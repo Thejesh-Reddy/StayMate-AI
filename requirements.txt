@@ -4,4 +4,4 @@ python-dotenv
 gunicorn
 pymongo
 reportlab
-faiss
+faiss-cpu
