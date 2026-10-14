@@ -3,3 +3,4 @@ requests>=2.31,<3.0
 python-dotenv
 gunicorn
 pymongo
+reportlab
