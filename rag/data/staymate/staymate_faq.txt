@@ -1,0 +1,83 @@
+STAYMATE AI - FREQUENTLY ASKED QUESTIONS
+
+1. CREATING AN ACCOUNT
+
+Users can create a StayMate AI account by providing their required registration details and verifying their email address.
+
+Email verification is performed using a one-time password (OTP).
+
+After successful verification, the user can create a password and complete account creation.
+
+2. SIGNING IN
+
+Registered users can sign in using their email address and password.
+
+After successful authentication, the user can access the protected StayMate AI application.
+
+3. HOTEL SEARCH
+
+Users can search for hotels by entering a destination or using their current location when location access is available.
+
+Hotel search results are obtained from the configured live hotel search service.
+
+4. USING CURRENT LOCATION
+
+StayMate AI can use the user's browser location when location permission is available.
+
+The application can use location information to determine a suitable location for hotel search.
+
+Users can also manually enter a destination.
+
+5. HOTEL INFORMATION
+
+Hotel search results may contain information such as hotel name, location, price, rating, and other available hotel details.
+
+Current hotel information is obtained through the live hotel search system.
+
+6. MAKING A BOOKING
+
+After selecting a hotel, users can provide the required booking information through the booking interface.
+
+The booking process includes reviewing the booking details, billing information, and payment flow.
+
+7. VIEWING BOOKINGS
+
+Authenticated users can view their previous bookings through the My Bookings section.
+
+Bookings are associated with the authenticated user's account.
+
+8. PROFILE
+
+Users can access their profile information after signing in.
+
+The profile section provides access to account-related information and booking functionality.
+
+9. FORGOT PASSWORD
+
+Users who forget their password can use the Forgot Password functionality.
+
+A password reset process is initiated through email.
+
+10. LOGGING OUT
+
+Users can securely log out of their StayMate AI session using the logout functionality.
+
+11. AI KNOWLEDGE ASSISTANT
+
+The StayMate AI knowledge assistant answers questions using information available in its knowledge base.
+
+The assistant uses retrieved information from the knowledge base to generate its responses.
+
+12. KNOWLEDGE LIMITATION
+
+The AI knowledge assistant should not invent information that is not available in its knowledge base.
+
+If the required information is unavailable, the assistant should clearly state that it does not have sufficient information.
+
+13. LIVE HOTEL INFORMATION
+
+Questions about current hotel prices and live availability should be handled by the live hotel search system rather than the static knowledge base.
+
+14. RAG KNOWLEDGE ASSISTANT
+
+The RAG-based assistant is intended to answer questions about StayMate, stored hotel knowledge, policies, and other information available in its knowledge base.

@@ -1,0 +1,78 @@
+STAYMATE AI - BOOKING POLICY
+
+1. HOTEL SEARCH
+
+StayMate AI allows users to search for hotels by destination or location.
+
+Users can search for hotels using a manually entered destination or their current location when location access is available.
+
+Hotel search results are obtained from the configured hotel search service.
+
+2. BOOKING INFORMATION
+
+Before confirming a booking, users must provide the required booking information.
+
+The booking information may include:
+
+- Guest name
+- Mobile number
+- Email address
+- Hotel name
+- Hotel address
+- Check-in date
+- Check-out date
+- Number of guests
+- Number of children
+- Number of rooms
+- Room type
+- Payment method
+
+3. BOOKING CONFIRMATION
+
+After the booking process is completed, StayMate AI creates a booking record.
+
+The booking contains a unique booking reference.
+
+The booking information is stored in the StayMate database.
+
+Users can view their bookings through the My Bookings section.
+
+4. PAYMENT
+
+StayMate AI currently provides a demo payment flow for the project.
+
+The payment flow does not represent a production payment gateway.
+
+A production version would require integration with a real payment service provider.
+
+5. BOOKING HISTORY
+
+Authenticated users can access their previous bookings through the My Bookings section.
+
+Users can only access bookings associated with their authenticated account.
+
+6. HOTEL PRICES
+
+Hotel prices and availability can change over time.
+
+Current hotel prices should be obtained from the live hotel search results rather than from this policy document.
+
+The StayMate AI knowledge assistant should not provide a current hotel price unless that information is explicitly available in its knowledge base.
+
+7. ACCOUNT REQUIREMENT
+
+Users must authenticate before accessing protected booking functionality.
+
+New users can create an account using email verification and password creation.
+
+8. KNOWLEDGE ASSISTANT
+
+The StayMate AI knowledge assistant answers questions using information available in its knowledge base.
+
+If the requested information is not available in the knowledge base, the assistant should clearly state that it does not have sufficient information rather than inventing an answer.
+
+9. CURRENT INFORMATION
+
+Information such as current hotel prices and live hotel availability should be obtained through the live hotel search system.
+
+The knowledge assistant is intended primarily for answering questions about StayMate, hotel information available in its knowledge base, policies, and other stored knowledge.

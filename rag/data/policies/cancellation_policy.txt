@@ -1,0 +1,43 @@
+STAYMATE AI - CANCELLATION POLICY
+
+1. CANCELLATION INFORMATION
+
+StayMate AI allows authenticated users to manage their bookings through the My Bookings section.
+
+Cancellation availability and refund conditions may depend on the cancellation rules associated with the booking.
+
+2. CANCELLATION OF A BOOKING
+
+Users should review the cancellation conditions associated with their booking before cancelling.
+
+The cancellation process should be performed through the available booking management functionality.
+
+3. REFUND INFORMATION
+
+Any refund depends on the applicable cancellation conditions for the booking.
+
+StayMate AI should not guarantee a refund unless the applicable booking information explicitly states that a refund is available.
+
+4. NON-REFUNDABLE BOOKINGS
+
+Some bookings may have non-refundable conditions.
+
+If a booking is marked as non-refundable, cancellation may not result in a refund.
+
+5. CANCELLATION QUESTIONS
+
+The StayMate AI knowledge assistant can explain cancellation-related information available in its knowledge base.
+
+If the knowledge base does not contain the cancellation conditions for a particular hotel or booking, the assistant should not invent them.
+
+6. CURRENT BOOKING INFORMATION
+
+The knowledge assistant provides information from its stored knowledge base.
+
+For booking-specific information, users should refer to their booking details and the My Bookings section.
+
+7. IMPORTANT LIMITATION
+
+The current StayMate project does not use this document to determine the actual cancellation or refund status of a live hotel booking.
+
+Live booking conditions should be verified from the applicable hotel or booking provider.

@@ -1,0 +1,43 @@
+STAYMATE AI - CHECK-IN AND CHECK-OUT POLICY
+
+1. CHECK-IN INFORMATION
+
+The check-in and check-out times for a hotel may vary depending on the hotel.
+
+Users should review the hotel information provided in the applicable hotel details before completing a booking.
+
+2. CHECK-IN DATE
+
+The check-in date is the date on which the guest is expected to arrive at the hotel.
+
+The selected check-in date is part of the booking information.
+
+3. CHECK-OUT DATE
+
+The check-out date is the date on which the guest is expected to leave the hotel.
+
+The selected check-out date is part of the booking information.
+
+4. EARLY CHECK-IN
+
+Early check-in may depend on the hotel's policy and availability.
+
+StayMate AI should not guarantee early check-in unless the applicable hotel information explicitly confirms it.
+
+5. LATE CHECK-OUT
+
+Late check-out may depend on the hotel's policy and availability.
+
+StayMate AI should not guarantee late check-out unless the applicable hotel information explicitly confirms it.
+
+6. HOTEL-SPECIFIC POLICIES
+
+Check-in requirements, identification requirements, early check-in, and late check-out conditions can vary between hotels.
+
+Users should verify hotel-specific requirements before arrival.
+
+7. KNOWLEDGE ASSISTANT LIMITATION
+
+The StayMate AI knowledge assistant should answer check-in and check-out questions only using information available in its knowledge base.
+
+If hotel-specific information is unavailable, the assistant should clearly state that it does not have sufficient information.

@@ -1,0 +1,6856 @@
+/* =========================================================
+   STAYMATE AI
+   PREMIUM TRAVEL / HOTEL BOOKING UI
+   ========================================================= */
+
+/* =========================================================
+   DESIGN SYSTEM
+   ========================================================= */
+
+:root {
+  --bg: #f4f9fc;
+  --bg-soft: #eef6fa;
+  --surface: #ffffff;
+  --surface-soft: #f7fbfd;
+
+  --text: #0b1720;
+  --text-soft: #536774;
+  --text-muted: #7b8d98;
+
+  --primary: #087fbd;
+  --primary-dark: #05679a;
+  --primary-light: #dff4fc;
+
+  --cyan: #2da9d0;
+  --cyan-soft: #e4f8fc;
+
+  --border: #dce9ef;
+  --border-soft: #e9f1f5;
+
+  --success: #15936b;
+  --danger: #d84b4b;
+
+  --shadow-sm:
+    0 4px 18px rgba(24, 67, 88, 0.06);
+
+  --shadow-md:
+    0 14px 40px rgba(22, 76, 101, 0.10);
+
+  --shadow-lg:
+    0 24px 70px rgba(22, 76, 101, 0.14);
+
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  --max-width: 1240px;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 85% 5%,
+      rgba(173, 233, 248, 0.42),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      #f7fbfd 0%,
+      #f2f8fb 50%,
+      #eef6fa 100%
+    );
+
+  color: var(--text);
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =========================================================
+   APP SHELL
+   ========================================================= */
+
+.app-shell {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+
+/* =========================================================
+   TOP NAVIGATION
+   ========================================================= */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  width: 100%;
+
+  background:
+    rgba(247, 251, 253, 0.84);
+
+  border-bottom:
+    1px solid rgba(220, 233, 239, 0.75);
+
+  backdrop-filter:
+    blur(22px);
+
+  -webkit-backdrop-filter:
+    blur(22px);
+}
+
+.topbar-inner {
+  width: min(
+    calc(100% - 48px),
+    var(--max-width)
+  );
+
+  min-height: 76px;
+
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 28px;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      145deg,
+      #087fbd,
+      #2da9d0
+    );
+
+  box-shadow:
+    0 8px 22px rgba(8, 127, 189, 0.22);
+}
+
+.brand-mark-spark {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.brand-copy {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.brand-name {
+  font-size: 17px;
+  font-weight: 850;
+  letter-spacing: -0.03em;
+}
+
+.brand-ai {
+  color: var(--primary);
+
+  font-size: 12px;
+  font-weight: 850;
+
+  letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-left: auto;
+}
+
+.nav-link {
+  position: relative;
+
+  padding: 9px 14px;
+
+  color: var(--text-soft);
+
+  font-size: 13px;
+  font-weight: 650;
+
+  border-radius: 10px;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary);
+
+  background:
+    rgba(8, 127, 189, 0.06);
+}
+
+.nav-link.active {
+  color: var(--primary);
+}
+
+.nav-link.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 14px;
+  right: 14px;
+  bottom: 2px;
+
+  height: 2px;
+
+  border-radius: 999px;
+
+  background:
+    var(--primary);
+}
+
+
+/* =========================================================
+   NEW CHAT BUTTON
+   ========================================================= */
+
+.new-chat-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 15px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  border: 0;
+  border-radius: 12px;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  box-shadow:
+    0 8px 22px rgba(8, 127, 189, 0.18);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.new-chat-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 28px rgba(8, 127, 189, 0.25);
+}
+
+.new-chat-icon {
+  width: 20px;
+  height: 20px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 7px;
+
+  background:
+    rgba(255, 255, 255, 0.18);
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page-content {
+  width: min(
+    calc(100% - 48px),
+    var(--max-width)
+  );
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero-section {
+  position: relative;
+
+  min-height: 610px;
+
+  margin-top: 24px;
+
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(390px, 0.95fr);
+
+  gap: 50px;
+
+  align-items: center;
+
+  padding:
+    66px 64px;
+
+  overflow: visible;
+
+  border:
+    1px solid rgba(220, 233, 239, 0.9);
+
+  border-radius: var(--radius-xl);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff 0%,
+      #f4fbfe 54%,
+      #e8f7fb 100%
+    );
+
+  box-shadow:
+    var(--shadow-lg);
+}
+
+
+/* =========================================================
+   HERO BACKGROUND EFFECTS
+   ========================================================= */
+
+.hero-background {
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  overflow: hidden;
+}
+
+.hero-glow {
+  position: absolute;
+
+  border-radius: 50%;
+
+  filter: blur(4px);
+}
+
+.hero-glow-one {
+  width: 380px;
+  height: 380px;
+
+  top: -190px;
+  left: -130px;
+
+  background:
+    rgba(173, 233, 248, 0.28);
+}
+
+.hero-glow-two {
+  width: 420px;
+  height: 420px;
+
+  right: -210px;
+  bottom: -230px;
+
+  background:
+    rgba(45, 169, 208, 0.11);
+}
+
+
+/* =========================================================
+   HERO CONTENT
+   ========================================================= */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+
+  max-width: 650px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-bottom: 19px;
+
+  color: var(--primary);
+
+  font-size: 10px;
+  font-weight: 850;
+
+  letter-spacing: 0.14em;
+}
+
+.eyebrow-icon {
+  width: 23px;
+  height: 23px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 8px;
+
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  font-size: 12px;
+}
+
+.hero-title {
+  margin: 0;
+
+  color: var(--text);
+
+  font-size:
+    clamp(42px, 5vw, 67px);
+
+  line-height: 0.98;
+
+  letter-spacing: -0.055em;
+
+  font-weight: 850;
+}
+
+.hero-title span {
+  color: var(--primary);
+}
+
+.hero-description {
+  max-width: 555px;
+
+  margin:
+    24px 0 30px;
+
+  color: var(--text-soft);
+
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   HERO SEARCH
+   ========================================================= */
+
+.hero-search-card {
+  position: relative;
+
+  max-width: 650px;
+
+  padding: 18px 18px 14px;
+
+  border:
+    1px solid rgba(211, 229, 237, 0.95);
+
+  border-radius: 19px;
+
+  background:
+    rgba(255, 255, 255, 0.92);
+
+  box-shadow:
+    0 14px 34px rgba(22, 76, 101, 0.09);
+}
+
+.search-card-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin:
+    0 0 9px 5px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+  font-weight: 850;
+
+  letter-spacing: 0.14em;
+}
+
+.search-label-icon {
+  color: var(--primary);
+  font-size: 8px;
+}
+
+
+/* =========================================================
+   LOCATION INPUT
+   ========================================================= */
+
+.location-search-wrapper {
+  position: relative;
+}
+
+.location-input-shell {
+  display: flex;
+  align-items: center;
+
+  min-height: 58px;
+
+  padding:
+    0 10px 0 16px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 14px;
+
+  background:
+    var(--surface-soft);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.location-input-shell:focus-within {
+  border-color:
+    rgba(8, 127, 189, 0.55);
+
+  background:
+    white;
+
+  box-shadow:
+    0 0 0 4px rgba(8, 127, 189, 0.08);
+}
+
+.location-input-icon {
+  width: 32px;
+  height: 32px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  margin-right: 9px;
+
+  color: var(--primary);
+
+  border-radius: 10px;
+
+  background:
+    var(--primary-light);
+
+  font-size: 18px;
+}
+
+.location-search {
+  min-width: 0;
+  width: 100%;
+
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+
+  color: var(--text);
+
+  background: transparent;
+
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.location-search::placeholder {
+  color: #91a3ad;
+}
+
+.location-input-arrow {
+  width: 39px;
+  height: 39px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  color: white;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  box-shadow:
+    0 7px 16px rgba(8, 127, 189, 0.18);
+
+  font-size: 18px;
+}
+
+
+/* =========================================================
+   LOCATION RESULTS
+   ========================================================= */
+
+.location-search-wrapper {
+  position: relative;
+  z-index: 100;
+}
+
+.location-results {
+  position: absolute;
+
+  z-index: 9999;
+
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+
+  display: none;
+
+  max-height: 300px;
+
+  overflow-y: auto;
+
+  padding: 7px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 15px;
+
+  background:
+    rgba(255, 255, 255, 0.99);
+
+  box-shadow:
+    0 18px 45px rgba(22, 76, 101, 0.18);
+
+  backdrop-filter:
+    blur(20px);
+
+  -webkit-backdrop-filter:
+    blur(20px);
+}
+
+.location-results.visible {
+  display: block;
+}
+
+.location-result {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 12px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  color: var(--text);
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+
+.location-result:hover,
+.location-result.active {
+  background:
+    var(--primary-light);
+
+  transform:
+    translateX(2px);
+}
+
+.location-result::before {
+  content: "⌖";
+
+  width: 32px;
+  height: 32px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  color: var(--primary);
+
+  border-radius: 9px;
+
+  background:
+    #edf8fc;
+
+  font-size: 15px;
+}
+
+.location-result-main {
+  display: block;
+
+  color: var(--text);
+
+  font-size: 13px;
+  line-height: 1.35;
+
+  font-weight: 750;
+}
+
+.location-result-secondary {
+  display: block;
+
+  margin-top: 3px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+/* =========================================================
+   SEARCH FOOTER
+   ========================================================= */
+
+.search-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  margin:
+    10px 4px 0;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+  font-weight: 600;
+}
+
+.search-hint-dot {
+  color: #b7c8d0;
+}
+
+
+/* =========================================================
+   HERO ACTIONS
+   ========================================================= */
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 17px;
+}
+
+.hero-action {
+  min-height: 45px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  padding:
+    0 15px;
+
+  border-radius: 12px;
+
+  font-size: 12px;
+  font-weight: 750;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.hero-action:hover {
+  transform: translateY(-2px);
+}
+
+.primary-action {
+  color: white;
+
+  border: 0;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  box-shadow:
+    0 9px 22px rgba(8, 127, 189, 0.18);
+}
+
+.primary-action:hover {
+  box-shadow:
+    0 13px 27px rgba(8, 127, 189, 0.25);
+}
+
+.secondary-action {
+  color: var(--text);
+
+  border:
+    1px solid var(--border);
+
+  background:
+    rgba(255, 255, 255, 0.76);
+}
+
+.secondary-action:hover {
+  background: white;
+}
+
+.hero-action-icon {
+  color: currentColor;
+}
+
+.hero-action-arrow {
+  margin-left: 4px;
+}
+
+
+/* =========================================================
+   HERO IMAGE
+   ========================================================= */
+
+.hero-visual {
+  position: relative;
+  z-index: 2;
+
+  min-height: 455px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-image-frame {
+  position: relative;
+
+  width: 100%;
+  max-width: 470px;
+
+  min-height: 455px;
+
+  overflow: hidden;
+
+  border-radius: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #b8e5f2,
+      #5eabc8
+    );
+
+  box-shadow:
+    0 25px 55px rgba(24, 86, 111, 0.20);
+}
+
+
+/*
+   We intentionally create a premium abstract
+   travel-like visual here without hardcoding
+   an external stock image.
+*/
+
+.hero-image-frame::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    radial-gradient(
+      circle at 28% 20%,
+      rgba(255,255,255,0.65),
+      transparent 18%
+    ),
+    linear-gradient(
+      155deg,
+      rgba(255,255,255,0.35),
+      transparent 42%
+    ),
+    linear-gradient(
+      25deg,
+      rgba(3, 83, 124, 0.36),
+      transparent 55%
+    );
+}
+
+.hero-image-frame::after {
+  content: "";
+
+  position: absolute;
+
+  width: 270px;
+  height: 270px;
+
+  right: -80px;
+  top: 80px;
+
+  border-radius: 50%;
+
+  border:
+    50px solid rgba(255,255,255,0.18);
+
+  box-shadow:
+    -100px 120px 0 -30px rgba(255,255,255,0.11);
+}
+
+.hero-image-overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 35%,
+      rgba(3, 38, 55, 0.66) 100%
+    );
+}
+
+.hero-image-content {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 3;
+
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.hero-image-badge {
+  align-self: flex-start;
+
+  padding:
+    7px 10px;
+
+  color: white;
+
+  border:
+    1px solid rgba(255,255,255,0.28);
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,0.14);
+
+  backdrop-filter:
+    blur(10px);
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+}
+
+.hero-image-caption {
+  display: flex;
+  flex-direction: column;
+
+  max-width: 310px;
+
+  color: white;
+}
+
+.hero-image-caption-small {
+  margin-bottom: 9px;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  letter-spacing: 0.15em;
+
+  opacity: 0.78;
+}
+
+.hero-image-caption-title {
+  font-size: 34px;
+  line-height: 1.05;
+
+  letter-spacing: -0.045em;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   FLOATING AI CARD
+   ========================================================= */
+
+.floating-ai-card {
+  position: absolute;
+
+  z-index: 5;
+
+  left: -28px;
+  bottom: 40px;
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  padding:
+    11px 14px;
+
+  color: var(--text);
+
+  border:
+    1px solid rgba(255,255,255,0.75);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255,255,255,0.88);
+
+  box-shadow:
+    0 15px 34px rgba(22, 76, 101, 0.17);
+
+  backdrop-filter:
+    blur(18px);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.floating-ai-icon {
+  width: 27px;
+  height: 27px;
+
+  display: grid;
+  place-items: center;
+
+  color: white;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+}
+
+.floating-ai-status {
+  color: var(--success);
+
+  font-size: 9px;
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   FEATURE STRIP
+   ========================================================= */
+
+.feature-strip {
+  display: grid;
+  grid-template-columns:
+    1fr auto 1fr auto 1fr;
+
+  align-items: center;
+
+  gap: 25px;
+
+  padding:
+    27px 10px;
+
+  border-bottom:
+    1px solid var(--border-soft);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+}
+
+.feature-icon {
+  width: 39px;
+  height: 39px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  color: var(--primary);
+
+  border-radius: 12px;
+
+  background:
+    var(--primary-light);
+
+  font-size: 15px;
+}
+
+.feature-item div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.feature-item strong {
+  color: var(--text);
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.feature-item span:not(.feature-icon) {
+  color: var(--text-muted);
+
+  font-size: 10px;
+}
+
+.feature-divider {
+  width: 1px;
+  height: 34px;
+
+  background:
+    var(--border);
+}
+
+
+/* =========================================================
+   ASSISTANT SECTION
+   ========================================================= */
+
+.assistant-section {
+  margin-top: 80px;
+  padding-bottom: 80px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 25px;
+}
+
+.section-eyebrow {
+  color: var(--primary);
+
+  font-size: 9px;
+  font-weight: 850;
+
+  letter-spacing: 0.15em;
+}
+
+.section-heading h2 {
+  margin:
+    7px 0 7px;
+
+  font-size: 34px;
+
+  line-height: 1.1;
+
+  letter-spacing: -0.04em;
+
+  font-weight: 820;
+}
+
+.section-heading p {
+  margin: 0;
+
+  color: var(--text-soft);
+
+  font-size: 13px;
+}
+
+.assistant-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding:
+    9px 12px;
+
+  color: var(--success);
+
+  border:
+    1px solid #d8eee6;
+
+  border-radius: 999px;
+
+  background:
+    #f2fbf7;
+
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--success);
+
+  box-shadow:
+    0 0 0 4px rgba(21,147,107,0.10);
+}
+
+
+/* =========================================================
+   CHAT AREA
+   ========================================================= */
+
+.chat-area {
+  min-height: 250px;
+
+  max-height: none;
+
+  padding:
+    22px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 24px;
+
+  background:
+    rgba(255,255,255,0.68);
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+
+/* =========================================================
+   CHAT MESSAGES
+   ========================================================= */
+
+.message {
+  display: flex;
+
+  width: 100%;
+
+  margin:
+    10px 0;
+}
+
+.message.bot {
+  justify-content: flex-start;
+}
+
+.message.user {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: min(850px, 88%);
+
+  padding:
+    13px 16px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 17px;
+
+  background:
+    white;
+
+  color: var(--text);
+
+  box-shadow:
+    0 5px 18px rgba(24, 67, 88, 0.055);
+
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.message.bot .bubble {
+  border-top-left-radius: 6px;
+}
+
+.message.user .bubble {
+  border-top-right-radius: 6px;
+
+  color: white;
+
+  border-color:
+    transparent;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  box-shadow:
+    0 8px 20px rgba(8, 127, 189, 0.15);
+}
+
+
+/* =========================================================
+   GENERAL CARDS
+   ========================================================= */
+
+.card {
+  width: 100%;
+
+  margin-top: 12px;
+
+  padding: 20px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,0.96);
+
+  box-shadow:
+    var(--shadow-sm);
+}
+
+.card h2,
+.card h3,
+.card h4 {
+  margin-top: 0;
+
+  color: var(--text);
+
+  letter-spacing: -0.025em;
+}
+
+.card h2 {
+  font-size: 23px;
+}
+
+.card h3 {
+  font-size: 17px;
+}
+
+.card p {
+  color: var(--text-soft);
+}
+
+.muted {
+  color: var(--text-muted);
+
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   HOTEL RESULTS
+   ========================================================= */
+
+.hotel-results {
+  padding: 22px;
+}
+
+.hotel-results h2 {
+  margin:
+    0 0 18px;
+
+  font-size: 23px;
+}
+
+
+/* =========================================================
+   HOTEL GRID
+   ========================================================= */
+
+.hotel-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   HOTEL CARD
+   ========================================================= */
+
+.hotel-card,
+.hotel {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  min-width: 0;
+
+  padding: 0;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 20px;
+
+  background:
+    white;
+
+  box-shadow:
+    0 8px 26px rgba(24, 67, 88, 0.065);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.hotel-card:hover,
+.hotel:hover {
+  transform:
+    translateY(-5px);
+
+  border-color:
+    #c6e0eb;
+
+  box-shadow:
+    0 18px 40px rgba(24, 67, 88, 0.13);
+}
+
+
+/* =========================================================
+   HOTEL IMAGE
+   ========================================================= */
+
+.hotel-card img,
+.hotel img {
+  width: 100%;
+
+  height: 210px;
+
+  object-fit: cover;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d9edf4,
+      #a9d9e8
+    );
+}
+
+.hotel-card img {
+  border-radius: 0;
+}
+
+
+/* =========================================================
+   HOTEL CONTENT
+   ========================================================= */
+
+.hotel-card > *:not(img),
+.hotel > *:not(img) {
+  margin-left: 17px;
+  margin-right: 17px;
+}
+
+.hotel-card h3,
+.hotel h3 {
+  margin-top: 16px;
+  margin-bottom: 6px;
+
+  font-size: 17px;
+  line-height: 1.3;
+
+  font-weight: 800;
+}
+
+.hotel-card .muted,
+.hotel .muted {
+  margin-bottom: 6px;
+}
+
+.hotel-card .price,
+.hotel .price {
+  margin-top: auto;
+
+  padding-top: 16px;
+
+  color: var(--text);
+
+  font-size: 19px;
+  font-weight: 850;
+}
+
+.hotel-card .price::after,
+.hotel .price::after {
+  content: "";
+}
+
+
+/* =========================================================
+   RATING
+   ========================================================= */
+
+.hotel-card .rating,
+.hotel .rating {
+  color: #087fbd;
+
+  font-weight: 750;
+}
+
+
+/* =========================================================
+   AMENITY PILLS
+   ========================================================= */
+
+.pill {
+  display: inline-flex;
+
+  align-items: center;
+
+  margin:
+    3px 4px 3px 0;
+
+  padding:
+    5px 8px;
+
+  color:
+    var(--primary-dark);
+
+  border:
+    1px solid #d6edf5;
+
+  border-radius: 999px;
+
+  background:
+    #eff9fc;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.hotel-card button,
+.hotel button,
+.primary {
+  min-height: 42px;
+
+  margin-top: 16px;
+  margin-bottom: 17px;
+
+  padding:
+    0 16px;
+
+  color: white;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  font-size: 11px;
+  font-weight: 800;
+
+  box-shadow:
+    0 7px 18px rgba(8, 127, 189, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.hotel-card button:hover,
+.hotel button:hover,
+.primary:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 11px 24px rgba(8, 127, 189, 0.23);
+
+  filter:
+    brightness(1.04);
+}
+
+/* View Hotel button */
+.hotel-view-link {
+  min-height: 42px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 16px;
+  margin-bottom: 17px;
+
+  padding: 0 16px;
+
+  color: white;
+
+  border: 0;
+  border-radius: 11px;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--cyan)
+  );
+
+  font-size: 11px;
+  font-weight: 800;
+  text-align: center;
+
+  box-shadow:
+    0 7px 18px rgba(8, 127, 189, 0.16);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.hotel-view-link:hover {
+  color: white;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 11px 24px rgba(8, 127, 189, 0.23);
+
+  filter: brightness(1.04);
+}
+
+.hotel-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+  padding: 0 17px 17px;
+}
+
+.hotel-card-actions .hotel-view-link,
+.hotel-card-actions .hotel-book-button {
+  flex: 1;
+  margin: 0;
+}
+
+/* =========================================================
+   MORE HOTELS
+   ========================================================= */
+
+.more-hotels-card {
+  display: flex;
+
+  justify-content: center;
+
+  margin-top: 20px;
+
+  text-align: center;
+}
+
+.more-hotels-card .primary {
+  min-width: 190px;
+}
+
+
+/* =========================================================
+   BOOKING SECTION
+   ========================================================= */
+
+.booking-section {
+  max-width: 900px;
+
+  margin:
+    20px auto;
+}
+
+.booking-section h2 {
+  margin-bottom: 6px;
+
+  font-size: 25px;
+}
+
+.booking-section .subtitle {
+  margin-bottom: 20px;
+
+  color: var(--text-soft);
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
+.form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 15px;
+}
+
+.form-grid label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  color: var(--text-soft);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.form-grid input,
+.form-grid select {
+  width: 100%;
+
+  min-height: 45px;
+
+  padding:
+    0 12px;
+
+  color: var(--text);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 11px;
+
+  outline: none;
+
+  background:
+    var(--surface-soft);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.form-grid input:focus,
+.form-grid select:focus {
+  border-color:
+    rgba(8, 127, 189, 0.55);
+
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(8, 127, 189, 0.07);
+}
+
+.form-grid input::placeholder {
+  color: #9aaab3;
+}
+
+.full {
+  grid-column:
+    1 / -1;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.actions {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 20px;
+}
+
+.actions button {
+  min-height: 42px;
+
+  padding:
+    0 17px;
+
+  border-radius: 11px;
+
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.secondary {
+  color: var(--text-soft);
+
+  border:
+    1px solid var(--border);
+
+  background:
+    white;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.secondary:hover {
+  color: var(--primary);
+
+  border-color:
+    #c5dfe9;
+
+  background:
+    #f5fbfd;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* =========================================================
+   BILLING
+   ========================================================= */
+
+.billing-card {
+  max-width: 760px;
+
+  margin:
+    18px auto;
+}
+
+.billing-card h2 {
+  margin-bottom: 20px;
+}
+
+.billing-row {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding:
+    12px 0;
+
+  border-bottom:
+    1px solid var(--border-soft);
+
+  font-size: 12px;
+}
+
+.billing-row:last-child {
+  border-bottom: 0;
+}
+
+.billing-label {
+  color: var(--text-muted);
+}
+
+.billing-value {
+  color: var(--text);
+
+  text-align: right;
+
+  font-weight: 700;
+}
+
+.billing-total {
+  margin-top: 5px;
+
+  padding-top: 18px;
+
+  font-size: 20px;
+  font-weight: 850;
+}
+
+.billing-total .billing-value {
+  color: var(--primary);
+
+  font-size: 23px;
+}
+
+
+/* =========================================================
+   PAYMENT
+   ========================================================= */
+
+.payment-card {
+  max-width: 760px;
+
+  margin:
+    18px auto;
+}
+
+.payment-card > h2 {
+  margin-bottom: 7px;
+}
+
+.payment-card > p strong {
+  color: var(--primary);
+
+  font-size: 20px;
+}
+
+.payment-summary {
+  margin:
+    18px 0;
+
+  padding:
+    15px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 14px;
+
+  background:
+    var(--surface-soft);
+}
+
+.payment-summary p {
+  margin:
+    5px 0;
+}
+
+
+/* =========================================================
+   PAYMENT METHODS
+   ========================================================= */
+
+.payment-methods {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin:
+    18px 0;
+}
+
+.payment-option {
+  position: relative;
+
+  min-height: 72px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    13px;
+
+  color: var(--text-soft);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 14px;
+
+  background:
+    white;
+
+  text-align: center;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.payment-option:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    #b9dce9;
+
+  background:
+    #f8fcfd;
+}
+
+.payment-option input {
+  position: absolute;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+.payment-option.selected {
+  color: var(--primary);
+
+  border-color:
+    var(--primary);
+
+  background:
+    var(--primary-light);
+
+  box-shadow:
+    0 0 0 3px rgba(8, 127, 189, 0.08);
+}
+
+.payment-option:focus-within {
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 3px rgba(8, 127, 189, 0.08);
+}
+
+.payment-note {
+  margin-top: 12px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   PAYMENT FORM
+   ========================================================= */
+
+.payment-form {
+  margin-top: 18px;
+}
+
+.payment-form label {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  color: var(--text-soft);
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.payment-form select {
+  min-height: 46px;
+
+  padding:
+    0 12px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 11px;
+
+  outline: none;
+
+  background:
+    var(--surface-soft);
+
+  color: var(--text);
+}
+
+.payment-form select:focus {
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 4px rgba(8, 127, 189, 0.07);
+}
+
+
+/* =========================================================
+   BACK / PAYMENT ACTIONS
+   ========================================================= */
+
+.back-payment {
+  margin-right: 8px;
+}
+
+
+/* =========================================================
+   CONFIRMATION
+   ========================================================= */
+
+.confirmation-container {
+  width: 100%;
+}
+
+.confirmation-card {
+  max-width: 780px;
+
+  margin:
+    20px auto;
+
+  text-align: center;
+
+  padding:
+    30px;
+}
+
+.confirmation-card h2 {
+  margin-bottom: 7px;
+
+  font-size: 28px;
+}
+
+.confirmation-card > p {
+  margin-bottom: 23px;
+}
+
+.confirmation-icon {
+  width: 64px;
+  height: 64px;
+
+  display: grid;
+  place-items: center;
+
+  margin:
+    0 auto 15px;
+
+  color: white;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #15936b,
+      #43c79b
+    );
+
+  box-shadow:
+    0 12px 28px rgba(21,147,107,0.18);
+
+  font-size: 28px;
+}
+
+.confirmation-reference {
+  display: inline-block;
+
+  margin:
+    5px 0 20px;
+
+  padding:
+    8px 13px;
+
+  color: var(--primary);
+
+  border:
+    1px solid #cde6f0;
+
+  border-radius: 9px;
+
+  background:
+    #f1faff;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  letter-spacing: 0.05em;
+}
+
+.confirmation-details {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+
+  margin-top: 20px;
+
+  text-align: left;
+}
+
+.confirmation-details > div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+
+  padding:
+    13px 14px;
+
+  border:
+    1px solid var(--border-soft);
+
+  border-radius: 12px;
+
+  background:
+    var(--surface-soft);
+}
+
+.confirmation-details span {
+  color: var(--text-muted);
+
+  font-size: 9px;
+  font-weight: 650;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.08em;
+}
+
+.confirmation-details strong {
+  color: var(--text);
+
+  font-size: 12px;
+}
+
+.confirmation-total {
+  grid-column:
+    1 / -1;
+
+  margin-top: 5px;
+
+  padding:
+    18px !important;
+
+  border-color:
+    #cce8f2 !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      #eefaff,
+      #f7fcfd
+    ) !important;
+}
+
+.confirmation-total strong {
+  color: var(--primary);
+
+  font-size: 22px;
+}
+
+.confirmation-note {
+  margin-top: 20px;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading-message {
+  opacity: 0.95;
+}
+
+.loading-bubble {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 10px;
+}
+
+.loading-spinner {
+  width: 16px;
+  height: 16px;
+
+  display: inline-block;
+
+  border:
+    2px solid #cde4ed;
+
+  border-top-color:
+    var(--primary);
+
+  border-radius: 50%;
+
+  animation:
+    staymate-spin 0.8s linear infinite;
+}
+
+@keyframes staymate-spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* =========================================================
+   ERROR / STATUS
+   ========================================================= */
+
+.error,
+.error-message {
+  color: var(--danger);
+}
+
+
+/* =========================================================
+   CHAT COMPOSER
+   ========================================================= */
+
+.chat-composer {
+  position: sticky;
+
+  bottom: 16px;
+
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  width: 100%;
+
+  margin-top: 16px;
+
+  padding:
+    8px 9px 8px 14px;
+
+  border:
+    1px solid rgba(207, 225, 233, 0.95);
+
+  border-radius: 17px;
+
+  background:
+    rgba(255,255,255,0.92);
+
+  box-shadow:
+    0 14px 38px rgba(22,76,101,0.12);
+
+  backdrop-filter:
+    blur(18px);
+}
+
+.composer-icon {
+  width: 31px;
+  height: 31px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  color: var(--primary);
+
+  border-radius: 9px;
+
+  background:
+    var(--primary-light);
+
+  font-size: 14px;
+}
+
+.chat-composer input {
+  min-width: 0;
+
+  width: 100%;
+
+  height: 39px;
+
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+
+  color: var(--text);
+
+  background: transparent;
+
+  font-size: 13px;
+}
+
+.chat-composer input::placeholder {
+  color: #8ca0aa;
+}
+
+.composer-send {
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  flex-shrink: 0;
+
+  color: white;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  box-shadow:
+    0 7px 17px rgba(8,127,189,0.17);
+
+  font-size: 19px;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.composer-send:hover {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 11px 22px rgba(8,127,189,0.23);
+}
+
+
+/* =========================================================
+   DYNAMIC HOTEL RESULTS — APP.JS COMPATIBILITY
+   ========================================================= */
+
+.hotel-results {
+  width: 100%;
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255,255,255,0.82);
+  box-shadow: var(--shadow-sm);
+}
+
+.hotel-results-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.hotel-results-heading h2 {
+  margin: 7px 0 0;
+  font-size: 23px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.hotel-result-count {
+  color: var(--text-muted);
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.hotel-card-image {
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #d9edf4, #a9d9e8);
+}
+
+.hotel-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hotel-image-placeholder {
+  display: grid;
+  place-items: center;
+  color: white;
+  background: linear-gradient(135deg, #b8e5f2, #5eabc8);
+  font-size: 34px;
+}
+
+.hotel-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 17px;
+}
+
+.hotel-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.hotel-card-top h3 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 800;
+}
+
+.hotel-rating {
+  flex-shrink: 0;
+  padding: 5px 8px;
+  color: var(--primary-dark);
+  border-radius: 8px;
+  background: var(--primary-light);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.hotel-address {
+  margin: 7px 0 0;
+  color: var(--text-soft);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.hotel-reviews {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.hotel-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 12px;
+}
+
+.hotel-amenity {
+  padding: 5px 8px;
+  color: var(--primary-dark);
+  border: 1px solid #d6edf5;
+  border-radius: 999px;
+  background: #eff9fc;
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.hotel-card-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 17px;
+}
+
+.hotel-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.hotel-price strong {
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 850;
+}
+
+.hotel-price span {
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.hotel-book-button {
+  min-height: 40px;
+  margin: 0 !important;
+  padding: 0 14px !important;
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   DYNAMIC BOOKING / BILLING / PAYMENT COMPONENTS
+   ========================================================= */
+
+.booking-container,
+.billing-container,
+.payment-container {
+  width: 100%;
+  margin-top: 20px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: var(--shadow-sm);
+}
+
+.booking-header h2,
+.billing-header h2,
+.payment-header h2 {
+  margin: 7px 0;
+  color: var(--text);
+  font-size: 25px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.booking-header p,
+.payment-header p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 12px;
+}
+
+.booking-form {
+  margin-top: 22px;
+}
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.booking-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.booking-grid input,
+.booking-grid select {
+  width: 100%;
+  min-height: 45px;
+  padding: 0 12px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  outline: none;
+  background: var(--surface-soft);
+}
+
+.booking-grid input:focus,
+.booking-grid select:focus {
+  border-color: rgba(8,127,189,0.55);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(8,127,189,0.07);
+}
+
+.booking-summary {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface-soft);
+}
+
+.booking-summary > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 11px;
+}
+
+.booking-summary > div:last-child {
+  border-bottom: 0;
+}
+
+.booking-summary span {
+  color: var(--text-muted);
+}
+
+.booking-summary strong {
+  color: var(--text);
+}
+
+.booking-actions,
+.billing-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.booking-actions button,
+.billing-actions button,
+.payment-form button {
+  min-height: 43px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 11px;
+}
+
+.billing-card {
+  width: 100%;
+  margin: 18px 0 0;
+}
+
+.billing-card > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: 12px;
+}
+
+.billing-card > div:last-child {
+  border-bottom: 0;
+}
+
+.billing-card > div span {
+  color: var(--text-muted);
+}
+
+.billing-card > div strong {
+  color: var(--text);
+  text-align: right;
+}
+
+.billing-total {
+  margin-top: 5px;
+  padding-top: 18px !important;
+  color: var(--primary);
+  font-size: 20px !important;
+}
+
+.billing-total strong {
+  color: var(--primary) !important;
+  font-size: 22px;
+}
+
+.payment-form {
+  margin-top: 20px;
+}
+
+.payment-form .payment-option {
+  min-height: 65px;
+  margin-bottom: 10px;
+}
+
+.payment-form .primary-action {
+  width: 100%;
+  margin-top: 8px;
+}
+
+
+/* =========================================================
+   CONFIRMATION — DYNAMIC APP.JS COMPONENT
+   ========================================================= */
+
+.confirmation-container {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.confirmation-card {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255,255,255,0.96);
+  box-shadow: var(--shadow-md);
+}
+
+.confirmation-card h2 {
+  margin: 7px 0;
+  font-size: 28px;
+}
+
+.confirmation-card > p {
+  color: var(--text-soft);
+}
+
+.confirmation-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 15px;
+  color: white;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #15936b, #43c79b);
+  box-shadow: 0 12px 28px rgba(21,147,107,0.18);
+  font-size: 28px;
+}
+
+.confirmation-reference {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0 20px;
+  padding: 10px 14px;
+  color: var(--primary);
+  border: 1px solid #cde6f0;
+  border-radius: 10px;
+  background: #f1faff;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.confirmation-reference strong {
+  font-size: 14px;
+}
+
+.confirmation-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.confirmation-details > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 13px 14px;
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+
+.confirmation-details span {
+  color: var(--text-muted);
+  font-size: 9px;
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.confirmation-details strong {
+  color: var(--text);
+  font-size: 12px;
+}
+
+.confirmation-card .primary-action {
+  margin-top: 20px;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.site-footer {
+  width: min(
+    calc(100% - 48px),
+    var(--max-width)
+  );
+
+  margin:
+    0 auto;
+
+  padding:
+    26px 0 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  border-top:
+    1px solid var(--border);
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--text);
+
+  font-weight: 850;
+
+  letter-spacing: -0.02em;
+}
+
+.footer-mark {
+  color: var(--primary);
+}
+
+.site-footer p {
+  margin: 0;
+}
+
+.footer-note {
+  text-align: right;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+* {
+  scrollbar-width: thin;
+
+  scrollbar-color:
+    #b7d4df
+    transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+
+  background:
+    #b7d4df;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 1050px) {
+
+  .hero-section {
+    grid-template-columns:
+      1fr;
+
+    gap: 35px;
+
+    padding:
+      50px 42px;
+  }
+
+  .hero-content {
+    max-width: 760px;
+  }
+
+  .hero-visual {
+    min-height: 390px;
+  }
+
+  .hero-image-frame {
+    min-height: 390px;
+  }
+
+  .hotel-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+  .topbar-inner {
+    width:
+      calc(100% - 28px);
+
+    min-height: 68px;
+
+    gap: 12px;
+  }
+
+  .main-nav {
+    display: none;
+  }
+
+  .new-chat-button {
+    padding:
+      9px 11px;
+  }
+
+  .new-chat-button span:last-child {
+    display: none;
+  }
+
+  .page-content {
+    width:
+      calc(100% - 24px);
+  }
+
+  .hero-section {
+    min-height: auto;
+
+    margin-top: 14px;
+
+    padding:
+      38px 22px 26px;
+
+    border-radius: 25px;
+  }
+
+  .hero-title {
+    font-size:
+      clamp(39px, 12vw, 54px);
+  }
+
+  .hero-description {
+    font-size: 14px;
+
+    margin-top: 19px;
+  }
+
+  .hero-search-card {
+    padding:
+      14px;
+  }
+
+  .location-input-shell {
+    min-height: 53px;
+  }
+
+  .location-input-arrow {
+    width: 35px;
+    height: 35px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+  }
+
+  .hero-action {
+    width: 100%;
+
+    justify-content: center;
+  }
+
+  .hero-visual {
+    min-height: 340px;
+
+    margin-top: 8px;
+  }
+
+  .hero-image-frame {
+    min-height: 340px;
+
+    border-radius: 24px;
+  }
+
+  .hero-image-caption-title {
+    font-size: 28px;
+  }
+
+  .floating-ai-card {
+    left: 12px;
+    bottom: 18px;
+  }
+
+  .feature-strip {
+    grid-template-columns:
+      1fr;
+
+    gap: 17px;
+
+    padding:
+      23px 4px;
+  }
+
+  .feature-divider {
+    display: none;
+  }
+
+  .feature-item {
+    justify-content: flex-start;
+  }
+
+  .assistant-section {
+    margin-top: 48px;
+
+    padding-bottom: 45px;
+  }
+
+  .section-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 15px;
+  }
+
+  .section-heading h2 {
+    font-size: 28px;
+  }
+
+  .chat-area {
+    padding:
+      12px;
+
+    border-radius: 18px;
+  }
+
+  .bubble {
+    max-width: 94%;
+  }
+
+  .hotel-grid {
+    grid-template-columns:
+      1fr;
+
+    gap: 15px;
+  }
+
+  .hotel-card img,
+  .hotel img {
+    height: 220px;
+  }
+
+  .hotel-results-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hotel-card-image {
+    height: 220px;
+  }
+
+  .hotel-card-bottom {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hotel-book-button {
+    width: 100%;
+  }
+
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .confirmation-details {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .payment-methods {
+    grid-template-columns:
+      1fr;
+  }
+
+  .confirmation-details {
+    grid-template-columns:
+      1fr;
+  }
+
+  .confirmation-total {
+    grid-column:
+      auto;
+  }
+
+  .site-footer {
+    width:
+      calc(100% - 24px);
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .footer-note {
+    text-align: left;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .brand-name {
+    font-size: 15px;
+  }
+
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+  }
+
+  .hero-section {
+    padding:
+      32px 17px 20px;
+  }
+
+  .hero-title {
+    font-size: 38px;
+  }
+
+  .hero-search-card {
+    padding:
+      11px;
+  }
+
+  .search-card-footer {
+    flex-wrap: wrap;
+  }
+
+  .hero-image-frame {
+    min-height: 300px;
+  }
+
+  .hero-visual {
+    min-height: 300px;
+  }
+
+  .floating-ai-card {
+    left: 8px;
+
+    padding:
+      9px 11px;
+  }
+
+  .card {
+    padding:
+      16px;
+  }
+
+  .hotel-card img,
+  .hotel img {
+    height: 200px;
+  }
+
+  .hotel-card-image {
+    height: 200px;
+  }
+
+  .hotel-results,
+  .booking-container,
+  .billing-container,
+  .payment-container {
+    padding: 16px;
+  }
+
+  .confirmation-card {
+    padding: 20px 15px;
+  }
+
+  .confirmation-card {
+    padding:
+      20px 15px;
+  }
+
+}
+/* =========================================================
+   STAYMATE BOOKING FLOW UI
+   Booking → Billing → Payment → Confirmation
+   UI ONLY — NO FUNCTIONALITY CHANGES
+   ========================================================= */
+
+
+/* =========================================================
+   COMMON BOOKING CONTAINER
+   ========================================================= */
+
+.booking-container,
+.billing-container,
+.payment-container,
+.confirmation-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 28px auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   COMMON CARD
+   ========================================================= */
+
+.booking-card,
+.billing-card,
+.payment-card,
+.confirmation-card {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 28px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    var(--radius-lg);
+
+  background:
+    rgba(255, 255, 255, 0.96);
+
+  box-shadow:
+    0 12px 35px rgba(22, 76, 101, 0.09);
+
+  backdrop-filter:
+    blur(14px);
+
+  -webkit-backdrop-filter:
+    blur(14px);
+}
+
+
+/* =========================================================
+   HEADINGS
+   ========================================================= */
+
+.booking-card h2,
+.billing-card h2,
+.payment-card h2,
+.confirmation-card h2 {
+  margin:
+    0 0 8px;
+
+  color:
+    var(--text);
+
+  font-size:
+    24px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.2;
+}
+
+
+.booking-card > p:first-of-type,
+.billing-card > p:first-of-type {
+  margin:
+    0 0 26px;
+
+  color:
+    var(--text-muted);
+
+  font-size:
+    14px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================================
+   BOOKING FORM
+   ========================================================= */
+
+.booking-form {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    18px;
+}
+
+
+/* =========================================================
+   FORM LABELS
+   ========================================================= */
+
+.booking-form label {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    7px;
+
+  color:
+    var(--text);
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   INPUTS / SELECT
+   ========================================================= */
+
+.booking-form input,
+.booking-form select {
+  width:
+    100%;
+
+  min-height:
+    44px;
+
+  box-sizing:
+    border-box;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    11px;
+
+  outline:
+    none;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+
+.booking-form input::placeholder {
+  color:
+    #9aaab3;
+}
+
+
+.booking-form input:hover,
+.booking-form select:hover {
+  border-color:
+    #b7dce9;
+}
+
+
+.booking-form input:focus,
+.booking-form select:focus {
+  border-color:
+    var(--primary);
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(25, 157, 204, 0.10);
+}
+
+
+/* =========================================================
+   TWO-COLUMN FORM ROW
+   ========================================================= */
+
+.booking-form .form-row {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap:
+    16px;
+
+  width:
+    100%;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+   ========================================================= */
+
+.booking-form .actions,
+.billing-card .actions,
+.payment-card .actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    12px;
+
+  margin-top:
+    8px;
+
+  padding-top:
+    20px;
+
+  border-top:
+    1px solid var(--border);
+}
+
+
+/* Primary */
+
+.booking-form button.primary,
+.billing-card button.primary,
+.payment-card button.primary {
+  min-height:
+    44px;
+
+  padding:
+    0 22px;
+
+  border:
+    none;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #1597c9,
+      #168cc0
+    );
+
+  color:
+    #ffffff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0 8px 20px rgba(21, 151, 201, 0.20);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    opacity 0.18s ease;
+}
+
+
+.booking-form button.primary:hover,
+.billing-card button.primary:hover,
+.payment-card button.primary:hover {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 11px 24px rgba(21, 151, 201, 0.25);
+}
+
+
+.booking-form button.primary:disabled,
+.payment-card button.primary:disabled {
+  opacity:
+    0.65;
+
+  cursor:
+    wait;
+
+  transform:
+    none;
+}
+
+
+/* Secondary */
+
+.booking-form button.secondary,
+.billing-card button.secondary,
+.payment-card button.secondary {
+  min-height:
+    44px;
+
+  padding:
+    0 20px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    12px;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--text-muted);
+
+  font-family:
+    inherit;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease;
+}
+
+
+.booking-form button.secondary:hover,
+.billing-card button.secondary:hover,
+.payment-card button.secondary:hover {
+  background:
+    #f4fbfd;
+
+  border-color:
+    #b7dce9;
+
+  color:
+    var(--text);
+}
+
+
+/* =========================================================
+   BILLING CARD
+   ========================================================= */
+
+.billing-card {
+  padding:
+    30px;
+}
+
+
+/* Hotel title */
+
+.billing-card > p:first-of-type {
+  color:
+    var(--primary);
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   BILLING SUMMARY
+   ========================================================= */
+
+/* =========================================================
+   BILLING SUMMARY
+   2 DETAILS PER ROW
+   ========================================================= */
+
+.billing-summary {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  width: 100%;
+
+  margin-top: 16px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    16px;
+
+  overflow: hidden;
+
+  background:
+    #ffffff;
+}
+
+
+/* =========================================================
+   INDIVIDUAL BILLING ITEM
+   ========================================================= */
+
+.billing-summary > .billing-row {
+  min-height: 76px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  justify-content: center;
+
+  gap: 6px;
+
+  padding:
+    14px 18px;
+
+  margin: 0;
+
+  border-bottom:
+    1px solid var(--border-soft);
+
+  border-right:
+    1px solid var(--border-soft);
+
+  box-sizing: border-box;
+}
+
+
+/* Right item in each row */
+
+.billing-summary > .billing-row:nth-child(even) {
+  border-right:
+    none;
+}
+
+
+/* =========================================================
+   BILLING LABEL
+   ========================================================= */
+
+.billing-summary .billing-label {
+  display: block;
+
+  color:
+    var(--text-muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    650;
+
+  line-height:
+    1.3;
+}
+
+
+/* =========================================================
+   BILLING VALUE
+   ========================================================= */
+
+.billing-summary .billing-value {
+  display: block;
+
+  width: 100%;
+
+  color:
+    var(--text);
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.35;
+
+  text-align:
+    left;
+
+  word-break:
+    break-word;
+}
+
+
+/* =========================================================
+   LAST NORMAL ITEM
+   ========================================================= */
+
+/*
+   The total row is the last child.
+   The tax row is therefore the last normal item.
+*/
+
+.billing-summary > .billing-row:nth-last-child(2) {
+  border-bottom:
+    none;
+}
+
+
+/* =========================================================
+   TOTAL ROW
+   ========================================================= */
+
+.billing-summary > .billing-row.billing-total {
+  grid-column:
+    1 / -1;
+
+  min-height:
+    82px;
+
+  display:
+    flex;
+
+  flex-direction:
+    row;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    20px;
+
+  padding:
+    18px 20px;
+
+  border-top:
+    1px solid var(--border);
+
+  border-right:
+    none;
+
+  border-bottom:
+    none;
+
+  background:
+    #f4fbfd;
+}
+
+
+/* Total label */
+
+.billing-summary > .billing-row.billing-total .billing-label {
+  width:
+    auto;
+
+  color:
+    var(--text);
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+}
+
+
+/* Total value */
+
+.billing-summary > .billing-row.billing-total .billing-value {
+  width:
+    auto;
+
+  color:
+    var(--primary);
+
+  font-size:
+    24px;
+
+  font-weight:
+    850;
+
+  text-align:
+    right;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .billing-summary {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .billing-summary > .billing-row {
+    border-right:
+      none;
+  }
+
+
+  .billing-summary > .billing-row:nth-last-child(2) {
+    border-bottom:
+      1px solid var(--border-soft);
+  }
+
+
+  .billing-summary > .billing-row.billing-total {
+    grid-column:
+      1;
+  }
+
+
+  .billing-summary > .billing-row.billing-total .billing-value {
+    font-size:
+      22px;
+  }
+
+}
+
+/* =========================================================
+   PAYMENT PAGE
+   ========================================================= */
+
+.payment-card {
+  padding:
+    30px;
+}
+
+
+.payment-card > p:first-of-type {
+  margin:
+    8px 0 22px;
+
+  padding:
+    14px 16px;
+
+  border:
+    1px solid #d9edf4;
+
+  border-radius:
+    12px;
+
+  background:
+    #f4fbfd;
+
+  color:
+    var(--text-muted);
+
+  font-size:
+    13px;
+}
+
+
+.payment-card > p:first-of-type strong {
+  color:
+    var(--primary);
+
+  font-size:
+    18px;
+
+  margin-left:
+    5px;
+}
+
+
+/* =========================================================
+   PAYMENT SUMMARY
+   ========================================================= */
+
+.payment-summary {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  margin-bottom:
+    24px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    14px;
+
+  overflow:
+    hidden;
+}
+
+
+.payment-summary > div {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    5px;
+
+  padding:
+    14px 16px;
+
+  border-bottom:
+    1px solid #edf3f5;
+
+  border-right:
+    1px solid #edf3f5;
+}
+
+
+.payment-summary > div:nth-child(2n) {
+  border-right:
+    none;
+}
+
+
+.payment-summary > div:nth-last-child(-n + 2) {
+  border-bottom:
+    none;
+}
+
+
+.payment-summary span {
+  color:
+    var(--text-muted);
+
+  font-size:
+    11px;
+
+  font-weight:
+    600;
+}
+
+
+.payment-summary strong {
+  color:
+    var(--text);
+
+  font-size:
+    13px;
+
+  font-weight:
+    750;
+}
+
+
+/* =========================================================
+   PAYMENT FORM
+   ========================================================= */
+
+.payment-form {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    12px;
+}
+
+
+.payment-form > label {
+  color:
+    var(--text);
+
+  font-size:
+    13px;
+
+  font-weight:
+    750;
+
+  margin-bottom:
+    2px;
+}
+
+
+/* =========================================================
+   PAYMENT OPTIONS
+   ========================================================= */
+
+.payment-methods {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap:
+    12px;
+
+  margin-bottom:
+    8px;
+}
+
+
+.payment-option {
+  min-height:
+    72px;
+
+  box-sizing:
+    border-box;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    14px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    13px;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--text);
+
+  font-size:
+    12px;
+
+  font-weight:
+    750;
+
+  cursor:
+    pointer;
+
+  text-align:
+    center;
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+
+.payment-option:hover {
+  border-color:
+    #afd8e6;
+
+  background:
+    #f8fcfd;
+
+  transform:
+    translateY(-1px);
+}
+
+
+.payment-option.selected {
+  border-color:
+    var(--primary);
+
+  background:
+    #effaff;
+
+  box-shadow:
+    0 0 0 3px rgba(25, 157, 204, 0.09);
+}
+
+
+.payment-option input {
+  position:
+    absolute;
+
+  opacity:
+    0;
+
+  pointer-events:
+    none;
+}
+
+
+.payment-note {
+  margin:
+    16px 0 0;
+
+  padding:
+    11px 14px;
+
+  border-radius:
+    10px;
+
+  background:
+    #f7fafb;
+
+  color:
+    var(--text-muted);
+
+  font-size:
+    11px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================================
+   CONFIRMATION
+   ========================================================= */
+
+.confirmation-card {
+  text-align:
+    left;
+
+  padding:
+    32px;
+}
+
+
+.confirmation-card h2 {
+  color:
+    var(--text);
+}
+
+
+.confirmation-card > p:first-of-type {
+  color:
+    var(--text-muted);
+
+  margin:
+    8px 0 24px;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================================
+   CONFIRMATION DETAILS
+   ========================================================= */
+
+.confirmation-details {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    14px;
+
+  overflow:
+    hidden;
+
+  background:
+    #ffffff;
+}
+
+
+.confirmation-details > div {
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    5px;
+
+  padding:
+    14px 16px;
+
+  border-bottom:
+    1px solid #edf3f5;
+
+  border-right:
+    1px solid #edf3f5;
+}
+
+
+.confirmation-details > div:nth-child(2n) {
+  border-right:
+    none;
+}
+
+
+.confirmation-details > div:nth-last-child(-n + 2) {
+  border-bottom:
+    none;
+}
+
+
+.confirmation-details span {
+  color:
+    var(--text-muted);
+
+  font-size:
+    11px;
+
+  font-weight:
+    600;
+}
+
+
+.confirmation-details strong {
+  color:
+    var(--text);
+
+  font-size:
+    13px;
+
+  font-weight:
+    750;
+}
+
+
+/* =========================================================
+   CONFIRMATION TOTAL
+   ========================================================= */
+
+.confirmation-details .confirmation-total {
+  grid-column:
+    1 / -1;
+
+  display:
+    flex;
+
+  flex-direction:
+    row;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    18px 20px;
+
+  border-top:
+    1px solid var(--border);
+
+  border-right:
+    none;
+
+  border-bottom:
+    none;
+
+  background:
+    #f4fbfd;
+}
+
+
+.confirmation-details .confirmation-total span {
+  color:
+    var(--text);
+
+  font-size:
+    14px;
+
+  font-weight:
+    750;
+}
+
+
+.confirmation-details .confirmation-total strong {
+  color:
+    var(--primary);
+
+  font-size:
+    22px;
+
+  font-weight:
+    850;
+}
+
+
+.confirmation-note {
+  margin:
+    18px 0 0;
+
+  padding:
+    12px 14px;
+
+  border-radius:
+    10px;
+
+  background:
+    #f4fbfd;
+
+  color:
+    var(--text-muted);
+
+  font-size:
+    11px;
+
+  line-height:
+    1.5;
+}
+
+
+/* =========================================================
+   CHAT FLOW SPACING
+   ========================================================= */
+
+.chat .booking-container,
+.chat .billing-container,
+.chat .payment-container,
+.chat .confirmation-container {
+  flex-shrink:
+    0;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 700px
+) {
+
+  .booking-container,
+  .billing-container,
+  .payment-container,
+  .confirmation-container {
+    padding:
+      0 10px;
+
+    margin:
+      20px auto;
+  }
+
+
+  .booking-card,
+  .billing-card,
+  .payment-card,
+  .confirmation-card {
+    padding:
+      20px;
+  }
+
+
+  .booking-card h2,
+  .billing-card h2,
+  .payment-card h2,
+  .confirmation-card h2 {
+    font-size:
+      21px;
+  }
+
+
+  .booking-form .form-row {
+    grid-template-columns:
+      1fr;
+
+    gap:
+      16px;
+  }
+
+
+  .billing-summary,
+  .payment-summary,
+  .confirmation-details {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .billing-summary > div,
+  .payment-summary > div,
+  .confirmation-details > div {
+    border-right:
+      none;
+  }
+
+
+  .billing-summary > div:nth-last-child(-n + 2),
+  .payment-summary > div:nth-last-child(-n + 2),
+  .confirmation-details > div:nth-last-child(-n + 2) {
+    border-bottom:
+      1px solid #edf3f5;
+  }
+
+
+  .billing-summary > div:last-child,
+  .payment-summary > div:last-child,
+  .confirmation-details > div:last-child {
+    border-bottom:
+      none;
+  }
+
+
+  .billing-summary .billing-total,
+  .confirmation-details .confirmation-total {
+    grid-column:
+      1;
+
+    border-top:
+      1px solid var(--border);
+
+    border-bottom:
+      none;
+  }
+
+
+  .payment-methods {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .payment-option {
+    min-height:
+      56px;
+  }
+
+
+  .booking-form .actions,
+  .billing-card .actions,
+  .payment-card .actions {
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+  }
+
+
+  .booking-form button.primary,
+  .booking-form button.secondary,
+  .billing-card button.primary,
+  .billing-card button.secondary,
+  .payment-card button.primary,
+  .payment-card button.secondary {
+    width:
+      100%;
+  }
+}
+
+/* =========================================================
+   FINAL BILLING LAYOUT
+   EXACTLY 2 DETAILS PER ROW
+   This block intentionally comes LAST so earlier duplicate
+   billing rules cannot override it.
+   ========================================================= */
+
+.billing-card .billing-summary {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 18px 0 0 !important;
+  padding: 0 !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  box-sizing: border-box !important;
+}
+
+/* Each detail occupies one half of a row */
+.billing-card .billing-summary > .billing-row {
+  min-width: 0 !important;
+  min-height: 74px !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+
+  gap: 5px !important;
+  margin: 0 !important;
+  padding: 13px 17px !important;
+
+  border: 0 !important;
+  border-bottom: 1px solid var(--border-soft) !important;
+  border-right: 1px solid var(--border-soft) !important;
+
+  box-sizing: border-box !important;
+  background: #ffffff !important;
+}
+
+/* Right-hand detail in each pair */
+.billing-card .billing-summary > .billing-row:nth-child(even) {
+  border-right: 0 !important;
+}
+
+/* Labels */
+.billing-card .billing-summary .billing-label {
+  display: block !important;
+  width: 100% !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: var(--text-muted) !important;
+
+  font-size: 10px !important;
+  line-height: 1.3 !important;
+  font-weight: 650 !important;
+
+  text-align: left !important;
+}
+
+/* Values */
+.billing-card .billing-summary .billing-value {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  color: var(--text) !important;
+
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+  font-weight: 800 !important;
+
+  text-align: left !important;
+  overflow-wrap: anywhere !important;
+}
+
+/* Last ordinary detail */
+.billing-card .billing-summary > .billing-row:nth-last-child(2) {
+  border-bottom: 0 !important;
+}
+
+/* Total is a full-width row */
+.billing-card .billing-summary > .billing-row.billing-total {
+  grid-column: 1 / -1 !important;
+
+  min-height: 78px !important;
+
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  gap: 20px !important;
+
+  padding: 17px 19px !important;
+
+  border: 0 !important;
+  border-top: 1px solid var(--border) !important;
+
+  background: #f4fbfd !important;
+}
+
+.billing-card .billing-summary > .billing-row.billing-total .billing-label {
+  width: auto !important;
+  flex: 1 1 auto !important;
+
+  color: var(--text) !important;
+
+  font-size: 14px !important;
+  font-weight: 800 !important;
+}
+
+.billing-card .billing-summary > .billing-row.billing-total .billing-value {
+  width: auto !important;
+  flex: 0 0 auto !important;
+
+  color: var(--primary) !important;
+
+  font-size: 23px !important;
+  font-weight: 850 !important;
+
+  text-align: right !important;
+}
+
+/* Keep the billing action buttons below the summary */
+.billing-card > .actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 10px !important;
+  margin-top: 20px !important;
+}
+
+/* Mobile: one detail per row */
+@media (max-width: 650px) {
+  .billing-card .billing-summary {
+    grid-template-columns: 1fr !important;
+  }
+
+  .billing-card .billing-summary > .billing-row {
+    border-right: 0 !important;
+  }
+
+  .billing-card .billing-summary > .billing-row:nth-last-child(2) {
+    border-bottom: 1px solid var(--border-soft) !important;
+  }
+
+  .billing-card .billing-summary > .billing-row.billing-total {
+    grid-column: 1 !important;
+  }
+
+  .billing-card .billing-summary > .billing-row.billing-total .billing-value {
+    font-size: 21px !important;
+  }
+
+  .billing-card > .actions {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .billing-card > .actions button {
+    width: 100% !important;
+  }
+}
+/* =====================================================
+   PROFILE BUTTON AND PROFILE MENU
+   ===================================================== */
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.profile-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.profile-button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #159bd3, #1689bd);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(21, 155, 211, 0.22);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.profile-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(21, 155, 211, 0.3);
+}
+
+.profile-button:focus-visible {
+  outline: 3px solid rgba(21, 155, 211, 0.35);
+  outline-offset: 3px;
+}
+
+.profile-initial {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.profile-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  z-index: 1000;
+  width: 270px;
+  padding: 16px;
+  border: 1px solid rgba(42, 91, 117, 0.12);
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(31, 73, 95, 0.18);
+}
+
+.profile-menu[hidden] {
+  display: none;
+}
+
+.profile-details {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-menu-initial {
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #159bd3, #1689bd);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.profile-user-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.profile-user-info strong {
+  color: #18384b;
+  font-size: 15px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.profile-user-info span {
+  color: #718895;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.profile-menu-divider {
+  height: 1px;
+  margin: 15px 0;
+  background: #e7eff3;
+}
+
+.logout-button {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #f0d8d8;
+  border-radius: 12px;
+  background: #fff7f7;
+  color: #c44747;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.logout-button:hover {
+  background: #c44747;
+  border-color: #c44747;
+  color: #ffffff;
+}
+
+.logout-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Keep the profile button beside New Search on smaller screens */
+
+@media (max-width: 768px) {
+  .topbar-inner {
+    gap: 12px;
+  }
+
+  .main-nav {
+    gap: 14px;
+  }
+
+  .topbar-actions {
+    gap: 8px;
+  }
+
+  .new-chat-button {
+    padding: 10px 12px;
+  }
+
+  .new-chat-button span:last-child {
+    display: none;
+  }
+
+  .profile-button {
+    width: 42px;
+    height: 42px;
+  }
+
+  .profile-menu {
+    right: 0;
+    width: 245px;
+  }
+}
+/* =========================================================
+   HOTEL PRICE COMPARISON PAGE
+   ========================================================= */
+
+.comparison-page {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 40px 0 60px;
+}
+
+.comparison-summary {
+  margin: 24px 0;
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.provider-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.provider-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 300px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.provider-card-content {
+  flex: 1;
+}
+
+.provider-label {
+  display: inline-block;
+  margin-bottom: 14px;
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.provider-name {
+  margin: 0;
+  color: var(--text);
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 850;
+}
+
+.provider-description {
+  margin: 12px 0 24px;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.provider-price {
+  color: var(--text);
+  font-size: 26px;
+  font-weight: 850;
+}
+
+.provider-price span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.provider-book-button {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 24px;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 12px;
+  color: white;
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    var(--cyan)
+  );
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.provider-book-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(8, 127, 189, 0.2);
+}
+
+@media (max-width: 900px) {
+  .provider-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .comparison-page {
+    padding: 24px 0 40px;
+  }
+
+  .provider-list {
+    grid-template-columns: 1fr;
+  }
+
+  .provider-card {
+    min-height: auto;
+  }
+}
+
+/* =========================================================
+   STAYMATE AI ASSISTANT
+   ========================================================= */
+
+.sm-ai-assistant {
+
+  position: fixed;
+
+  right: 28px;
+
+  bottom: 28px;
+
+  z-index: 9999;
+
+  font-family: inherit;
+
+}
+
+
+/* =========================================================
+   ROBOT BUTTON
+   ========================================================= */
+
+.sm-ai-toggle {
+
+  position: relative;
+
+  width: 150px;
+
+  height: 175px;
+
+  padding: 0;
+
+  border: none;
+
+  background: transparent;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  overflow: visible;
+
+  box-shadow: none;
+
+  outline: none;
+
+  transition:
+    transform 0.25s ease,
+    filter 0.25s ease;
+
+}
+
+
+.sm-ai-toggle:hover {
+
+  transform:
+    translateY(-4px)
+    scale(1.025);
+
+  filter:
+    drop-shadow(
+      0 14px 25px
+      rgba(8, 127, 189, 0.25)
+    );
+
+}
+
+
+.sm-ai-toggle:active {
+
+  transform:
+    scale(0.97);
+
+}
+
+
+.sm-ai-toggle:focus-visible {
+
+  outline:
+    3px solid
+    rgba(45, 169, 208, 0.35);
+
+  outline-offset:
+    5px;
+
+}
+
+
+/* =========================================================
+   ROBOT
+   ========================================================= */
+
+   /* =========================================================
+   ROBOT BODY FLOAT
+   ========================================================= */
+
+.sm-ai-robot {
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  top:
+    -3px;
+
+  width:
+    155px;
+
+  height:
+    175px;
+
+  overflow:
+    visible;
+
+  transform:
+    translateX(-50%);
+
+  transform-origin:
+    center bottom;
+
+  animation:
+    sm-ai-robot-float
+    4s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-robot-float {
+
+  0%,
+  100% {
+
+    transform:
+      translateX(-50%)
+      translateY(0);
+
+  }
+
+  50% {
+
+    transform:
+      translateX(-50%)
+      translateY(-3px);
+
+  }
+
+}
+
+/* =========================================================
+   ROBOT HEAD SWING
+   Noticeable but smooth
+   ========================================================= */
+
+.sm-ai-robot-head {
+
+  transform-box:
+    fill-box;
+
+  transform-origin:
+    center bottom;
+
+  animation:
+    sm-ai-head-swing
+    3.4s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-head-swing {
+
+  0% {
+
+    transform:
+      rotate(-7deg);
+
+  }
+
+  18% {
+
+    transform:
+      rotate(-5deg);
+
+  }
+
+  38% {
+
+    transform:
+      rotate(0deg);
+
+  }
+
+  58% {
+
+    transform:
+      rotate(6deg);
+
+  }
+
+  76% {
+
+    transform:
+      rotate(4deg);
+
+  }
+
+  100% {
+
+    transform:
+      rotate(-7deg);
+
+  }
+
+}
+
+/* =========================================================
+   ANTENNA HEAD-SWING MOTION
+   ========================================================= */
+
+.sm-ai-left-antenna,
+.sm-ai-right-antenna {
+
+  transform-box:
+    view-box;
+
+  transform-origin:
+    120px 75px;
+
+  animation:
+    sm-ai-antenna-head-swing
+    3.2s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-antenna-head-swing {
+
+  0% {
+
+    transform:
+      rotate(-6deg);
+
+  }
+
+  18% {
+
+    transform:
+      rotate(-4deg);
+
+  }
+
+  38% {
+
+    transform:
+      rotate(0deg);
+
+  }
+
+  58% {
+
+    transform:
+      rotate(5deg);
+
+  }
+
+  78% {
+
+    transform:
+      rotate(3deg);
+
+  }
+
+  100% {
+
+    transform:
+      rotate(-6deg);
+
+  }
+
+}
+
+
+/* =========================================================
+   ANTENNAS
+   They automatically move with the head.
+   ========================================================= */
+
+.sm-ai-left-antenna line,
+.sm-ai-right-antenna line {
+
+  stroke:
+    #526b7b;
+
+  stroke-width:
+    3;
+
+  stroke-linecap:
+    round;
+
+}
+
+
+.sm-ai-left-antenna circle,
+.sm-ai-right-antenna circle {
+
+  fill:
+    #42d5fa;
+
+  stroke:
+    #e7fcff;
+
+  stroke-width:
+    1;
+
+  filter:
+    url(#smBlueGlow);
+
+  animation:
+    sm-ai-antenna-light
+    1.6s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-antenna-light {
+
+  0%,
+  100% {
+
+    opacity:
+      0.7;
+
+    transform:
+      scale(0.9);
+
+  }
+
+  50% {
+
+    opacity:
+      1;
+
+    transform:
+      scale(1.15);
+
+  }
+
+}
+
+
+/* =========================================================
+   CHAT ICON ON RIGHT ANTENNA
+   ========================================================= */
+
+.sm-ai-antenna-chat {
+
+  transform-box:
+    fill-box;
+
+  transform-origin:
+    center;
+
+  animation:
+    sm-ai-chat-float
+    2.4s
+    ease-in-out
+    infinite;
+
+}
+
+
+.sm-ai-antenna-chat path {
+
+  filter:
+    url(#smBlueGlow);
+
+}
+
+
+.sm-ai-antenna-chat circle {
+
+  animation:
+    sm-ai-chat-dots
+    1.5s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-chat-float {
+
+  0%,
+  100% {
+
+    transform:
+      translateY(0)
+      scale(1);
+
+  }
+
+  50% {
+
+    transform:
+      translateY(-2px)
+      scale(1.06);
+
+  }
+
+}
+
+
+@keyframes sm-ai-chat-dots {
+
+  0%,
+  100% {
+
+    opacity:
+      0.65;
+
+  }
+
+  50% {
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* =========================================================
+   ROBOT HEAD
+   ========================================================= */
+
+.sm-ai-robot-head > rect:first-child {
+
+  stroke:
+    #d1e2eb;
+
+  stroke-width:
+    1.5;
+
+}
+
+
+.sm-ai-robot-head > path {
+
+  filter:
+    drop-shadow(
+      0 2px 2px
+      rgba(8, 127, 189, 0.18)
+    );
+
+}
+
+
+/* =========================================================
+   ROBOT EYES
+   ========================================================= */
+
+.sm-ai-eye {
+
+  fill:
+    #55eaff;
+
+  filter:
+    url(#smEyeGlow);
+
+  animation:
+    sm-ai-eye-glow
+    2.5s
+    ease-in-out
+    infinite;
+
+}
+
+
+.sm-ai-eye:nth-of-type(2) {
+
+  animation-delay:
+    0.15s;
+
+}
+
+
+@keyframes sm-ai-eye-glow {
+
+  0%,
+  100% {
+
+    opacity:
+      0.8;
+
+  }
+
+  50% {
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* =========================================================
+   SMILING FACE
+   ========================================================= */
+
+.sm-ai-smile {
+
+  fill:
+    none;
+
+  stroke:
+    #62edff;
+
+  stroke-width:
+    3.5;
+
+  stroke-linecap:
+    round;
+
+  filter:
+    drop-shadow(
+      0 0 4px
+      rgba(98, 237, 255, 0.9)
+    );
+
+  animation:
+    sm-ai-smile-glow
+    2.5s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-smile-glow {
+
+  0%,
+  100% {
+
+    opacity:
+      0.8;
+
+  }
+
+  50% {
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* =========================================================
+   NECK
+   ========================================================= */
+
+.sm-ai-neck {
+
+  fill:
+    #273e50;
+
+}
+
+
+/* =========================================================
+   ROBOT BODY
+   ========================================================= */
+
+.sm-ai-robot-body > rect {
+
+  stroke:
+    #cbdde7;
+
+  stroke-width:
+    1.5;
+
+}
+
+
+/* =========================================================
+   CHEST CORE
+   ========================================================= */
+
+.sm-ai-chest-core {
+
+  transform-box:
+    fill-box;
+
+  transform-origin:
+    center;
+
+  animation:
+    sm-ai-core-glow
+    2s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-core-glow {
+
+  0%,
+  100% {
+
+    transform:
+      scale(0.92);
+
+    opacity:
+      0.82;
+
+  }
+
+  50% {
+
+    transform:
+      scale(1.08);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* =========================================================
+   ROBOT HANDS
+   ========================================================= */
+
+.sm-ai-left-arm,
+.sm-ai-right-arm {
+
+  transform-box:
+    fill-box;
+
+}
+
+
+.sm-ai-left-arm {
+
+  transform-origin:
+    50% 20%;
+
+}
+
+
+.sm-ai-right-arm {
+
+  transform-origin:
+    50% 20%;
+
+}
+
+
+/* =========================================================
+   CHAT PANEL
+   ========================================================= */
+
+.sm-ai-panel {
+
+  position:
+    absolute;
+
+  right:
+    0;
+
+  bottom:
+    178px;
+
+  width:
+    380px;
+
+  max-width:
+    calc(100vw - 32px);
+
+  height:
+    570px;
+
+  max-height:
+    calc(100vh - 120px);
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  background:
+    var(--surface);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    22px;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 24px 70px
+    rgba(22, 76, 101, 0.20);
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  transform:
+    translateY(15px)
+    scale(0.96);
+
+  transform-origin:
+    bottom right;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0.25s ease;
+
+}
+
+
+.sm-ai-panel.open {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.sm-ai-header {
+
+  min-height:
+    72px;
+
+  padding:
+    14px 16px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  color:
+    #ffffff;
+
+}
+
+
+.sm-ai-header-info {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    11px;
+
+}
+
+
+.sm-ai-avatar {
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  border-radius:
+    50%;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  background:
+    rgba(255,255,255,0.18);
+
+  border:
+    1px solid
+    rgba(255,255,255,0.35);
+
+  font-size:
+    19px;
+
+}
+
+
+.sm-ai-header-info strong {
+
+  display:
+    block;
+
+  font-size:
+    15px;
+
+  font-weight:
+    700;
+
+}
+
+
+.sm-ai-header-info span {
+
+  display:
+    block;
+
+  margin-top:
+    2px;
+
+  font-size:
+    11px;
+
+  opacity:
+    0.82;
+
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.sm-ai-close {
+
+  width:
+    34px;
+
+  height:
+    34px;
+
+  border:
+    none;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(255,255,255,0.12);
+
+  color:
+    #ffffff;
+
+  font-size:
+    24px;
+
+  line-height:
+    1;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+
+.sm-ai-close:hover {
+
+  background:
+    rgba(255,255,255,0.22);
+
+  transform:
+    rotate(90deg);
+
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.sm-ai-messages {
+
+  flex:
+    1 1 auto;
+
+  min-height:
+    0;
+
+  overflow-y:
+    auto;
+
+  padding:
+    18px 15px 12px;
+
+  background:
+    linear-gradient(
+      180deg,
+      var(--bg-soft),
+      var(--surface)
+    );
+
+  scroll-behavior:
+    smooth;
+
+}
+
+
+.sm-ai-message {
+
+  display:
+    flex;
+
+  width:
+    100%;
+
+  margin:
+    0 0 12px;
+
+}
+
+
+.sm-ai-bot {
+
+  justify-content:
+    flex-start;
+
+}
+
+
+.sm-ai-user {
+
+  justify-content:
+    flex-end;
+
+}
+
+
+/* =========================================================
+   MESSAGE BUBBLE
+   ========================================================= */
+
+.sm-ai-bubble {
+
+  max-width:
+    84%;
+
+  padding:
+    11px 13px;
+
+  border-radius:
+    15px;
+
+  font-size:
+    13px;
+
+  line-height:
+    1.55;
+
+  word-break:
+    break-word;
+
+}
+
+
+.sm-ai-bot .sm-ai-bubble {
+
+  background:
+    #ffffff;
+
+  border:
+    1px solid var(--border);
+
+  color:
+    var(--text);
+
+  border-bottom-left-radius:
+    5px;
+
+  box-shadow:
+    var(--shadow-sm);
+
+}
+
+
+.sm-ai-user .sm-ai-bubble {
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--primary),
+      var(--cyan)
+    );
+
+  color:
+    #ffffff;
+
+  border-bottom-right-radius:
+    5px;
+
+}
+
+
+/* =========================================================
+   FAQ
+   ========================================================= */
+
+.sm-ai-faq-section {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  box-sizing:
+    border-box;
+
+  margin:
+    0 0 12px !important;
+
+  padding:
+    0 !important;
+
+  border:
+    0;
+
+  background:
+    transparent;
+
+}
+
+
+.sm-ai-faq-title {
+
+  display:
+    block;
+
+  margin:
+    0 0 8px;
+
+  color:
+    var(--text-muted);
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.06em;
+
+}
+
+
+.sm-ai-faqs {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    7px;
+
+  width:
+    100%;
+
+  margin:
+    0;
+
+  padding:
+    0;
+
+}
+
+
+.sm-ai-faq {
+
+  display:
+    block;
+
+  width:
+    100%;
+
+  box-sizing:
+    border-box;
+
+  flex:
+    0 0 auto;
+
+  padding:
+    9px 12px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    10px;
+
+  background:
+    var(--surface-soft);
+
+  color:
+    var(--primary-dark);
+
+  font-family:
+    inherit;
+
+  font-size:
+    11px;
+
+  font-weight:
+    600;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+
+.sm-ai-faq:hover {
+
+  background:
+    var(--primary-light);
+
+  border-color:
+    rgba(8,127,189,0.35);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.sm-ai-form {
+
+  flex:
+    0 0 auto;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    11px;
+
+  border-top:
+    1px solid var(--border);
+
+  background:
+    var(--surface);
+
+}
+
+
+.sm-ai-form input {
+
+  flex:
+    1;
+
+  min-width:
+    0;
+
+  height:
+    42px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    12px;
+
+  background:
+    var(--surface-soft);
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
+  outline:
+    none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
+
+.sm-ai-form input:focus {
+
+  border-color:
+    var(--primary);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(8,127,189,0.10);
+
+}
+
+
+.sm-ai-form button {
+
+  width:
+    42px;
+
+  height:
+    42px;
+
+  flex:
+    0 0 42px;
+
+  border:
+    none;
+
+  border-radius:
+    12px;
+
+  background:
+    var(--primary);
+
+  color:
+    #ffffff;
+
+  font-size:
+    19px;
+
+  cursor:
+    pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+
+}
+
+
+.sm-ai-form button:hover {
+
+  background:
+    var(--primary-dark);
+
+  transform:
+    translateY(-1px);
+
+}
+
+
+.sm-ai-form button:disabled {
+
+  opacity:
+    0.55;
+
+  cursor:
+    not-allowed;
+
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.sm-ai-loading {
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  gap:
+    5px;
+
+}
+
+
+.sm-ai-loading span {
+
+  width:
+    6px;
+
+  height:
+    6px;
+
+  border-radius:
+    50%;
+
+  background:
+    var(--primary);
+
+  animation:
+    sm-ai-dot
+    1.2s
+    infinite
+    ease-in-out;
+
+}
+
+
+.sm-ai-loading span:nth-child(2) {
+
+  animation-delay:
+    0.15s;
+
+}
+
+
+.sm-ai-loading span:nth-child(3) {
+
+  animation-delay:
+    0.3s;
+
+}
+
+
+@keyframes sm-ai-dot {
+
+  0%,
+  60%,
+  100% {
+
+    transform:
+      translateY(0);
+
+    opacity:
+      0.45;
+
+  }
+
+  30% {
+
+    transform:
+      translateY(-4px);
+
+    opacity:
+      1;
+
+  }
+
+}
+
+
+/* =========================================================
+   PULSE UNDER ROBOT
+   ========================================================= */
+
+.sm-ai-pulse {
+
+  position:
+    absolute;
+
+  left:
+    50%;
+
+  bottom:
+    6px;
+
+  width:
+    70px;
+
+  height:
+    22px;
+
+  border-radius:
+    50%;
+
+  background:
+    rgba(45,169,208,0.12);
+
+  transform:
+    translateX(-50%);
+
+  filter:
+    blur(3px);
+
+  pointer-events:
+    none;
+
+  z-index:
+    1;
+
+  animation:
+    sm-ai-ground-pulse
+    3s
+    ease-in-out
+    infinite;
+
+}
+
+
+@keyframes sm-ai-ground-pulse {
+
+  0%,
+  100% {
+
+    transform:
+      translateX(-50%)
+      scaleX(0.85);
+
+    opacity:
+      0.5;
+
+  }
+
+  50% {
+
+    transform:
+      translateX(-50%)
+      scaleX(1.08);
+
+    opacity:
+      0.8;
+
+  }
+
+}
+
+
+/* =========================================================
+   HOVER LABEL
+   ========================================================= */
+
+.sm-ai-label {
+
+  position:
+    absolute;
+
+  right:
+    132px;
+
+  top:
+    50%;
+
+  white-space:
+    nowrap;
+
+  padding:
+    8px 12px;
+
+  border-radius:
+    10px;
+
+  background:
+    var(--text);
+
+  color:
+    #ffffff;
+
+  font-size:
+    12px;
+
+  font-weight:
+    600;
+
+  opacity:
+    0;
+
+  visibility:
+    hidden;
+
+  transform:
+    translateY(-50%)
+    translateX(8px);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+
+  pointer-events:
+    none;
+
+  z-index:
+    20;
+
+}
+
+
+.sm-ai-toggle:hover .sm-ai-label {
+
+  opacity:
+    1;
+
+  visibility:
+    visible;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+   @media (max-width: 600px) {
+
+    .sm-ai-assistant {
+  
+      right:
+        10px;
+  
+      bottom:
+        10px;
+  
+    }
+  
+  
+    /* ================================================
+       MOBILE ROBOT BUTTON
+       ================================================ */
+  
+    .sm-ai-toggle {
+  
+      width:
+        120px;
+  
+      height:
+        145px;
+  
+    }
+  
+  
+    .sm-ai-robot {
+  
+      width:
+        132px;
+  
+      height:
+        150px;
+  
+      top:
+        3px;
+  
+    }
+  
+  
+    /* ================================================
+       MOBILE CHAT PANEL
+       ================================================ */
+  
+    .sm-ai-panel {
+  
+      right:
+        0;
+  
+      /*
+         Keep the panel at the original position.
+         Do NOT use 148px here.
+      */
+  
+      bottom:
+        76px;
+  
+      width:
+        calc(100vw - 24px);
+  
+      height:
+        min(
+          570px,
+          calc(100vh - 105px)
+        );
+  
+      border-radius:
+        18px;
+  
+    }
+  
+  
+    /* ================================================
+       MOBILE FAQ
+       ================================================ */
+  
+    .sm-ai-faq-section {
+  
+      flex:
+        0 0 auto;
+  
+      margin-top:
+        4px !important;
+  
+      margin-bottom:
+        12px !important;
+  
+    }
+  
+  
+    .sm-ai-faqs {
+  
+      gap:
+        7px;
+  
+    }
+  
+  
+    /* ================================================
+       HIDE LABEL ON MOBILE
+       ================================================ */
+  
+    .sm-ai-label {
+  
+      display:
+        none;
+  
+    }
+  
+  
+    /* ================================================
+       ROBOT GROUND GLOW
+       ================================================ */
+  
+    .sm-ai-pulse {
+  
+      width:
+        60px;
+  
+      height:
+        19px;
+  
+    }
+  
+  }

@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>My Bookings - StayMate AI</title>
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}"
+  >
+
+  <style>
+    .my-bookings-page {
+      min-height: 100vh;
+      padding: 40px 24px 60px;
+      background: #f5fafc;
+    }
+
+    .my-bookings-container {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+    }
+
+    .my-bookings-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .my-bookings-title h1 {
+      margin: 0;
+      color: #18384b;
+      font-size: 30px;
+    }
+
+    .my-bookings-title p {
+      margin: 8px 0 0;
+      color: #718895;
+      font-size: 14px;
+    }
+
+    .back-home-button {
+      min-height: 42px;
+      padding: 0 18px;
+      border: 1px solid #d8e8ef;
+      border-radius: 12px;
+      background: #ffffff;
+      color: #18384b;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .back-home-button:hover {
+      background: #eef8fc;
+      border-color: #159bd3;
+    }
+
+    .bookings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .booking-card {
+      padding: 24px;
+      border: 1px solid #e0edf2;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(31, 73, 95, 0.08);
+    }
+
+    .booking-card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #edf2f5;
+    }
+
+    .hotel-name {
+      margin: 0;
+      color: #18384b;
+      font-size: 21px;
+      font-weight: 700;
+    }
+
+    .hotel-address {
+      margin: 6px 0 0;
+      color: #718895;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .booking-reference {
+      flex-shrink: 0;
+      padding: 8px 12px;
+      border-radius: 10px;
+      background: #eef8fc;
+      color: #1689bd;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .booking-status {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: #edf9f1;
+      color: #25804a;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+    .booking-status.cancelled {
+    background: #fff1f0;
+    color: #c0392b;
+    }
+
+
+    .booking-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid #edf2f5;
+    }
+
+
+    .cancel-booking-button {
+      border: 1px solid #e0a7a2;
+      background: #fff;
+      color: #c0392b;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+
+    .cancel-booking-button:hover {
+      background: #fff1f0;
+      border-color: #c0392b;
+    }
+
+
+    .cancel-booking-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+
+    .cancellation-message {
+      margin-bottom: 20px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #edf9f1;
+      border: 1px solid #b9e5c8;
+      color: #247342;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .booking-details {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      padding: 20px 0;
+    }
+
+    .detail-item {
+      min-width: 0;
+    }
+
+    .detail-label {
+      display: block;
+      margin-bottom: 5px;
+      color: #8a9da7;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .detail-value {
+      color: #29495a;
+      font-size: 14px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .booking-price-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 18px;
+      border-top: 1px solid #edf2f5;
+    }
+
+    .payment-info {
+      color: #718895;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .payment-info strong {
+      color: #29495a;
+    }
+
+    .total-amount {
+      text-align: right;
+    }
+
+    .total-label {
+      display: block;
+      color: #718895;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .total-value {
+      color: #159bd3;
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .empty-bookings {
+      padding: 60px 20px;
+      border: 1px solid #e0edf2;
+      border-radius: 18px;
+      background: #ffffff;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(31, 73, 95, 0.06);
+    }
+
+    .empty-bookings h2 {
+      margin: 0 0 8px;
+      color: #18384b;
+      font-size: 22px;
+    }
+
+    .empty-bookings p {
+      margin: 0 0 20px;
+      color: #718895;
+      font-size: 14px;
+    }
+
+    .empty-bookings button {
+      min-height: 42px;
+      padding: 0 18px;
+      border: none;
+      border-radius: 12px;
+      background: #159bd3;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .loading-bookings {
+      padding: 50px;
+      color: #718895;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .booking-error {
+      padding: 20px;
+      border: 1px solid #f0d8d8;
+      border-radius: 14px;
+      background: #fff7f7;
+      color: #c44747;
+      text-align: center;
+    }
+
+    @media (max-width: 800px) {
+      .my-bookings-header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .booking-details {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .booking-card-header {
+        flex-direction: column;
+      }
+
+      .booking-reference {
+        align-self: flex-start;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .my-bookings-page {
+        padding: 25px 14px 40px;
+      }
+
+      .booking-card {
+        padding: 18px;
+      }
+
+      .booking-details {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .booking-price-section {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .total-amount {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="my-bookings-page">
+
+    <div class="my-bookings-container">
+
+      <div class="my-bookings-header">
+
+        <div class="my-bookings-title">
+          <h1>My Bookings</h1>
+          <p>Your complete StayMate AI booking history</p>
+        </div>
+
+        <button
+          type="button"
+          class="back-home-button"
+          onclick="window.location.href='/'"
+        >
+          ← Back to Home
+        </button>
+
+      </div>
+
+      <div
+        id="bookingsContainer"
+        class="bookings-list"
+      >
+        <div class="loading-bookings">
+          Loading your bookings...
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    const bookingsContainer =
+      document.getElementById("bookingsContainer");
+
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+
+    function formatDate(value) {
+      if (!value) {
+        return "—";
+      }
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return escapeHtml(value);
+      }
+
+      return date.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric"
+      });
+    }
+
+
+    function formatDateTime(value) {
+      if (!value) {
+        return "—";
+      }
+
+      const date = new Date(value);
+
+      if (Number.isNaN(date.getTime())) {
+        return escapeHtml(value);
+      }
+
+      return date.toLocaleString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    }
+
+
+    function formatAmount(value) {
+      const amount = Number(value);
+
+      if (!Number.isFinite(amount)) {
+        return "₹0.00";
+      }
+
+      return amount.toLocaleString("en-IN", {
+        style: "currency",
+        currency: "INR",
+        minimumFractionDigits: 2
+      });
+    }
+
+
+    function createBookingCard(booking) {
+      const bookingReference =
+        escapeHtml(booking.booking_reference || "N/A");
+
+      const hotelName =
+        escapeHtml(booking.hotel_name || "Hotel");
+
+      const hotelAddress =
+        escapeHtml(booking.hotel_address || "Address not available");
+
+      const guestName =
+        escapeHtml(booking.guest_name || "N/A");
+
+      const checkIn =
+        formatDate(booking.check_in);
+
+      const checkOut =
+        formatDate(booking.check_out);
+
+      const persons =
+        escapeHtml(booking.num_persons ?? 0);
+
+      const children =
+        escapeHtml(booking.num_children ?? 0);
+
+      const rooms =
+        escapeHtml(booking.num_rooms ?? 0);
+
+      const roomType =
+        escapeHtml(booking.room_type || "N/A");
+
+      const pricePerNight =
+        formatAmount(booking.price_per_night);
+
+      const nights =
+        escapeHtml(booking.nights ?? 0);
+
+      const subtotal =
+        formatAmount(booking.subtotal);
+
+      const tax =
+        formatAmount(booking.tax);
+
+      const totalAmount =
+        formatAmount(booking.total_amount);
+
+      const paymentMethod =
+        escapeHtml(booking.payment_method || "N/A");
+
+      const paymentStatus =
+        escapeHtml(booking.payment_status || "N/A");
+
+        const rawBookingStatus =
+  String(
+    booking.booking_status || "N/A"
+  ).trim().toLowerCase();
+
+
+const bookingStatus =
+  escapeHtml(
+    booking.booking_status || "N/A"
+  );
+
+
+// --------------------------------------------------------
+// CHECK WHETHER BOOKING CAN STILL BE CANCELLED
+// --------------------------------------------------------
+
+const checkInDate =
+  String(
+    booking.check_in || ""
+  ).trim();
+
+
+const today = new Date();
+
+
+const todayDate =
+  today.getFullYear() +
+  "-" +
+  String(
+    today.getMonth() + 1
+  ).padStart(2, "0") +
+  "-" +
+  String(
+    today.getDate()
+  ).padStart(2, "0");
+
+
+// Cancellation is allowed only before
+// the check-in date.
+//
+// Example:
+// check-in = 2026-10-08
+// today     = 2026-10-07
+// → allowed
+//
+// check-in = 2026-10-08
+// today     = 2026-10-08
+// → not allowed
+
+const canCancel =
+  rawBookingStatus === "confirmed" &&
+  checkInDate &&
+  checkInDate > todayDate;
+
+      const bookingDate =
+        formatDateTime(booking.created_at);
+
+      return `
+        <article class="booking-card">
+
+          <div class="booking-card-header">
+
+            <div>
+              <h2 class="hotel-name">
+                ${hotelName}
+              </h2>
+
+              <p class="hotel-address">
+                ${hotelAddress}
+              </p>
+
+              <span class="booking-status ${rawBookingStatus === "cancelled" ? "cancelled" : ""}">
+  ${bookingStatus}
+</span>
+            </div>
+
+            <div class="booking-reference">
+              ${bookingReference}
+            </div>
+
+          </div>
+
+
+          <div class="booking-details">
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Guest Name
+              </span>
+
+              <span class="detail-value">
+                ${guestName}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Check-in
+              </span>
+
+              <span class="detail-value">
+                ${checkIn}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Check-out
+              </span>
+
+              <span class="detail-value">
+                ${checkOut}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Persons
+              </span>
+
+              <span class="detail-value">
+                ${persons}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Children
+              </span>
+
+              <span class="detail-value">
+                ${children}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Rooms
+              </span>
+
+              <span class="detail-value">
+                ${rooms}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Room Type
+              </span>
+
+              <span class="detail-value">
+                ${roomType}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Price / Night
+              </span>
+
+              <span class="detail-value">
+                ${pricePerNight}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Nights
+              </span>
+
+              <span class="detail-value">
+                ${nights}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Subtotal
+              </span>
+
+              <span class="detail-value">
+                ${subtotal}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Tax
+              </span>
+
+              <span class="detail-value">
+                ${tax}
+              </span>
+            </div>
+
+
+            <div class="detail-item">
+              <span class="detail-label">
+                Booking Date
+              </span>
+
+              <span class="detail-value">
+                ${bookingDate}
+              </span>
+            </div>
+
+          </div>
+
+
+          <div class="booking-price-section">
+
+            <div class="payment-info">
+
+              <div>
+                Payment Method:
+                <strong>${paymentMethod}</strong>
+              </div>
+
+              <div>
+                Payment Status:
+                <strong>${paymentStatus}</strong>
+              </div>
+
+            </div>
+
+
+            <div class="total-amount">
+
+              <span class="total-label">
+                Total Amount
+              </span>
+
+              <span class="total-value">
+                ${totalAmount}
+              </span>
+
+            </div>
+
+          </div>
+
+          ${canCancel ? `
+          <div class="booking-actions">
+
+            <button
+              type="button"
+              class="cancel-booking-button"
+              data-booking-reference="${bookingReference}"
+            >
+              Cancel Booking
+            </button>
+
+          </div>
+        ` : ""}
+
+        </article>
+      `;
+    }
+
+    async function cancelBooking(bookingReference, button) {
+
+const confirmed = window.confirm(
+  "Are you sure you want to cancel this booking?"
+);
+
+
+if (!confirmed) {
+  return;
+}
+
+
+const originalText =
+  button.textContent;
+
+
+button.disabled = true;
+button.textContent = "Cancelling...";
+
+
+try {
+
+  const response = await fetch(
+    `/api/bookings/${encodeURIComponent(bookingReference)}/cancel`,
+    {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    }
+  );
+
+
+  const data = await response.json();
+
+
+  if (response.status === 401) {
+
+    window.location.href = "/signin";
+    return;
+
+  }
+
+
+  if (!response.ok || !data.success) {
+
+    throw new Error(
+      data.error ||
+      "Unable to cancel the booking."
+    );
+
+  }
+
+
+  showCancellationMessage(
+    data.message ||
+    "Booking cancelled successfully."
+  );
+
+
+  await loadMyBookings();
+
+
+} catch (error) {
+
+  console.error(
+    "Unable to cancel booking:",
+    error
+  );
+
+
+  showCancellationMessage(
+    error.message ||
+    "Unable to cancel the booking. Please try again.",
+    true
+  );
+
+
+  button.disabled = false;
+  button.textContent = originalText;
+}
+}
+function showCancellationMessage(
+  message,
+  isError = false
+) {
+
+  const existing =
+    document.querySelector(
+      ".cancellation-message"
+    );
+
+
+  if (existing) {
+    existing.remove();
+  }
+
+
+  const messageElement =
+    document.createElement("div");
+
+
+  messageElement.className =
+    "cancellation-message";
+
+
+  if (isError) {
+
+    messageElement.style.background =
+      "#fff1f0";
+
+    messageElement.style.borderColor =
+      "#f0b5ae";
+
+    messageElement.style.color =
+      "#b42318";
+  }
+
+
+  messageElement.textContent =
+    message;
+
+
+  bookingsContainer.prepend(
+    messageElement
+  );
+}
+
+    async function loadMyBookings() {
+      try {
+
+        const response = await fetch(
+          "/api/my-bookings",
+          {
+            method: "GET",
+            credentials: "same-origin",
+            headers: {
+              Accept: "application/json"
+            }
+          }
+        );
+
+
+        const data = await response.json();
+
+
+        if (response.status === 401) {
+          window.location.href = "/signin";
+          return;
+        }
+
+
+        if (!response.ok || !data.success) {
+          throw new Error(
+            data.error ||
+            "Unable to load your bookings."
+          );
+        }
+
+
+        const bookings = Array.isArray(data.bookings)
+          ? data.bookings
+          : [];
+
+
+        if (bookings.length === 0) {
+
+          bookingsContainer.innerHTML = `
+            <div class="empty-bookings">
+
+              <h2>No bookings yet</h2>
+
+              <p>
+                You don't have any bookings in your
+                StayMate AI account.
+              </p>
+
+              <button
+                type="button"
+                onclick="window.location.href='/'"
+              >
+                Find a Hotel
+              </button>
+
+            </div>
+          `;
+
+          return;
+        }
+
+
+        bookingsContainer.innerHTML =
+          bookings.map(createBookingCard).join("");
+        
+          document
+  .querySelectorAll(
+    ".cancel-booking-button"
+  )
+  .forEach((button) => {
+
+    button.addEventListener(
+      "click",
+      () => {
+
+        cancelBooking(
+          button.dataset.bookingReference,
+          button
+        );
+
+      }
+    );
+
+  });
+
+      } catch (error) {
+
+        console.error(
+          "Unable to load bookings:",
+          error
+        );
+
+        bookingsContainer.innerHTML = `
+          <div class="booking-error">
+            ${escapeHtml(
+              error.message ||
+              "Unable to load your bookings. Please try again."
+            )}
+          </div>
+        `;
+      }
+    }
+
+
+    loadMyBookings();
+  </script>
+
+</body>
+</html>

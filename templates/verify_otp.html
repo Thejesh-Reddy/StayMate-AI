@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verify OTP | StayMate AI</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}">
+</head>
+
+<body class="auth-page">
+    <main class="auth-container">
+        <section class="auth-card" aria-labelledby="verifyOtpTitle">
+
+            <a href="/" class="auth-brand" aria-label="StayMate AI home">
+                <span class="auth-brand-mark">S</span>
+
+                <span class="auth-brand-copy">
+                    <span class="auth-brand-name">STAYMATE</span>
+                    <span class="auth-brand-ai">AI</span>
+                </span>
+            </a>
+
+            <header class="auth-header">
+                <p class="auth-eyebrow">Email verification</p>
+
+                <h1 id="verifyOtpTitle">Verify your email</h1>
+
+                <p>
+                    Enter the six-digit OTP sent to your email address.
+                </p>
+
+                <p id="otpEmail" class="auth-helper-text"></p>
+            </header>
+
+            <form id="verifyOtpForm" class="auth-form" novalidate>
+
+                <div class="auth-form-group">
+                    <label for="otp">Verification code</label>
+
+                    <input
+                        type="text"
+                        id="otp"
+                        name="otp"
+                        placeholder="Enter 6-digit OTP"
+                        inputmode="numeric"
+                        autocomplete="one-time-code"
+                        maxlength="6"
+                        pattern="[0-9]{6}"
+                        required
+                    >
+                </div>
+
+                <p
+                    id="verifyOtpMessage"
+                    class="auth-message"
+                    role="alert"
+                    aria-live="polite"
+                ></p>
+
+                <button
+                    type="submit"
+                    id="verifyOtpButton"
+                    class="auth-submit-button"
+                >
+                    Verify OTP
+                </button>
+            </form>
+
+            <div class="auth-footer auth-otp-footer">
+                <span>Didn't receive the code?</span>
+
+                <button
+                    type="button"
+                    id="resendOtpButton"
+                    class="auth-text-button"
+                >
+                    Resend OTP
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <a href="/signup" class="auth-secondary-link">
+                    Back to sign up
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='verify_otp.js') }}"></script>
+</body>
+</html>

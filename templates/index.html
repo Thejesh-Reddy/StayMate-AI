@@ -1,0 +1,1698 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="theme-color"
+    content="#f4f9fc"
+  >
+
+  <title>
+    STAYMATE AI — Your AI Hotel Concierge
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/static/style.css"
+  >
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       APPLICATION
+       ===================================================== -->
+
+  <div class="app-shell">
+
+
+    <!-- ===================================================
+         TOP NAVIGATION
+         =================================================== -->
+
+    <header class="topbar">
+
+      <div class="topbar-inner">
+
+
+        <!-- BRAND -->
+
+        <a
+          href="/"
+          class="brand"
+          aria-label="STAYMATE AI Home"
+        >
+
+          <span class="brand-mark">
+
+            <span class="brand-mark-spark">
+              ✦
+            </span>
+
+          </span>
+
+
+          <span class="brand-copy">
+
+            <span class="brand-name">
+              STAYMATE
+            </span>
+
+
+            <span class="brand-ai">
+              AI
+            </span>
+
+          </span>
+
+        </a>
+
+
+        <!-- NAVIGATION -->
+
+        <nav
+          class="main-nav"
+          aria-label="Main navigation"
+        >
+
+          <a
+            href="#discover"
+            class="nav-link active"
+          >
+            Discover
+          </a>
+
+
+          <a
+            href="#hotels"
+            class="nav-link"
+          >
+            Hotels
+          </a>
+
+
+          <a
+            href="#assistant"
+            class="nav-link"
+          >
+            AI Concierge
+          </a>
+
+        </nav>
+
+
+        <!-- ACTIONS -->
+
+ <div class="topbar-actions">
+
+  <button
+    id="newChat"
+    type="button"
+    class="new-chat-button"
+  >
+    <span class="new-chat-icon">
+      +
+    </span>
+
+    <span>
+      New Search
+    </span>
+  </button>
+
+  <!-- USER PROFILE -->
+
+  <div class="profile-wrapper">
+
+    <button
+      id="profileButton"
+      type="button"
+      class="profile-button"
+      aria-label="Open profile"
+      aria-expanded="false"
+    >
+      <span id="profileInitial" class="profile-initial">
+        U
+      </span>
+    </button>
+
+    <div
+      id="profileMenu"
+      class="profile-menu"
+      hidden
+    >
+
+      <div class="profile-details">
+
+        <div
+          id="profileMenuInitial"
+          class="profile-menu-initial"
+        >
+          U
+        </div>
+
+        <div class="profile-user-info">
+
+          <strong id="profileName">
+            User
+          </strong>
+
+          <span id="profileEmail">
+            user@example.com
+          </span>
+
+        </div>
+
+      </div>
+
+      <div class="profile-menu-divider"></div>
+
+      <button
+        id="myBookingsButton"
+        type="button"
+        class="my-bookings-button"
+        >
+        My Bookings
+      </button>
+
+      <button
+        id="logoutButton"
+        type="button"
+        class="logout-button"
+        >
+        Logout
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+      </div>
+
+    </header>
+
+
+    <!-- ===================================================
+         MAIN CONTENT
+         =================================================== -->
+
+    <main class="page-content">
+
+
+      <!-- =================================================
+           HERO / DISCOVERY
+           ================================================= -->
+
+      <section
+        id="discover"
+        class="hero-section"
+      >
+
+        <div class="hero-background">
+
+          <div class="hero-glow hero-glow-one"></div>
+
+          <div class="hero-glow hero-glow-two"></div>
+
+        </div>
+
+
+        <div class="hero-content">
+
+
+          <div class="eyebrow">
+
+            <span class="eyebrow-icon">
+              ✦
+            </span>
+
+
+            <span>
+              AI-POWERED HOTEL DISCOVERY
+            </span>
+
+          </div>
+
+
+          <h1 class="hero-title">
+
+            Your next stay,
+
+            <br>
+
+            <span>
+              intelligently discovered.
+            </span>
+
+          </h1>
+
+
+          <p class="hero-description">
+
+            Tell STAYMATE where you want to stay.
+            We'll help you discover live hotel options
+            and make booking simple.
+
+          </p>
+
+
+          <!-- =============================================
+               LOCATION SEARCH
+               ============================================= -->
+
+          <div class="hero-search-card">
+
+
+            <div class="search-card-label">
+
+              <span class="search-label-icon">
+                ●
+              </span>
+
+
+              <span>
+                WHERE ARE YOU GOING?
+              </span>
+
+            </div>
+
+
+            <div class="location-search-wrapper">
+
+
+              <div class="location-input-shell">
+
+                <span
+                  class="location-input-icon"
+                  aria-hidden="true"
+                >
+                  ⌖
+                </span>
+
+
+                <input
+                  id="locationSearch"
+                  class="location-search"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Search city, area or destination..."
+                  aria-label="Search location in India"
+                  aria-autocomplete="list"
+                  aria-controls="locationResults"
+                >
+
+
+                <span
+                  class="location-input-arrow"
+                  aria-hidden="true"
+                >
+                  →
+                </span>
+
+              </div>
+
+
+              <!-- LOCATION SUGGESTIONS -->
+
+              <div
+                id="locationResults"
+                class="location-results"
+                role="listbox"
+              ></div>
+
+            </div>
+
+
+            <div class="search-card-footer">
+
+              <span class="search-hint">
+                Search locations across India
+              </span>
+
+
+              <span class="search-hint-dot">
+                •
+              </span>
+
+
+              <span class="search-hint">
+                Live hotel availability
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- =============================================
+               QUICK ACTIONS
+               ============================================= -->
+
+          <div class="hero-actions">
+
+
+            <button
+              type="button"
+              class="hero-action primary-action"
+              data-command="find hotels"
+              onclick="document.getElementById('input').value='Find hotels'; document.getElementById('chatForm').requestSubmit();"
+            >
+
+              <span class="hero-action-icon">
+                ✦
+              </span>
+
+
+              <span>
+                Find hotels near me
+              </span>
+
+
+              <span class="hero-action-arrow">
+                →
+              </span>
+
+            </button>
+
+
+            <button
+              type="button"
+              class="hero-action secondary-action"
+              onclick="document.getElementById('locationSearch').focus();"
+            >
+
+              <span class="hero-action-icon">
+                ⌖
+              </span>
+
+
+              <span>
+                Search a destination
+              </span>
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===============================================
+             HERO VISUAL
+             =============================================== -->
+
+        <div class="hero-visual">
+
+
+          <div class="hero-image-frame">
+
+            <div class="hero-image-overlay"></div>
+
+
+            <div class="hero-image-content">
+
+
+              <span class="hero-image-badge">
+                STAYMATE AI
+              </span>
+
+
+              <div class="hero-image-caption">
+
+
+                <span class="hero-image-caption-small">
+                  DISCOVER YOUR STAY
+                </span>
+
+
+                <span class="hero-image-caption-title">
+
+                  Stay somewhere
+
+                  <br>
+
+                  worth remembering.
+
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           DISCOVERY HIGHLIGHTS
+           ================================================= -->
+
+      <section class="feature-strip">
+
+
+        <div class="feature-item">
+
+          <span class="feature-icon">
+            ◉
+          </span>
+
+
+          <div>
+
+            <strong>
+              Live hotel search
+            </strong>
+
+
+            <span>
+              Real-time hotel results
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="feature-divider"></div>
+
+
+        <div class="feature-item">
+
+          <span class="feature-icon">
+            ✦
+          </span>
+
+
+          <div>
+
+            <strong>
+              AI assistance
+            </strong>
+
+
+            <span>
+              Natural language booking
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="feature-divider"></div>
+
+
+        <div class="feature-item">
+
+          <span class="feature-icon">
+            ✓
+          </span>
+
+
+          <div>
+
+            <strong>
+              Simple booking
+            </strong>
+
+
+            <span>
+              From discovery to confirmation
+            </span>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- =================================================
+           CHAT / DYNAMIC APPLICATION AREA
+           ================================================= -->
+
+      <section
+        id="assistant"
+        class="assistant-section"
+      >
+
+
+        <div class="section-heading">
+
+
+          <div>
+
+            <span class="section-eyebrow">
+              ✦ STAYMATE CONCIERGE
+            </span>
+
+
+            <h2>
+              Your personal hotel assistant
+            </h2>
+
+
+            <p>
+              Ask naturally. Search, compare and book
+              your stay with STAYMATE AI.
+            </p>
+
+          </div>
+
+
+          <div class="assistant-status">
+
+            <span class="status-dot"></span>
+
+          </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CHAT
+             ================================================= -->
+
+        <main
+          id="chat"
+          class="chat-area"
+          aria-live="polite"
+        ></main>
+
+
+        <!-- =================================================
+             CHAT INPUT
+             ================================================= -->
+
+        <form
+          id="chatForm"
+          class="chat-composer"
+        >
+
+
+          <span
+            class="composer-icon"
+            aria-hidden="true"
+          >
+            ✦
+          </span>
+
+
+          <input
+            id="input"
+            type="text"
+            autocomplete="off"
+            placeholder="Ask STAYMATE anything about your stay..."
+            aria-label="Chat with STAYMATE AI"
+          >
+
+
+          <button
+            type="submit"
+            class="composer-send"
+            aria-label="Send message"
+          >
+
+            <span>
+              →
+            </span>
+
+          </button>
+
+        </form>
+
+      </section>
+
+    </main>
+
+
+    <!-- ===================================================
+         FOOTER
+         =================================================== -->
+
+    <footer class="site-footer">
+
+
+      <div class="footer-brand">
+
+        <span class="footer-mark">
+          ✦
+        </span>
+
+
+        <span>
+          STAYMATE AI
+        </span>
+
+      </div>
+
+
+      <p>
+        Intelligent hotel discovery and booking.
+      </p>
+
+
+      <span class="footer-note">
+        Live hotel data • AI assistance • Secure booking
+      </span>
+
+    </footer>
+
+  </div>
+
+  <!-- =====================================================
+  FLOATING STAYMATE AI KNOWLEDGE ASSISTANT
+  ===================================================== -->
+
+<div
+id="sm-ai-assistant"
+class="sm-ai-assistant"
+>
+
+<!-- ===================================================
+    FLOATING ROBOT BUTTON
+    =================================================== -->
+
+<button
+ id="sm-ai-toggle"
+ class="sm-ai-toggle"
+ type="button"
+ aria-label="Open StayMate AI Assistant"
+ aria-expanded="false"
+>
+
+ <!-- =================================================
+      ROBOT
+      ================================================= -->
+
+ <svg
+   class="sm-ai-robot"
+   viewBox="0 0 240 270"
+   xmlns="http://www.w3.org/2000/svg"
+   aria-hidden="true"
+ >
+
+   <defs>
+
+     <!-- =============================================
+          ROBOT WHITE GRADIENT
+          ============================================= -->
+
+     <linearGradient
+       id="smRobotWhite"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1"
+     >
+
+       <stop
+         offset="0%"
+         stop-color="#ffffff"
+       />
+
+       <stop
+         offset="48%"
+         stop-color="#f3f8fb"
+       />
+
+       <stop
+         offset="78%"
+         stop-color="#dce8ee"
+       />
+
+       <stop
+         offset="100%"
+         stop-color="#b7c9d3"
+       />
+
+     </linearGradient>
+
+
+     <!-- =============================================
+          BLUE GRADIENT
+          ============================================= -->
+
+     <linearGradient
+       id="smRobotBlue"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1"
+     >
+
+       <stop
+         offset="0%"
+         stop-color="#7be4ff"
+       />
+
+       <stop
+         offset="35%"
+         stop-color="#3cc5f3"
+       />
+
+       <stop
+         offset="70%"
+         stop-color="#159fdf"
+       />
+
+       <stop
+         offset="100%"
+         stop-color="#087bb8"
+       />
+
+     </linearGradient>
+
+
+     <!-- =============================================
+          DARK FACE
+          ============================================= -->
+
+     <linearGradient
+       id="smRobotFace"
+       x1="0"
+       y1="0"
+       x2="0"
+       y2="1"
+     >
+
+       <stop
+         offset="0%"
+         stop-color="#29495f"
+       />
+
+       <stop
+         offset="45%"
+         stop-color="#102d43"
+       />
+
+       <stop
+         offset="100%"
+         stop-color="#071b2b"
+       />
+
+     </linearGradient>
+
+
+     <!-- =============================================
+          CHAT ICON BLUE
+          ============================================= -->
+
+     <linearGradient
+       id="smChatBlue"
+       x1="0"
+       y1="0"
+       x2="1"
+       y2="1"
+     >
+
+       <stop
+         offset="0%"
+         stop-color="#69ddff"
+       />
+
+       <stop
+         offset="50%"
+         stop-color="#22b7ed"
+       />
+
+       <stop
+         offset="100%"
+         stop-color="#087fbd"
+       />
+
+     </linearGradient>
+
+
+     <!-- =============================================
+          EYE GLOW
+          ============================================= -->
+
+     <filter
+       id="smEyeGlow"
+       x="-100%"
+       y="-100%"
+       width="300%"
+       height="300%"
+     >
+
+       <feGaussianBlur
+         stdDeviation="3"
+         result="blur"
+       />
+
+       <feMerge>
+
+         <feMergeNode
+           in="blur"
+         />
+
+         <feMergeNode
+           in="SourceGraphic"
+         />
+
+       </feMerge>
+
+     </filter>
+
+
+     <!-- =============================================
+          BLUE GLOW
+          ============================================= -->
+
+     <filter
+       id="smBlueGlow"
+       x="-100%"
+       y="-100%"
+       width="300%"
+       height="300%"
+     >
+
+       <feGaussianBlur
+         stdDeviation="2.5"
+         result="blur"
+       />
+
+       <feMerge>
+
+         <feMergeNode
+           in="blur"
+         />
+
+         <feMergeNode
+           in="SourceGraphic"
+         />
+
+       </feMerge>
+
+     </filter>
+
+
+     <!-- =============================================
+          ROBOT SHADOW
+          ============================================= -->
+
+     <filter
+       id="smRobotShadow"
+       x="-50%"
+       y="-50%"
+       width="200%"
+       height="200%"
+     >
+
+       <feDropShadow
+         dx="0"
+         dy="5"
+         stdDeviation="5"
+         flood-color="#087fbd"
+         flood-opacity="0.25"
+       />
+
+     </filter>
+
+   </defs>
+
+
+   <!-- =================================================
+        ROBOT HEAD
+        ================================================= -->
+
+   <g
+     class="sm-ai-robot-head"
+     filter="url(#smRobotShadow)"
+   >
+
+     <!-- ===============================================
+          SIGNAL + ANTENNAS + CHAT
+          ALL ARE INSIDE THE HEAD GROUP
+          =============================================== -->
+
+     <g
+       class="sm-ai-head-signal-system"
+     >
+
+
+       <!-- =============================================
+            LEFT ANTENNA
+            ============================================= -->
+
+       <g
+         class="sm-ai-left-antenna"
+       >
+
+         <line
+           x1="76"
+           y1="53"
+           x2="62"
+           y2="39"
+         />
+
+         <circle
+           cx="59"
+           cy="36"
+           r="5"
+         />
+
+       </g>
+
+
+       <!-- =============================================
+            RIGHT ANTENNA
+            ============================================= -->
+
+       <g
+         class="sm-ai-right-antenna"
+       >
+
+         <line
+           x1="164"
+           y1="53"
+           x2="178"
+           y2="39"
+         />
+
+
+       </g>
+
+
+       <!-- =============================================
+            SINGLE CHAT ICON
+            ATTACHED TO RIGHT ANTENNA
+            ============================================= -->
+
+       <g
+         class="sm-ai-antenna-chat"
+       >
+
+         <path
+           d="
+             M175 12
+
+             C175 5
+             181 1
+             189 1
+
+             H211
+
+             C219 1
+             225 5
+             225 12
+
+             C225 19
+             219 24
+             211 24
+
+             H195
+
+             L189 31
+
+             L190 24
+
+             H189
+
+             C181 24
+             175 19
+             175 12
+
+             Z
+           "
+           fill="url(#smChatBlue)"
+         />
+
+         <circle
+           cx="190"
+           cy="12"
+           r="2.3"
+           fill="#ffffff"
+         />
+
+         <circle
+           cx="198"
+           cy="12"
+           r="2.3"
+           fill="#ffffff"
+         />
+
+         <circle
+           cx="206"
+           cy="12"
+           r="2.3"
+           fill="#ffffff"
+         />
+
+       </g>
+
+     </g>
+
+
+     <!-- =============================================
+          MAIN ROBOT HEAD
+          ============================================= -->
+
+     <rect
+       x="48"
+       y="49"
+       width="144"
+       height="91"
+       rx="32"
+       fill="url(#smRobotWhite)"
+     />
+
+
+     <!-- =============================================
+          BLUE TOP PANEL
+          ============================================= -->
+
+     <path
+       d="
+         M80 51
+
+         C84 39
+         96 34
+         120 34
+
+         C144 34
+         156 39
+         160 51
+
+         Z
+       "
+       fill="url(#smRobotBlue)"
+     />
+
+
+     <!-- Top highlight -->
+
+     <path
+       d="
+         M88 48
+         C101 41 139 41 152 48
+       "
+       fill="none"
+       stroke="#a6efff"
+       stroke-width="2"
+       opacity="0.65"
+     />
+
+
+     <!-- =============================================
+          LEFT EAR
+          ============================================= -->
+
+     <rect
+       x="39"
+       y="74"
+       width="12"
+       height="39"
+       rx="6"
+       fill="url(#smRobotBlue)"
+     />
+
+
+     <!-- =============================================
+          RIGHT EAR
+          ============================================= -->
+
+     <rect
+       x="189"
+       y="74"
+       width="12"
+       height="39"
+       rx="6"
+       fill="url(#smRobotBlue)"
+     />
+
+
+     <!-- =============================================
+          FACE SCREEN
+          ============================================= -->
+
+     <rect
+       x="62"
+       y="65"
+       width="116"
+       height="62"
+       rx="24"
+       fill="url(#smRobotFace)"
+     />
+
+
+     <!-- Face screen reflection -->
+
+     <path
+       d="
+         M75 72
+         C100 64 140 64 165 72
+       "
+       fill="none"
+       stroke="#5d7b8e"
+       stroke-width="3"
+       opacity="0.35"
+     />
+
+
+     <!-- =============================================
+          LEFT EYE
+          ============================================= -->
+
+     <ellipse
+       class="sm-ai-eye"
+       cx="91"
+       cy="91"
+       rx="11"
+       ry="14"
+     />
+
+
+     <!-- =============================================
+          RIGHT EYE
+          ============================================= -->
+
+     <ellipse
+       class="sm-ai-eye"
+       cx="149"
+       cy="91"
+       rx="11"
+       ry="14"
+     />
+
+
+     <!-- Eye highlights -->
+
+     <ellipse
+       cx="88"
+       cy="87"
+       rx="3"
+       ry="4"
+       fill="#ffffff"
+       opacity="0.85"
+     />
+
+     <ellipse
+       cx="146"
+       cy="87"
+       rx="3"
+       ry="4"
+       fill="#ffffff"
+       opacity="0.85"
+     />
+
+
+     <!-- =============================================
+          SMILE
+          ============================================= -->
+
+     <path
+       class="sm-ai-smile"
+       d="
+         M100 108
+         Q120 124 140 108
+       "
+     />
+
+   </g>
+
+
+   <!-- =================================================
+        NECK
+        ================================================= -->
+
+   <rect
+     class="sm-ai-neck"
+     x="101"
+     y="136"
+     width="38"
+     height="13"
+     rx="6.5"
+   />
+
+
+   <!-- =================================================
+        ROBOT BODY
+        ================================================= -->
+
+   <g
+     class="sm-ai-robot-body"
+     filter="url(#smRobotShadow)"
+   >
+
+     <!-- Main body -->
+
+     <rect
+       x="72"
+       y="143"
+       width="96"
+       height="76"
+       rx="30"
+       fill="url(#smRobotWhite)"
+     />
+
+
+     <!-- Left shoulder -->
+
+     <ellipse
+       cx="70"
+       cy="162"
+       rx="15"
+       ry="17"
+       fill="url(#smRobotBlue)"
+     />
+
+
+     <!-- Right shoulder -->
+
+     <ellipse
+       cx="170"
+       cy="162"
+       rx="15"
+       ry="17"
+       fill="url(#smRobotBlue)"
+     />
+
+
+     <!-- Chest plate -->
+
+     <ellipse
+       cx="120"
+       cy="171"
+       rx="20"
+       ry="20"
+       fill="#e0f1f8"
+     />
+
+
+     <!-- Chest glowing core -->
+
+     <circle
+       class="sm-ai-chest-core"
+       cx="120"
+       cy="171"
+       r="12"
+       fill="url(#smRobotBlue)"
+       filter="url(#smBlueGlow)"
+     />
+
+
+     <circle
+       cx="120"
+       cy="171"
+       r="4"
+       fill="#e4ffff"
+     />
+
+
+     <!-- Waist -->
+
+     <path
+       d="
+         M84 204
+         Q120 217 156 204
+         L151 220
+         H89
+         Z
+       "
+       fill="#263e51"
+     />
+
+   </g>
+
+
+   <!-- =================================================
+        LEFT ARM
+        ================================================= -->
+
+   <g
+     class="sm-ai-left-arm"
+   >
+
+     <!-- Upper arm -->
+
+     <rect
+       x="48"
+       y="157"
+       width="20"
+       height="49"
+       rx="10"
+       transform="rotate(12 58 181)"
+       fill="url(#smRobotWhite)"
+     />
+
+
+     <!-- Elbow -->
+
+     <circle
+       cx="52"
+       cy="202"
+       r="10"
+       fill="#159ddd"
+     />
+
+   </g>
+
+
+   <!-- =================================================
+        RIGHT ARM
+        ================================================= -->
+
+   <g
+     class="sm-ai-right-arm"
+   >
+
+     <!-- Upper arm -->
+
+     <rect
+       x="172"
+       y="157"
+       width="20"
+       height="49"
+       rx="10"
+       transform="rotate(-12 182 181)"
+       fill="url(#smRobotWhite)"
+     />
+
+
+     <!-- Elbow -->
+
+     <circle
+       cx="188"
+       cy="202"
+       r="10"
+       fill="#159ddd"
+     />
+
+   </g>
+
+
+   <!-- =================================================
+        LEGS
+        ================================================= -->
+
+   <g
+     class="sm-ai-robot-legs"
+   >
+
+     <!-- Left leg -->
+
+     <rect
+       x="82"
+       y="210"
+       width="32"
+       height="42"
+       rx="14"
+       fill="url(#smRobotWhite)"
+     />
+
+     <!-- Right leg -->
+
+     <rect
+       x="126"
+       y="210"
+       width="32"
+       height="42"
+       rx="14"
+       fill="url(#smRobotWhite)"
+     />
+
+
+     <!-- Left foot -->
+
+     <ellipse
+       cx="95"
+       cy="254"
+       rx="24"
+       ry="11"
+       fill="url(#smRobotWhite)"
+     />
+
+
+     <!-- Left blue sole -->
+
+     <path
+       d="
+         M75 254
+         Q95 264 115 254
+       "
+       fill="none"
+       stroke="#159ddd"
+       stroke-width="5"
+     />
+
+
+     <!-- Right foot -->
+
+     <ellipse
+       cx="145"
+       cy="254"
+       rx="24"
+       ry="11"
+       fill="url(#smRobotWhite)"
+     />
+
+
+     <!-- Right blue sole -->
+
+     <path
+       d="
+         M125 254
+         Q145 264 165 254
+       "
+       fill="none"
+       stroke="#159ddd"
+       stroke-width="5"
+     />
+
+   </g>
+
+ </svg>
+
+
+ <!-- Existing pulse -->
+
+ <span
+   class="sm-ai-pulse"
+   aria-hidden="true"
+ ></span>
+
+
+ <!-- Hover label -->
+
+ <span
+   class="sm-ai-label"
+ >
+   StayMate AI Assistant
+ </span>
+
+</button>
+
+
+<!-- ===================================================
+    MINI CHAT PANEL
+    =================================================== -->
+
+<section
+ id="sm-ai-panel"
+ class="sm-ai-panel"
+ aria-hidden="true"
+>
+
+ <!-- Header -->
+
+ <header
+   class="sm-ai-header"
+ >
+
+   <div
+     class="sm-ai-header-info"
+   >
+
+     <div
+       class="sm-ai-avatar"
+     >
+       ✦
+     </div>
+
+     <div>
+
+       <strong>
+         StayMate AI
+       </strong>
+
+       <span>
+         Knowledge Assistant
+       </span>
+
+     </div>
+
+   </div>
+
+
+   <div class="sm-ai-header-actions" style="display:flex;align-items:center;gap:8px;">
+     <button
+       id="sm-ai-history"
+       type="button"
+       hidden
+       style="border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:7px 9px;background:transparent;color:inherit;font-size:12px;font-weight:600;cursor:pointer;"
+       aria-label="View past chat history"
+     >Past chats</button>
+     <button
+       id="sm-ai-close"
+       class="sm-ai-close"
+       type="button"
+       aria-label="Close AI Assistant"
+     >
+       ×
+     </button>
+   </div>
+
+ </header>
+
+
+ <!-- =================================================
+      CHAT MESSAGES
+      ================================================= -->
+
+ <div
+   id="sm-ai-messages"
+   class="sm-ai-messages"
+   aria-live="polite"
+ >
+
+   <!-- Greeting -->
+
+   <div
+     class="sm-ai-message sm-ai-bot"
+   >
+
+     <div
+       class="sm-ai-bubble"
+     >
+
+       Hi! 👋 I'm the StayMate AI Assistant.
+
+       <br><br>
+
+       I can help you with StayMate's
+       booking, account, payment and
+       cancellation information.
+
+     </div>
+
+   </div>
+
+
+   <!-- =================================================
+        FREQUENTLY ASKED QUESTIONS
+        ================================================= -->
+
+   <div
+     class="sm-ai-faq-section"
+   >
+
+     <span
+       class="sm-ai-faq-title"
+     >
+       Frequently asked
+     </span>
+
+
+     <div
+       class="sm-ai-faqs"
+     >
+
+       <button
+         type="button"
+         class="sm-ai-faq"
+         data-question="Can I cancel my booking?"
+       >
+         Can I cancel my booking?
+       </button>
+
+
+       <button
+         type="button"
+         class="sm-ai-faq"
+         data-question="What happens if I forget my password?"
+       >
+         What happens if I forget my password?
+       </button>
+
+
+       <button
+         type="button"
+         class="sm-ai-faq"
+         data-question="How can I view my past bookings?"
+       >
+         How can I view my past bookings?
+       </button>
+
+
+       <button
+         type="button"
+         class="sm-ai-faq"
+         data-question="How do I create a StayMate account?"
+       >
+         How do I create an account?
+       </button>
+
+     </div>
+
+   </div>
+
+ </div>
+
+
+ <!-- =================================================
+      INPUT
+      ================================================= -->
+
+ <form
+   id="sm-ai-form"
+   class="sm-ai-form"
+ >
+
+   <input
+     id="sm-ai-input"
+     type="text"
+     autocomplete="off"
+     placeholder="Ask about StayMate..."
+     aria-label="Ask StayMate AI"
+   >
+
+
+   <button
+     type="submit"
+     aria-label="Send question"
+   >
+     →
+   </button>
+
+ </form>
+
+</section>
+
+</div>
+
+
+<!-- =====================================================
+  APPLICATION JAVASCRIPT
+  ===================================================== -->
+
+<script src="/static/auth.js"></script>
+
+<script src="/static/app.js"></script>
+
+<script src="/static/profile.js"></script>
+
+</body>
+
+</html>

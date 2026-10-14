@@ -1,0 +1,48 @@
+STAYMATE AI - PAYMENT POLICY
+
+1. PAYMENT PROCESS
+
+StayMate AI currently provides a demo payment flow as part of the project.
+
+The demo payment flow is intended to demonstrate the booking and billing workflow.
+
+2. PRODUCTION PAYMENT
+
+The current project does not represent a production payment gateway.
+
+A production deployment would require integration with a real payment service provider.
+
+3. PAYMENT METHOD
+
+The booking flow collects the payment method selected by the user.
+
+The selected payment method is associated with the booking information.
+
+4. BILLING
+
+The billing process calculates the booking amount based on the booking details available to the application.
+
+The billing summary may include:
+
+- Price per night
+- Number of nights
+- Number of rooms
+- Subtotal
+- Applicable tax
+- Total amount
+
+5. PAYMENT STATUS
+
+The booking record contains payment-related information, including the payment status.
+
+6. PAYMENT QUESTIONS
+
+The StayMate AI knowledge assistant can explain the payment workflow described in its knowledge base.
+
+It should not claim that a real payment has been processed when the application is using its demo payment flow.
+
+7. PRODUCTION LIMITATION
+
+The current demo should not be presented as a real financial transaction system.
+
+A production implementation would require secure payment processing through an appropriate payment provider.

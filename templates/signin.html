@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sign In - STAYMATE AI</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+<link rel="stylesheet" href="/static/auth.css">
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-container">
+
+        <section class="auth-card">
+
+            <a href="/" class="auth-brand">
+                <span class="auth-brand-mark">✦</span>
+
+                <span class="auth-brand-copy">
+                    <span class="auth-brand-name">STAYMATE</span>
+                    <span class="auth-brand-ai">AI</span>
+                </span>
+            </a>
+
+            <div class="auth-header">
+                <p class="auth-eyebrow">WELCOME BACK</p>
+
+                <h1>Sign in to your account</h1>
+
+                <p>
+                    Continue your journey with STAYMATE AI.
+                </p>
+            </div>
+
+            <form id="signinForm" class="auth-form">
+
+                <div class="auth-form-group">
+                    <label for="email">Email Address</label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <div class="auth-form-group">
+                    <label for="password">Password</label>
+
+                    <div class="auth-password-wrapper">
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            id="togglePassword"
+                            class="auth-password-toggle"
+                            aria-label="Show password"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+                </div>
+
+                <div class="auth-form-options">
+                    <a
+                        href="/forgot-password"
+                        class="auth-link"
+                    >
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <button
+                    type="submit"
+                    id="signinButton"
+                    class="auth-submit-button"
+                >
+                    Sign In
+                </button>
+
+                <p
+                    id="signinMessage"
+                    class="auth-message"
+                    role="alert"
+                    aria-live="polite"
+                ></p>
+
+            </form>
+
+            <div class="auth-divider">
+                <span>OR</span>
+            </div>
+
+            <div class="auth-footer">
+                <p>
+                    Don't have an account?
+                    <a
+                        href="/signup"
+                        class="auth-link"
+                    >
+                        Create an account
+                    </a>
+                </p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script
+        src="{{ url_for('static', filename='signin.js') }}"
+    ></script>
+
+</body>
+</html>
