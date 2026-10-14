@@ -5,3 +5,4 @@ gunicorn
 pymongo
 reportlab
 faiss-cpu
+ollama
