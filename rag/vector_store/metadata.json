@@ -1,218 +1,218 @@
 [
   {
     "text": "STAYMATE AI - BOOKING POLICY",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "1. HOTEL SEARCH\n\nStayMate AI allows users to search for hotels by destination or location.\n\nUsers can search for hotels using a manually entered destination or their current location when location access is available.\n\nHotel search results are obtained from the configured hotel search service.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "2. BOOKING INFORMATION\n\nBefore confirming a booking, users must provide the required booking information.\n\nThe booking information may include:\n\n- Guest name\n- Mobile number\n- Email address\n- Hotel name\n- Hotel address\n- Check-in date\n- Check-out date\n- Number of guests\n- Number of children\n- Number of rooms\n- Room type\n- Payment method",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "3. BOOKING CONFIRMATION\n\nAfter the booking process is completed, StayMate AI creates a booking record.\n\nThe booking contains a unique booking reference.\n\nThe booking information is stored in the StayMate database.\n\nUsers can view their bookings through the My Bookings section.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "4. PAYMENT\n\nStayMate AI currently provides a demo payment flow for the project.\n\nThe payment flow does not represent a production payment gateway.\n\nA production version would require integration with a real payment service provider.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "5. BOOKING HISTORY\n\nAuthenticated users can access their previous bookings through the My Bookings section.\n\nUsers can only access bookings associated with their authenticated account.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "6. HOTEL PRICES\n\nHotel prices and availability can change over time.\n\nCurrent hotel prices should be obtained from the live hotel search results rather than from this policy document.\n\nThe StayMate AI knowledge assistant should not provide a current hotel price unless that information is explicitly available in its knowledge base.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "7. ACCOUNT REQUIREMENT\n\nUsers must authenticate before accessing protected booking functionality.\n\nNew users can create an account using email verification and password creation.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "8. KNOWLEDGE ASSISTANT\n\nThe StayMate AI knowledge assistant answers questions using information available in its knowledge base.\n\nIf the requested information is not available in the knowledge base, the assistant should clearly state that it does not have sufficient information rather than inventing an answer.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "9. CURRENT INFORMATION\n\nInformation such as current hotel prices and live hotel availability should be obtained through the live hotel search system.\n\nThe knowledge assistant is intended primarily for answering questions about StayMate, hotel information available in its knowledge base, policies, and other stored knowledge.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\booking_policy.txt"
+    "source": "data\\policies\\booking_policy.txt"
   },
   {
     "text": "STAYMATE AI - CANCELLATION POLICY",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "1. CANCELLATION INFORMATION\n\nStayMate AI allows authenticated users to manage their bookings through the My Bookings section.\n\nCancellation availability and refund conditions may depend on the cancellation rules associated with the booking.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "2. CANCELLATION OF A BOOKING\n\nUsers should review the cancellation conditions associated with their booking before cancelling.\n\nThe cancellation process should be performed through the available booking management functionality.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "3. REFUND INFORMATION\n\nAny refund depends on the applicable cancellation conditions for the booking.\n\nStayMate AI should not guarantee a refund unless the applicable booking information explicitly states that a refund is available.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "4. NON-REFUNDABLE BOOKINGS\n\nSome bookings may have non-refundable conditions.\n\nIf a booking is marked as non-refundable, cancellation may not result in a refund.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "5. CANCELLATION QUESTIONS\n\nThe StayMate AI knowledge assistant can explain cancellation-related information available in its knowledge base.\n\nIf the knowledge base does not contain the cancellation conditions for a particular hotel or booking, the assistant should not invent them.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "6. CURRENT BOOKING INFORMATION\n\nThe knowledge assistant provides information from its stored knowledge base.\n\nFor booking-specific information, users should refer to their booking details and the My Bookings section.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "7. IMPORTANT LIMITATION\n\nThe current StayMate project does not use this document to determine the actual cancellation or refund status of a live hotel booking.\n\nLive booking conditions should be verified from the applicable hotel or booking provider.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\cancellation_policy.txt"
+    "source": "data\\policies\\cancellation_policy.txt"
   },
   {
     "text": "STAYMATE AI - CHECK-IN AND CHECK-OUT POLICY",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "1. CHECK-IN INFORMATION\n\nThe check-in and check-out times for a hotel may vary depending on the hotel.\n\nUsers should review the hotel information provided in the applicable hotel details before completing a booking.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "2. CHECK-IN DATE\n\nThe check-in date is the date on which the guest is expected to arrive at the hotel.\n\nThe selected check-in date is part of the booking information.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "3. CHECK-OUT DATE\n\nThe check-out date is the date on which the guest is expected to leave the hotel.\n\nThe selected check-out date is part of the booking information.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "4. EARLY CHECK-IN\n\nEarly check-in may depend on the hotel's policy and availability.\n\nStayMate AI should not guarantee early check-in unless the applicable hotel information explicitly confirms it.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "5. LATE CHECK-OUT\n\nLate check-out may depend on the hotel's policy and availability.\n\nStayMate AI should not guarantee late check-out unless the applicable hotel information explicitly confirms it.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "6. HOTEL-SPECIFIC POLICIES\n\nCheck-in requirements, identification requirements, early check-in, and late check-out conditions can vary between hotels.\n\nUsers should verify hotel-specific requirements before arrival.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "7. KNOWLEDGE ASSISTANT LIMITATION\n\nThe StayMate AI knowledge assistant should answer check-in and check-out questions only using information available in its knowledge base.\n\nIf hotel-specific information is unavailable, the assistant should clearly state that it does not have sufficient information.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\checkin_policy.txt"
+    "source": "data\\policies\\checkin_policy.txt"
   },
   {
     "text": "STAYMATE AI - PAYMENT POLICY",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "1. PAYMENT PROCESS\n\nStayMate AI currently provides a demo payment flow as part of the project.\n\nThe demo payment flow is intended to demonstrate the booking and billing workflow.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "2. PRODUCTION PAYMENT\n\nThe current project does not represent a production payment gateway.\n\nA production deployment would require integration with a real payment service provider.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "3. PAYMENT METHOD\n\nThe booking flow collects the payment method selected by the user.\n\nThe selected payment method is associated with the booking information.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "4. BILLING\n\nThe billing process calculates the booking amount based on the booking details available to the application.\n\nThe billing summary may include:\n\n- Price per night\n- Number of nights\n- Number of rooms\n- Subtotal\n- Applicable tax\n- Total amount",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "5. PAYMENT STATUS\n\nThe booking record contains payment-related information, including the payment status.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "6. PAYMENT QUESTIONS\n\nThe StayMate AI knowledge assistant can explain the payment workflow described in its knowledge base.\n\nIt should not claim that a real payment has been processed when the application is using its demo payment flow.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "7. PRODUCTION LIMITATION\n\nThe current demo should not be presented as a real financial transaction system.\n\nA production implementation would require secure payment processing through an appropriate payment provider.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\policies\\payment_policy.txt"
+    "source": "data\\policies\\payment_policy.txt"
   },
   {
     "text": "STAYMATE AI - FREQUENTLY ASKED QUESTIONS",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "1. CREATING AN ACCOUNT\n\nUsers can create a StayMate AI account by providing their required registration details and verifying their email address.\n\nEmail verification is performed using a one-time password (OTP).\n\nAfter successful verification, the user can create a password and complete account creation.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "2. SIGNING IN\n\nRegistered users can sign in using their email address and password.\n\nAfter successful authentication, the user can access the protected StayMate AI application.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "3. HOTEL SEARCH\n\nUsers can search for hotels by entering a destination or using their current location when location access is available.\n\nHotel search results are obtained from the configured live hotel search service.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "4. USING CURRENT LOCATION\n\nStayMate AI can use the user's browser location when location permission is available.\n\nThe application can use location information to determine a suitable location for hotel search.\n\nUsers can also manually enter a destination.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "5. HOTEL INFORMATION\n\nHotel search results may contain information such as hotel name, location, price, rating, and other available hotel details.\n\nCurrent hotel information is obtained through the live hotel search system.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "6. MAKING A BOOKING\n\nAfter selecting a hotel, users can provide the required booking information through the booking interface.\n\nThe booking process includes reviewing the booking details, billing information, and payment flow.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "7. VIEWING BOOKINGS\n\nAuthenticated users can view their previous bookings through the My Bookings section.\n\nBookings are associated with the authenticated user's account.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "8. PROFILE\n\nUsers can access their profile information after signing in.\n\nThe profile section provides access to account-related information and booking functionality.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "9. FORGOT PASSWORD\n\nUsers who forget their password can use the Forgot Password functionality.\n\nA password reset process is initiated through email.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "1",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "0. LOGGING OUT\n\nUsers can securely log out of their StayMate AI session using the logout functionality.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "1",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "1. AI KNOWLEDGE ASSISTANT\n\nThe StayMate AI knowledge assistant answers questions using information available in its knowledge base.\n\nThe assistant uses retrieved information from the knowledge base to generate its responses.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "1",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "2. KNOWLEDGE LIMITATION\n\nThe AI knowledge assistant should not invent information that is not available in its knowledge base.\n\nIf the required information is unavailable, the assistant should clearly state that it does not have sufficient information.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "1",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "3. LIVE HOTEL INFORMATION\n\nQuestions about current hotel prices and live availability should be handled by the live hotel search system rather than the static knowledge base.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "1",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   },
   {
     "text": "4. RAG KNOWLEDGE ASSISTANT\n\nThe RAG-based assistant is intended to answer questions about StayMate, stored hotel knowledge, policies, and other information available in its knowledge base.",
-    "source": "C:\\Users\\91630\\Downloads\\STAYMATE_AI_Clean_Python_v2\\rag\\data\\staymate\\staymate_faq.txt"
+    "source": "data\\staymate\\staymate_faq.txt"
   }
 ]
