@@ -1799,8 +1799,9 @@ function setDiscoveryDefaults() {
 // =========================================================
 
 
+
 async function automaticLocation(forceRefresh = false) {
-  // Preserve existing/manual location unless a fresh location is requested.
+  // Preserve an existing or manually entered destination.
   if (context.location && !forceRefresh) {
     return context.location;
   }
@@ -1814,63 +1815,50 @@ async function automaticLocation(forceRefresh = false) {
   try {
     logInfo("GPS", "START automatic location");
 
-    // STEP 1: Browser GPS
-    if (navigator.geolocation) {
-      const position = await new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(
-          resolve,
-          (error) => {
-            logInfo("GPS", `GPS unavailable: ${error.message}`);
-            resolve(null);
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 15000,
-            maximumAge: 0
-          }
-        );
-      });
-
-      if (position) {
-        userCoords = {
-          lat: position.coords.latitude,
-          lon: position.coords.longitude
-        };
-
-        logInfo("GPS", "GPS coordinates received");
-
-        // STEP 2: Reverse-geocode GPS coordinates
-        try {
-          const result = await get(
-            `/api/location/reverse?lat=${encodeURIComponent(userCoords.lat)}&lon=${encodeURIComponent(userCoords.lon)}`
-          );
-
-          const location =
-            result.canonical_location || result.city;
-
-          if (location) {
-            context.location = location;
-
-            if (locationSearch) {
-              locationSearch.value = location;
-            }
-
-            logInfo("GPS", `GPS location="${location}"`);
-            return location;
-          }
-        } catch (error) {
-          logError("GPS", "Reverse geocoding failed", error);
-        }
-      }
-    } else {
+    // STEP 1: Detect location using browser GPS.
+    if (!navigator.geolocation) {
       logInfo("GPS", "Browser geolocation unavailable");
+      return null;
     }
 
-    // STEP 3: Existing IP fallback
-    try {
-      logInfo("GPS", "Trying IP location fallback");
+    const position = await new Promise((resolve) => {
+      navigator.geolocation.getCurrentPosition(
+        resolve,
+        (error) => {
+          logInfo("GPS", `GPS unavailable: ${error.message}`);
+          resolve(null);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 0
+        }
+      );
+    });
 
-      const result = await get("/api/location/ip");
+    // GPS denied, unavailable, or timed out.
+    // Do not use server-side IP geolocation as a fallback.
+    if (!position) {
+      logInfo(
+        "GPS",
+        "GPS unavailable; asking user to enter a destination"
+      );
+      return null;
+    }
+
+    userCoords = {
+      lat: position.coords.latitude,
+      lon: position.coords.longitude
+    };
+
+    logInfo("GPS", "GPS coordinates received");
+
+    // STEP 2: Reverse-geocode the GPS coordinates.
+    try {
+      const result = await get(
+        `/api/location/reverse?lat=${encodeURIComponent(userCoords.lat)}&lon=${encodeURIComponent(userCoords.lon)}`
+      );
+
       const location =
         result.canonical_location || result.city;
 
@@ -1881,18 +1869,26 @@ async function automaticLocation(forceRefresh = false) {
           locationSearch.value = location;
         }
 
-        logInfo("GPS", `IP location="${location}"`);
+        logInfo("GPS", `GPS location="${location}"`);
         return location;
       }
     } catch (error) {
-      logError("GPS", "IP location failed", error);
+      logError("GPS", "Reverse geocoding failed", error);
     }
+
+    // GPS worked, but reverse geocoding failed.
+    // Do not fall back to the server's IP-derived location.
+    logInfo(
+      "GPS",
+      "Unable to resolve GPS coordinates to a destination"
+    );
 
     return null;
   } finally {
     autoLocationInProgress = false;
   }
 }
+
 
 
 
@@ -1925,9 +1921,17 @@ async function startHotelSearch() {
         'location';
 
 
-      add(
-        'I could not determine your location automatically. Please enter the city where you want to stay.'
-      );
+        add(
+          '📍 Location access is unavailable. Please enter your destination in the chat input below, for example: "Find hotels in Tirupati".',
+          "bot",
+          true
+        );
+        
+        const chatInput = document.querySelector("#input");
+        
+        if (chatInput) {
+          chatInput.focus();
+        }
 
 
       return;
