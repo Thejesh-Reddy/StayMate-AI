@@ -1798,230 +1798,102 @@ function setDiscoveryDefaults() {
 //
 // =========================================================
 
-async function automaticLocation() {
 
-  // -------------------------------------------------------
-  // Existing/manual location
-  // -------------------------------------------------------
-
-  if (
-    context.location
-  ) {
-
+async function automaticLocation(forceRefresh = false) {
+  // Preserve existing/manual location unless a fresh location is requested.
+  if (context.location && !forceRefresh) {
     return context.location;
   }
 
-
-  // -------------------------------------------------------
-  // Prevent duplicate requests
-  // -------------------------------------------------------
-
-  if (
-    autoLocationInProgress
-  ) {
-
+  if (autoLocationInProgress) {
     return null;
   }
 
-
-  autoLocationInProgress =
-    true;
-
+  autoLocationInProgress = true;
 
   try {
+    logInfo("GPS", "START automatic location");
 
-    logInfo(
-      'GPS',
-      'START automatic location'
-    );
-
-
-    // -----------------------------------------------------
-    // STEP 1 — BROWSER GPS
-    // -----------------------------------------------------
-
-    if (
-      navigator.geolocation
-    ) {
-
-      const position =
-        await new Promise(
-          resolve => {
-
-            navigator.geolocation
-              .getCurrentPosition(
-
-                resolve,
-
-                () =>
-                  resolve(null),
-
-                {
-                  enableHighAccuracy:
-                    true,
-
-                  timeout:
-                    10000,
-
-                  maximumAge:
-                    0
-                }
-              );
+    // STEP 1: Browser GPS
+    if (navigator.geolocation) {
+      const position = await new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition(
+          resolve,
+          (error) => {
+            logInfo("GPS", `GPS unavailable: ${error.message}`);
+            resolve(null);
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 0
           }
         );
+      });
 
-
-      if (
-        position
-      ) {
-
+      if (position) {
         userCoords = {
-
-          lat:
-            position.coords.latitude,
-
-          lon:
-            position.coords.longitude
+          lat: position.coords.latitude,
+          lon: position.coords.longitude
         };
 
+        logInfo("GPS", "GPS coordinates received");
 
-        logInfo(
-          'GPS',
-          'GPS coordinates received'
-        );
-
-
-        // -------------------------------------------------
-        // STEP 2 — REVERSE GPS
-        // -------------------------------------------------
-
+        // STEP 2: Reverse-geocode GPS coordinates
         try {
+          const result = await get(
+            `/api/location/reverse?lat=${encodeURIComponent(userCoords.lat)}&lon=${encodeURIComponent(userCoords.lon)}`
+          );
 
-          const result =
-            await get(
-              `/api/location/reverse?lat=${encodeURIComponent(
-                userCoords.lat
-              )}&lon=${encodeURIComponent(
-                userCoords.lon
-              )}`
-            );
+          const location =
+            result.canonical_location || result.city;
 
+          if (location) {
+            context.location = location;
 
-          if (
-            result.canonical_location ||
-            result.city
-          ) {
-
-            context.location =
-              result.canonical_location ||
-              result.city;
-
-
-            if (
-              locationSearch
-            ) {
-
-              locationSearch.value =
-                context.location;
+            if (locationSearch) {
+              locationSearch.value = location;
             }
 
-
-            logInfo(
-              'GPS',
-              `REVERSE location="${context.location}"`
-            );
-
-
-            return context.location;
+            logInfo("GPS", `GPS location="${location}"`);
+            return location;
           }
-
-        } catch (
-          error
-        ) {
-
-          logError(
-            'GPS',
-            'Reverse geocoding failed; trying IP fallback',
-            error
-          );
+        } catch (error) {
+          logError("GPS", "Reverse geocoding failed", error);
         }
       }
-
     } else {
-
-      logInfo(
-        'GPS',
-        'Browser geolocation unavailable'
-      );
+      logInfo("GPS", "Browser geolocation unavailable");
     }
 
-
-    // -----------------------------------------------------
-    // STEP 3 — PUBLIC IP FALLBACK
-    // -----------------------------------------------------
-
+    // STEP 3: Existing IP fallback
     try {
+      logInfo("GPS", "Trying IP location fallback");
 
-      logInfo(
-        'GPS',
-        'Trying IP location fallback'
-      );
+      const result = await get("/api/location/ip");
+      const location =
+        result.canonical_location || result.city;
 
+      if (location) {
+        context.location = location;
 
-      const result =
-        await get(
-          '/api/location/ip'
-        );
-
-
-      if (
-        result.canonical_location ||
-        result.city
-      ) {
-
-        context.location =
-          result.canonical_location ||
-          result.city;
-
-
-        if (
-          locationSearch
-        ) {
-
-          locationSearch.value =
-            context.location;
+        if (locationSearch) {
+          locationSearch.value = location;
         }
 
-
-        logInfo(
-          'GPS',
-          `IP location="${context.location}"`
-        );
-
-
-        return context.location;
+        logInfo("GPS", `IP location="${location}"`);
+        return location;
       }
-
-    } catch (
-      error
-    ) {
-
-      logError(
-        'GPS',
-        'IP location failed',
-        error
-      );
+    } catch (error) {
+      logError("GPS", "IP location failed", error);
     }
-
 
     return null;
-
   } finally {
-
-    autoLocationInProgress =
-      false;
+    autoLocationInProgress = false;
   }
 }
+
 
 
 // =========================================================
@@ -5883,10 +5755,15 @@ if (
   // These must use the typed destination.
   // -------------------------------------------------
 
-  const explicitLocation =
-    parseLocation(
-      text
-    );
+  
+const isNearMeRequest =
+  /\b(?:near me|around me|close to me|nearby|my current location|current location)\b/i.test(text);
+
+const explicitLocation =
+  isNearMeRequest
+    ? null
+    : parseLocation(text);
+
 
 
   if (
