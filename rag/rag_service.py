@@ -6,16 +6,16 @@ import time
 
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 
 
 BASE_DIR = Path(__file__).resolve().parent
 VECTOR_DIR = BASE_DIR / "vector_store"
 
-# This model produces 384-dimensional embeddings.
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 TOP_K = 3
+
 FALLBACK = (
     "I don't have enough information in my knowledge base "
     "to answer that."
@@ -25,17 +25,36 @@ _embedding_model = None
 
 
 # ============================================================
-# LOAD FAISS INDEX AND METADATA
+# LOAD FAISS INDEX
 # ============================================================
 
-index = faiss.read_index(str(VECTOR_DIR / "index.faiss"))
+INDEX_PATH = VECTOR_DIR / "index.faiss"
+METADATA_PATH = VECTOR_DIR / "metadata.json"
+
+if not INDEX_PATH.exists():
+    raise FileNotFoundError(
+        f"FAISS index not found: {INDEX_PATH}"
+    )
+
+if not METADATA_PATH.exists():
+    raise FileNotFoundError(
+        f"Metadata file not found: {METADATA_PATH}"
+    )
+
+index = faiss.read_index(str(INDEX_PATH))
 
 with open(
-    VECTOR_DIR / "metadata.json",
+    METADATA_PATH,
     "r",
     encoding="utf-8"
 ) as file:
     metadata = json.load(file)
+
+if index.ntotal != len(metadata):
+    raise ValueError(
+        f"FAISS contains {index.ntotal} vectors, but metadata "
+        f"contains {len(metadata)} entries."
+    )
 
 
 # ============================================================
@@ -46,31 +65,56 @@ def get_embedding_model():
     global _embedding_model
 
     if _embedding_model is None:
-        _embedding_model = SentenceTransformer(EMBEDDING_MODEL)
+        print(
+            f"[RAG] Loading FastEmbed model: {EMBEDDING_MODEL}"
+        )
 
-        expected_dimension = _embedding_model.get_sentence_embedding_dimension()
+        model = TextEmbedding(
+            model_name=EMBEDDING_MODEL
+        )
 
-        if index.d != expected_dimension:
+        # Validate the embedding dimension against the index.
+        test_embedding = next(
+            model.embed(["dimension validation"])
+        )
+
+        test_embedding = np.asarray(
+            test_embedding,
+            dtype=np.float32
+        )
+
+        if test_embedding.shape[0] != index.d:
             raise ValueError(
                 f"FAISS index dimension is {index.d}, but "
-                f"{EMBEDDING_MODEL} produces {expected_dimension}. "
-                "Rebuild the FAISS index with this same model."
+                f"the embedding model produces "
+                f"{test_embedding.shape[0]} dimensions. "
+                "Rebuild the index using the same model and "
+                "embedding runtime."
             )
+
+        _embedding_model = model
+
+        print(
+            f"[RAG] Model loaded; dimension={index.d}"
+        )
 
     return _embedding_model
 
 
 # ============================================================
-# GENERATE EMBEDDING
+# GENERATE QUERY EMBEDDING
 # ============================================================
 
 def generate_embedding(text):
     model = get_embedding_model()
 
-    return model.encode(
-        text,
-        convert_to_numpy=True,
-        normalize_embeddings=False
+    embedding = next(
+        model.embed([text])
+    )
+
+    return np.asarray(
+        embedding,
+        dtype=np.float32
     )
 
 
@@ -81,20 +125,20 @@ def generate_embedding(text):
 def retrieve(query):
     embedding = generate_embedding(query)
 
-    query_vector = np.asarray(
-        [embedding],
-        dtype="float32"
-    )
+    query_vector = embedding.reshape(1, -1)
 
-    distances, indices = index.search(query_vector, TOP_K)
+    distances, indices = index.search(
+        query_vector,
+        min(TOP_K, index.ntotal)
+    )
 
     results = []
 
-    for distance, index_id in zip(distances[0], indices[0]):
-        if index_id == -1:
-            continue
-
-        if index_id >= len(metadata):
+    for distance, index_id in zip(
+        distances[0],
+        indices[0]
+    ):
+        if index_id < 0 or index_id >= len(metadata):
             continue
 
         results.append({
@@ -111,14 +155,25 @@ def retrieve(query):
 # ============================================================
 
 def split_questions(query):
-    query = re.sub(r"\s+", " ", query.strip())
+    query = re.sub(
+        r"\s+",
+        " ",
+        query.strip()
+    )
 
     if not query:
         return []
 
-    query = re.sub(r"\s+([?.!])", r"\1", query)
+    query = re.sub(
+        r"\s+([?.!])",
+        r"\1",
+        query
+    )
 
-    parts = re.split(r"(?<=[?.!])\s+", query)
+    parts = re.split(
+        r"(?<=[?.!])\s+",
+        query
+    )
 
     questions = []
 
@@ -133,20 +188,22 @@ def split_questions(query):
 
 # ============================================================
 # EXTRACTIVE ANSWER GENERATION
-# No LLM/API required
+# No Ollama or paid API required
 # ============================================================
 
 def generate_answer(query, retrieved_chunks):
     if not retrieved_chunks:
         return FALLBACK
 
-    # Split retrieved text into sentences.
     sentences = []
 
     for chunk in retrieved_chunks:
         text = chunk.get("text", "").strip()
 
-        for sentence in re.split(r"(?<=[.!?])\s+", text):
+        for sentence in re.split(
+            r"(?<=[.!?])\s+",
+            text
+        ):
             sentence = sentence.strip()
 
             if sentence:
@@ -155,7 +212,6 @@ def generate_answer(query, retrieved_chunks):
     if not sentences:
         return FALLBACK
 
-    # Rank sentences by overlap with meaningful query words.
     stop_words = {
         "a", "an", "the", "is", "are", "was", "were",
         "do", "does", "did", "how", "what", "when",
@@ -185,18 +241,28 @@ def generate_answer(query, retrieved_chunks):
 
         if overlap:
             score = overlap / len(query_words)
-            ranked.append((score, position, sentence))
+
+            ranked.append((
+                score,
+                position,
+                sentence
+            ))
 
     if not ranked:
         return FALLBACK
 
-    # Keep the strongest sentences in their original order.
-    ranked.sort(key=lambda item: (-item[0], item[1]))
+    ranked.sort(
+        key=lambda item: (-item[0], item[1])
+    )
 
     selected = ranked[:3]
+
+    # Preserve the original sentence order.
     selected.sort(key=lambda item: item[1])
 
-    return " ".join(item[2] for item in selected)
+    return " ".join(
+        item[2] for item in selected
+    )
 
 
 # ============================================================
@@ -216,9 +282,14 @@ def ask_rag(query):
     all_sources = []
     seen_sources = set()
 
-    for number, question in enumerate(questions, start=1):
+    for number, question in enumerate(
+        questions,
+        start=1
+    ):
         start = time.perf_counter()
+
         retrieved_chunks = retrieve(question)
+
         retrieval_time = time.perf_counter() - start
 
         print(
@@ -228,7 +299,12 @@ def ask_rag(query):
         )
 
         start = time.perf_counter()
-        answer = generate_answer(question, retrieved_chunks)
+
+        answer = generate_answer(
+            question,
+            retrieved_chunks
+        )
+
         generation_time = time.perf_counter() - start
 
         print(
@@ -239,7 +315,9 @@ def ask_rag(query):
         if len(questions) == 1:
             answers.append(answer.strip())
         else:
-            answers.append(f"{number}. {answer.strip()}")
+            answers.append(
+                f"{number}. {answer.strip()}"
+            )
 
         for chunk in retrieved_chunks:
             source_name = chunk["source"]

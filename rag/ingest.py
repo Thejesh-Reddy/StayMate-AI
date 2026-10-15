@@ -5,7 +5,7 @@ import re
 
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from fastembed import TextEmbedding
 
 
 BASE_DIR = Path(__file__).resolve().parent
@@ -13,7 +13,12 @@ DATA_DIR = BASE_DIR / "data"
 VECTOR_DIR = BASE_DIR / "vector_store"
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+BATCH_SIZE = 16
 
+
+# ============================================================
+# LOAD DOCUMENTS
+# ============================================================
 
 def load_documents():
     documents = []
@@ -30,6 +35,10 @@ def load_documents():
     return documents
 
 
+# ============================================================
+# CREATE CHUNKS
+# ============================================================
+
 def create_chunks(text):
     pattern = r"(?=\n?\d+\.\s+[A-Z][^\n]*)"
     sections = re.split(pattern, text)
@@ -41,14 +50,19 @@ def create_chunks(text):
     ]
 
 
+# ============================================================
+# MAIN INGESTION
+# ============================================================
+
 def main():
     print("Loading documents...")
 
     documents = load_documents()
 
     if not documents:
-        print(f"No .txt documents found in: {DATA_DIR}")
-        return
+        raise RuntimeError(
+            f"No .txt documents found in {DATA_DIR}"
+        )
 
     print(f"Found {len(documents)} document(s).")
 
@@ -69,45 +83,57 @@ def main():
             })
 
     if not all_chunks:
-        print("No chunks were generated.")
-        return
+        raise RuntimeError("No chunks were generated.")
 
     print(f"\nTotal chunks: {len(all_chunks)}")
     print(f"Loading embedding model: {EMBEDDING_MODEL}")
 
-    model = SentenceTransformer(EMBEDDING_MODEL)
+    model = TextEmbedding(model_name=EMBEDDING_MODEL)
 
-    print("Generating embeddings...")
+    print("Generating embeddings with FastEmbed...")
 
     texts = [chunk["text"] for chunk in all_chunks]
 
-    embedding_matrix = model.encode(
-        texts,
-        batch_size=16,
-        show_progress_bar=True,
-        convert_to_numpy=True,
-        normalize_embeddings=False
+    embeddings = list(
+        model.embed(
+            texts,
+            batch_size=BATCH_SIZE
+        )
     )
 
     embedding_matrix = np.asarray(
-        embedding_matrix,
-        dtype="float32"
+        embeddings,
+        dtype=np.float32
     )
+
+    if embedding_matrix.ndim != 2:
+        raise RuntimeError(
+            f"Unexpected embedding shape: {embedding_matrix.shape}"
+        )
+
+    if embedding_matrix.shape[0] != len(all_chunks):
+        raise RuntimeError(
+            "The number of embeddings does not match the number "
+            "of chunks."
+        )
 
     dimension = embedding_matrix.shape[1]
 
-    index = faiss.IndexFlatL2(dimension)
-    index.add(embedding_matrix)
+    print(f"Vector dimension: {dimension}")
 
     VECTOR_DIR.mkdir(parents=True, exist_ok=True)
 
-    faiss.write_index(
-        index,
-        str(VECTOR_DIR / "index.faiss")
-    )
+    # Build the new index and metadata together.
+    index = faiss.IndexFlatL2(dimension)
+    index.add(embedding_matrix)
+
+    index_path = VECTOR_DIR / "index.faiss"
+    metadata_path = VECTOR_DIR / "metadata.json"
+
+    faiss.write_index(index, str(index_path))
 
     with open(
-        VECTOR_DIR / "metadata.json",
+        metadata_path,
         "w",
         encoding="utf-8"
     ) as file:
@@ -122,8 +148,9 @@ def main():
     print(f"Embedding model: {EMBEDDING_MODEL}")
     print(f"Vector dimension: {dimension}")
     print(f"Stored vectors: {index.ntotal}")
-    print(f"FAISS index: {VECTOR_DIR / 'index.faiss'}")
-    print(f"Metadata: {VECTOR_DIR / 'metadata.json'}")
+    print(f"Metadata entries: {len(all_chunks)}")
+    print(f"FAISS index: {index_path}")
+    print(f"Metadata: {metadata_path}")
 
 
 if __name__ == "__main__":

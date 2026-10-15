@@ -6,4 +6,4 @@ pymongo
 reportlab
 faiss-cpu
 ollama
-sentence-transformers
+fastembed
