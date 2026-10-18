@@ -9429,7 +9429,40 @@ async function smAiAsk(
 
 
   // -------------------------------------------------------
-  // LLM-BASED ROUTING
+  // DETERMINISTIC HOTEL SEARCH ROUTING
+  // -------------------------------------------------------
+  // A clear hotel-search request must never fall through to RAG/FAQ,
+  // even when the hosted classifier returns the wrong intent or errors.
+  const explicitHotelSearch =
+    /\b(find|search|show|get|look for|recommend)\b/i.test(query) &&
+    /\bhotels?\b/i.test(query);
+
+  const explicitDestinationMatch = query.match(
+    /\b(?:in|at|near|around)\s+(.+?)\s*[.!?]*$/i
+  );
+
+  if (explicitHotelSearch && explicitDestinationMatch) {
+    const explicitDestination = explicitDestinationMatch[1]
+      .replace(
+        /\s+(?:for\s+\d+\s+(?:adults?|guests?|people|rooms?)|check[- ]?in|check[- ]?out|tomorrow|tonight|today)\b.*$/i,
+        ''
+      )
+      .trim()
+      .replace(/[,.!?]+$/, '')
+      .trim();
+
+    if (explicitDestination) {
+      console.log(
+        '[STAYMATE][HOTEL SEARCH] Deterministic route; destination:',
+        explicitDestination
+      );
+      await smAiSearchHotels(explicitDestination, {});
+      return;
+    }
+  }
+
+  // -------------------------------------------------------
+  // LLM-BASED ROUTING (for non-deterministic requests)
   // -------------------------------------------------------
 
   const loading = smAiAddLoading();

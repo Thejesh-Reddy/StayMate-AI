@@ -192,77 +192,122 @@ def split_questions(query):
 # ============================================================
 
 def generate_answer(query, retrieved_chunks):
+    """Create a concise extractive answer without repeated FAQ content."""
     if not retrieved_chunks:
         return FALLBACK
 
-    sentences = []
-
-    for chunk in retrieved_chunks:
-        text = chunk.get("text", "").strip()
-
-        for sentence in re.split(
-            r"(?<=[.!?])\s+",
-            text
-        ):
-            sentence = sentence.strip()
-
-            if sentence:
-                sentences.append(sentence)
-
-    if not sentences:
-        return FALLBACK
-
     stop_words = {
-        "a", "an", "the", "is", "are", "was", "were",
-        "do", "does", "did", "how", "what", "when",
-        "where", "why", "can", "could", "i", "my",
-        "me", "to", "of", "in", "on", "for", "and",
-        "or", "it", "this", "that", "with", "you"
+        "a", "an", "the", "is", "are", "was", "were", "be", "been",
+        "do", "does", "did", "how", "what", "when", "where", "why",
+        "can", "could", "would", "should", "i", "my", "me", "to",
+        "of", "in", "on", "for", "and", "or", "it", "this", "that",
+        "with", "you", "your", "users", "user", "staymate", "ai"
     }
 
-    query_words = {
-        word.lower()
-        for word in re.findall(r"\b\w+\b", query)
-        if word.lower() not in stop_words
-    }
+    # Remove common uppercase headings when they are concatenated with the
+    # first sentence in a chunk (e.g. "CREATING AN ACCOUNT Users can...").
+    def clean_sentence(sentence):
+        sentence = re.sub(r"\s+", " ", sentence).strip(" \t\r\n-•")
+        sentence = re.sub(
+            r"^(?:(?:CREATING\s+AN\s+ACCOUNT|VIEWING\s+BOOKINGS?|BOOKING\s+HISTORY|"
+            r"HOTEL\s+SEARCH|ACCOUNT\s+CREATION|REGISTRATION|AUTHENTICATION|"
+            r"PASSWORD\s+RESET|EMAIL\s+VERIFICATION|CANCELLATION\s+POLICY|"
+            r"PAYMENT\s+POLICY)\s*[:—-]?\s*)+",
+            "",
+            sentence,
+            flags=re.IGNORECASE,
+        ).strip()
+        # Also remove other all-caps section labels placed before normal prose.
+        heading_match = re.match(
+            r"^((?:[A-Z][A-Z0-9&/'-]*\s+){1,6})(?=[A-Z][a-z])",
+            sentence,
+        )
+        if heading_match:
+            sentence = sentence[heading_match.end():].strip()
+        return sentence
 
+    def meaningful_words(text):
+        return {
+            word.lower()
+            for word in re.findall(r"\b\w+\b", text)
+            if word.lower() not in stop_words and len(word) > 1
+        }
+
+    query_words = meaningful_words(query)
     if not query_words:
         return FALLBACK
 
-    ranked = []
+    candidates = []
+    position = 0
+    for chunk in retrieved_chunks:
+        text = str(chunk.get("text", "")).strip()
+        if not text:
+            continue
+        # Split sentences, including source documents where headings and text
+        # were joined together or separated by line breaks.
+        for raw_sentence in re.split(r"(?<=[.!?])\s+|\n+", text):
+            sentence = clean_sentence(raw_sentence)
+            if not sentence:
+                continue
+            # Ignore standalone headings and very short fragments.
+            if (len(sentence) <= 55 and sentence.upper() == sentence
+                    and re.search(r"[A-Z]", sentence)):
+                continue
+            words = meaningful_words(sentence)
+            if len(words) < 3:
+                position += 1
+                continue
+            overlap = len(query_words & words)
+            if overlap:
+                coverage = overlap / len(query_words)
+                precision = overlap / len(words)
+                score = (0.75 * coverage) + (0.25 * precision)
+                candidates.append({
+                    "score": score,
+                    "position": position,
+                    "sentence": sentence,
+                    "words": words,
+                })
+            position += 1
 
-    for position, sentence in enumerate(sentences):
-        words = {
-            word.lower()
-            for word in re.findall(r"\b\w+\b", sentence)
-        }
-
-        overlap = len(query_words & words)
-
-        if overlap:
-            score = overlap / len(query_words)
-
-            ranked.append((
-                score,
-                position,
-                sentence
-            ))
-
-    if not ranked:
+    if not candidates:
         return FALLBACK
 
-    ranked.sort(
-        key=lambda item: (-item[0], item[1])
-    )
+    candidates.sort(key=lambda item: (-item["score"], item["position"]))
 
-    selected = ranked[:3]
+    # Keep only distinct sentences. The containment ratio catches duplicate
+    # FAQ wording that differs slightly but conveys essentially the same fact.
+    selected = []
+    selected_word_sets = []
+    for candidate in candidates:
+        words = candidate["words"]
+        duplicate = False
+        for previous_words in selected_word_sets:
+            smaller = min(len(words), len(previous_words))
+            if smaller == 0:
+                continue
+            overlap = len(words & previous_words)
+            containment = overlap / smaller
+            union_similarity = overlap / len(words | previous_words)
+            if containment >= 0.72 or union_similarity >= 0.62:
+                duplicate = True
+                break
+        if duplicate:
+            continue
+        selected.append(candidate)
+        selected_word_sets.append(words)
+        # Two useful sentences are generally enough for a direct FAQ answer.
+        if len(selected) >= 2:
+            break
 
-    # Preserve the original sentence order.
-    selected.sort(key=lambda item: item[1])
+    if not selected:
+        return FALLBACK
 
-    return " ".join(
-        item[2] for item in selected
-    )
+    # Preserve source order for a natural explanation, not ranking order.
+    selected.sort(key=lambda item: item["position"])
+    answer = " ".join(item["sentence"] for item in selected).strip()
+    answer = re.sub(r"\s+", " ", answer)
+    return answer or FALLBACK
 
 
 # ============================================================
