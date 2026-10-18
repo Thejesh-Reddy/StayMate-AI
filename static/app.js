@@ -287,6 +287,42 @@ function logError(
 
 
 // =========================================================
+// BOOKING UI TARGET
+// =========================================================
+// Regular website bookings stay in the main hotel chat. When the user starts
+// booking from the AI Assistant's View Prices flow, render every booking step
+// inside the floating assistant conversation instead.
+function getBookingFlowContainer() {
+  if (window.__stayMateAssistantBookingFlow === true && smAiMessages) {
+    return smAiMessages;
+  }
+  return chat;
+}
+
+function appendBookingFlowUI(element) {
+  const target = getBookingFlowContainer();
+  if (!target || !element) return null;
+
+  if (window.__stayMateAssistantBookingFlow === true && target === smAiMessages) {
+    element.classList.add('sm-ai-message', 'sm-ai-bot', 'sm-ai-booking-flow-ui');
+    element.style.width = '100%';
+    element.style.maxWidth = '100%';
+    element.style.boxSizing = 'border-box';
+    element.style.margin = '8px 0';
+  }
+
+  target.appendChild(element);
+  target.scrollTop = target.scrollHeight;
+  return element;
+}
+
+function removeExistingBookingUI(selector) {
+  const target = getBookingFlowContainer();
+  if (!target) return;
+  target.querySelectorAll(selector).forEach(element => element.remove());
+}
+
+// =========================================================
 // CHAT MESSAGE HELPER
 // =========================================================
 
@@ -295,6 +331,10 @@ function add(
   who = 'bot',
   html = false
 ) {
+
+  if (window.__stayMateAssistantBookingFlow === true && !html && typeof smAiAddMessage === 'function') {
+    return smAiAddMessage(String(text ?? ''), who === 'user' ? 'user' : 'bot');
+  }
 
   if (
     !chat
@@ -3572,46 +3612,7 @@ function startBooking(
   // Remove previous booking UI
   // -------------------------------------------------------
 
-  const oldBooking =
-    chat.querySelector(
-      '.booking-container'
-    );
-
-
-  if (
-    oldBooking
-  ) {
-
-    oldBooking.remove();
-  }
-
-
-  const oldBilling =
-    chat.querySelector(
-      '.billing-container'
-    );
-
-
-  if (
-    oldBilling
-  ) {
-
-    oldBilling.remove();
-  }
-
-
-  const oldPayment =
-    chat.querySelector(
-      '.payment-container'
-    );
-
-
-  if (
-    oldPayment
-  ) {
-
-    oldPayment.remove();
-  }
+  removeExistingBookingUI('.booking-container, .billing-container, .payment-container');
 
 
   // -------------------------------------------------------
@@ -3858,17 +3859,12 @@ function startBooking(
   `;
 
 
-  chat.appendChild(
-    bookingContainer
-  );
-
-
-  chat.scrollTop =
-    chat.scrollHeight;
-
-  scrollToStayMateSection(
-  bookingContainer
-  );
+  appendBookingFlowUI(bookingContainer);
+  if (window.__stayMateAssistantBookingFlow === true && typeof smAiOpen === 'function') {
+    smAiOpen();
+  } else {
+    scrollToStayMateSection(bookingContainer);
+  }
 
 
   // -------------------------------------------------------
@@ -4240,6 +4236,13 @@ function startBooking(
       selectedHotel =
         null;
 
+
+      if (window.__stayMateAssistantBookingFlow === true) {
+        if (typeof smAiAddMessage === 'function') {
+          smAiAddMessage('Booking cancelled. You can choose another hotel whenever you are ready.', 'bot');
+        }
+        window.__stayMateAssistantBookingFlow = false;
+      }
 
       bookingData = {
 
@@ -4646,13 +4649,7 @@ function showBillingPage(
   `;
 
 
-  chat.appendChild(
-    billingContainer
-  );
-
-
-  chat.scrollTop =
-    chat.scrollHeight;
+  appendBookingFlowUI(billingContainer);
 
 
   // -------------------------------------------------------
@@ -4962,13 +4959,7 @@ function showPaymentPage(
   `;
 
 
-  chat.appendChild(
-    paymentContainer
-  );
-
-
-  chat.scrollTop =
-    chat.scrollHeight;
+  appendBookingFlowUI(paymentContainer);
 
 
   // -------------------------------------------------------
@@ -5351,8 +5342,8 @@ function showConfirmation(
   if (window.__stayMateAssistantBookingFlow === true) {
     const reference = booking.booking_reference || booking.reference || 'N/A';
     const hotelName = booking.hotel_name || selectedHotel?.name || 'Your selected hotel';
-    const checkInDate = booking.check_in || bookingData.checkIn || 'N/A';
-    const checkOutDate = booking.check_out || bookingData.checkOut || 'N/A';
+    const checkInDate = booking.check_in || bookingData.checkIn || context.checkIn || 'N/A';
+    const checkOutDate = booking.check_out || bookingData.checkOut || context.checkOut || 'N/A';
     const totalAmount = booking.total_amount ?? 0;
     const confirmationText =
       `🎉 Booking confirmed!\n\n` +
@@ -6396,6 +6387,10 @@ initializeChat();
           typeof smAiRestoreHistory === 'function'
         ) {
           smAiRestoreHistory(false);
+          if (typeof smAiOpen === 'function') smAiOpen();
+          if (typeof smAiAddMessage === 'function') {
+            smAiAddMessage(`Let's complete your booking for ${pending.hotel.name || 'your selected hotel'} here in the assistant.`, 'bot');
+          }
         }
 
         startBooking(
