@@ -9429,6 +9429,53 @@ async function smAiAsk(
 
 
   // -------------------------------------------------------
+  // DETERMINISTIC BOOKING CANCELLATION ROUTING
+  // Explicit cancellation requests must enter the existing
+  // booking-selection and confirmation flow, not fall back
+  // to a generic RAG/FAQ response if Qwen misclassifies them.
+  // -------------------------------------------------------
+  const explicitCancellationRequest =
+    /\b(?:cancel|cancell?ation)\b/i.test(query) &&
+    /\b(?:my\s+booking|booking|bookings|my\s+reservation|reservation|reservations)\b/i.test(query) &&
+    !/\b(?:what\s+is|explain|tell\s+me\s+about|policy|policies|rules|conditions)\b/i.test(query);
+
+  if (explicitCancellationRequest) {
+    console.log(
+      '[STAYMATE][CANCELLATION] Deterministic route to cancellation flow.'
+    );
+
+    // Preserve the current cancellation conversation. If the assistant
+    // has already shown multiple bookings, do not fetch and print the same
+    // list again when the user asks how to proceed; remind them to select one.
+    if (
+      smAiCancellationSelectionRequired &&
+      Array.isArray(smAiCancellationBookings) &&
+      smAiCancellationBookings.length > 1
+    ) {
+      smAiAddMessage(
+        'To continue, reply with the booking number (for example, 1 or 2) or paste the booking reference from the list above. I will then show the selected booking and ask you to confirm before cancelling it.',
+        'bot'
+      );
+      return;
+    }
+
+    // If a booking is already selected, keep the confirmation state instead
+    // of starting a new lookup and losing the user's current selection.
+    if (smAiPendingCancellation) {
+      smAiAddMessage(
+        `The selected booking is ${smAiPendingCancellation.hotel_name || 'your hotel booking'} ` +
+        `(reference: ${smAiPendingCancellation.booking_reference || 'N/A'}). ` +
+        'Reply "Yes" to confirm cancellation, or "No" to keep the booking.',
+        'bot'
+      );
+      return;
+    }
+
+    await smAiPrepareCancellation();
+    return;
+  }
+
+  // -------------------------------------------------------
   // DETERMINISTIC HOTEL SEARCH ROUTING
   // -------------------------------------------------------
   // A clear hotel-search request must never fall through to RAG/FAQ,
