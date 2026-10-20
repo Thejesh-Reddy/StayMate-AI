@@ -25,11 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function openProfilePage() {
-  window.open(
-    "/profile",
-    "_blank"
-  );
-}
+    window.location.href = "/profile";
+  }
 
   profileButton.addEventListener(
   "click",

@@ -3082,8 +3082,6 @@ function renderHotels(
                   <a
                     class="hotel-view-link"
                     href="${esc(hotelLink)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
                   >
                     View hotel
                   </a>
@@ -3234,11 +3232,8 @@ if (
       /*
        * Open StayMate price comparison page.
        */
-      window.open(
-        `/compare-prices?${params.toString()}`,
-        '_blank',
-        'noopener,noreferrer'
-      );
+      window.location.href =
+        `/compare-prices?${params.toString()}`;
 
     }
   );

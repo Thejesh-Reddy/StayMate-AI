@@ -1,7 +1,7 @@
 import os
 from html import escape
-import smtplib
-from email.message import EmailMessage
+import base64
+import requests
 
 from io import BytesIO
 
@@ -23,12 +23,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-SMTP_HOST = os.getenv("MAIL_SERVER", "smtp.gmail.com").strip()
-SMTP_PORT = int(os.getenv("MAIL_PORT", "587"))
-SMTP_USE_TLS = os.getenv("MAIL_USE_TLS", "True").strip().lower() == "true"
-SMTP_USERNAME = os.getenv("MAIL_USERNAME", "").strip()
-SMTP_PASSWORD = os.getenv("MAIL_PASSWORD", "").strip()
-SMTP_FROM_EMAIL = os.getenv("MAIL_DEFAULT_SENDER", SMTP_USERNAME).strip()
+
+from email.utils import parseaddr
+
+BREVO_API_URL = "https://api.brevo.com/v3/smtp/email"
+BREVO_API_KEY = os.getenv("BREVO_API_KEY", "").strip()
+
+# Accept either a plain email or "Display Name <email@example.com>".
+_RAW_SENDER = os.getenv("MAIL_DEFAULT_SENDER", "").strip()
+_, MAIL_DEFAULT_SENDER = parseaddr(_RAW_SENDER)
+
+MAIL_SENDER_NAME = os.getenv("MAIL_SENDER_NAME", "STAYMATE AI").strip()
+
 
 
 def send_email(
@@ -37,47 +43,72 @@ def send_email(
     html_content: str,
     attachment: dict | None = None,
 ) -> tuple[bool, str | None]:
-    """Send an email using Gmail SMTP."""
+    """Send transactional email using Brevo's HTTPS API."""
 
-    if not SMTP_USERNAME or not SMTP_PASSWORD:
-        return False, "Gmail SMTP credentials are not configured."
+    if not BREVO_API_KEY:
+        return False, "Brevo API key is not configured (BREVO_API_KEY)."
 
-    if not to_email:
+    if not MAIL_DEFAULT_SENDER:
+        return False, "Sender email is not configured (MAIL_DEFAULT_SENDER)."
+
+    if not to_email or not str(to_email).strip():
         return False, "Recipient email is required."
 
-    try:
-        message = EmailMessage()
-        message["From"] = SMTP_FROM_EMAIL or SMTP_USERNAME
-        message["To"] = to_email
-        message["Subject"] = subject
+    payload = {
+        "sender": {
+            "name": MAIL_SENDER_NAME or "STAYMATE AI",
+            "email": MAIL_DEFAULT_SENDER,
+        },
+        "to": [{"email": str(to_email).strip()}],
+        "subject": str(subject),
+        "htmlContent": str(html_content),
+        "textContent": "Please view this email in an HTML-compatible email client.",
+    }
 
-        message.set_content(
-            "Please view this email in an HTML-compatible email client."
-        )
-        message.add_alternative(html_content, subtype="html")
-
-        if attachment:
+    if attachment:
+        try:
             attachment_content = attachment["content"]
             if not isinstance(attachment_content, bytes):
                 attachment_content = bytes(attachment_content)
+            payload["attachment"] = [{
+                "name": str(attachment["filename"]),
+                "content": base64.b64encode(attachment_content).decode("ascii"),
+            }]
+        except (KeyError, TypeError, ValueError) as exc:
+            return False, f"Invalid email attachment ({type(exc).__name__}): {exc}"
 
-            message.add_attachment(
-                attachment_content,
-                maintype="application",
-                subtype="pdf",
-                filename=attachment["filename"],
-            )
+    headers = {
+        "accept": "application/json",
+        "api-key": BREVO_API_KEY,
+        "content-type": "application/json",
+    }
 
-        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=30) as smtp:
-            if SMTP_USE_TLS:
-                smtp.starttls()
-            smtp.login(SMTP_USERNAME, SMTP_PASSWORD)
-            smtp.send_message(message)
+    try:
+        response = requests.post(
+            BREVO_API_URL,
+            headers=headers,
+            json=payload,
+            timeout=(5, 15),
+        )
 
-        return True, None
+        if 200 <= response.status_code < 300:
+            return True, None
 
+        # Avoid returning request headers or secrets in error messages.
+        try:
+            details = response.json()
+            message = details.get("message") or details.get("code") or response.text
+        except ValueError:
+            message = response.text
+        message = str(message).replace(BREVO_API_KEY, "[REDACTED]")[:500]
+        return False, f"Brevo API returned HTTP {response.status_code}: {message}"
+
+    except requests.Timeout:
+        return False, "Brevo email request timed out. Please try again."
+    except requests.RequestException as exc:
+        return False, f"Brevo email request failed ({type(exc).__name__}): {exc}"
     except Exception as exc:
-        return False, str(exc)
+        return False, f"Email delivery failed ({type(exc).__name__}): {exc}"
 
 
 def send_otp_email(

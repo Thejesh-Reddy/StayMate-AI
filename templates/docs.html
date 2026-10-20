@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f9fc">
+  <meta name="description" content="StayMate AI user guide: hotel discovery, bookings, cancellations, AI assistance and account help.">
+  <title>Documentation & Help — StayMate AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='docs.css') }}">
+</head>
+<body>
+  <header class="docs-topbar">
+    <a class="docs-brand" href="/" aria-label="StayMate AI home">
+      <span class="brand-mark">✦</span><span>STAYMATE <b>AI</b></span>
+    </a>
+    <nav aria-label="Documentation navigation">
+      <a class="top-link" href="#account">Get started</a>
+      <a class="top-link" href="#my-bookings">Bookings</a>
+      <a class="sign-in-link" href="/signin">Sign in</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="docs-hero">
+      <div class="hero-label"><span>✦</span> HELP CENTRE & USER GUIDE</div>
+      <h1>Make your next stay <span>simpler.</span></h1>
+      <p>Learn how to use StayMate AI to discover hotels, manage your bookings and get help from the AI concierge.</p>
+      <div class="hero-actions">
+        <a class="primary-action" href="#account">Explore the guide <span>→</span></a>
+        <a class="secondary-action" href="/signin">Open StayMate AI</a>
+      </div>
+      <div class="hero-note"><span class="note-dot"></span> Public documentation — available before and after sign-in</div>
+    </section>
+
+    <div class="docs-layout">
+      <aside class="docs-sidebar" aria-label="Documentation table of contents">
+        <p class="sidebar-title">DOCUMENTATION CONTENTS</p>
+        <a href="#overview">01 · Project overview</a>
+        <a href="#account">02 · Account & authentication</a>
+        <a href="#discovery">03 · Hotel discovery</a>
+        <a href="#hotel-results">04 · Hotel results & more results</a>
+        <a href="#price-comparison">05 · Compare prices</a>
+        <a href="#booking-flow">06 · Booking flow</a>
+        <a href="#my-bookings">07 · My Bookings</a>
+        <a href="#cancellations">08 · Cancellation</a>
+        <a href="#profile">09 · Profile & sign-out</a>
+        <a href="#assistant">10 · AI assistant</a>
+        <a href="#assistant-history">11 · Past chats & new chats</a>
+        <a href="#privacy">12 · Privacy & account safety</a>
+        <a href="#architecture">13 · Technical architecture</a>
+        <a href="#integrations">14 · Integrations & configuration</a>
+        <a href="#limitations">15 · Important limitations</a>
+      </aside>
+
+      <div class="docs-content">
+        <section class="doc-section intro-section" id="overview">
+          <div class="section-kicker">01 · INTRODUCTION</div>
+          <h2>StayMate AI: from hotel search to booking record</h2>
+          <p>StayMate AI brings hotel discovery, price comparison, booking-record management and a conversational AI assistant into one web application. Start by entering a destination or using <strong>Find hotels near me</strong>; review the returned hotel options, compare available offers, and follow the guided booking flow to save a booking record. After signing in, you can revisit your bookings, check their recorded details, and request cancellation for an eligible booking. The assistant can help search for hotels, answer questions using the site's knowledge base, and carry out supported booking lookups or cancellation steps.</p>
+          <p>This guide describes the user-facing features, the steps for using them, and the technology behind them. A saved booking record and a demo payment step are not, by themselves, proof that an external hotel has confirmed a real reservation or that money has been transferred.</p>
+          <div class="info-callout"><strong>What you can do here</strong><p>Create and secure an account, discover hotels by destination or detected location, inspect results, compare available prices, create and review booking records, use the AI assistant, revisit chat history, and get help with supported tasks through the AI assistant.</p></div>
+        </section>
+
+        <section class="journey-section" id="project-journey" aria-labelledby="journey-title">
+          <div class="journey-heading">
+            <div class="section-kicker">THE STAYMATE JOURNEY</div>
+            <h2 id="journey-title">One journey. From discovery to your booking record.</h2>
+            <p>Follow the main path through StayMate AI. Choose where to begin, explore your options, and return later to manage your saved booking details.</p>
+          </div>
+          <div class="journey-flow" role="list" aria-label="StayMate AI project flow">
+            <article class="journey-step" role="listitem"><span class="journey-icon">⌖</span><span class="journey-count">STEP 01</span><h3>Discover</h3><p>Search by destination or use <strong>Find hotels near me</strong>.</p></article>
+            <span class="journey-connector" aria-hidden="true">➜</span>
+            <article class="journey-step" role="listitem"><span class="journey-icon">⌕</span><span class="journey-count">STEP 02</span><h3>Explore</h3><p>Review hotel cards and request more results when available.</p></article>
+            <span class="journey-connector" aria-hidden="true">➜</span>
+            <article class="journey-step" role="listitem"><span class="journey-icon">⇄</span><span class="journey-count">STEP 03</span><h3>Compare</h3><p>Review available offers and continue with a provider or StayMate flow.</p></article>
+            <span class="journey-connector" aria-hidden="true">➜</span>
+            <article class="journey-step" role="listitem"><span class="journey-icon">✓</span><span class="journey-count">STEP 04</span><h3>Book</h3><p>Enter guest and stay details, review the summary and save a booking record.</p></article>
+            <span class="journey-connector" aria-hidden="true">➜</span>
+            <article class="journey-step" role="listitem"><span class="journey-icon">▤</span><span class="journey-count">STEP 05</span><h3>Manage</h3><p>View booking details, identify a record by reference and request eligible cancellation.</p></article>
+          </div>
+          <div class="journey-assistant"><span class="assistant-orbit" aria-hidden="true">✦</span><div><strong>Your AI assistant is available along the way</strong><p>Ask it to find hotels, look up supported booking information, start a cancellation flow or answer questions from the knowledge base.</p></div><a href="#assistant">Explore AI assistant <span aria-hidden="true">→</span></a></div>
+        </section>
+
+        <section class="doc-section" id="account">
+          <div class="section-kicker">02 · ACCOUNT & AUTHENTICATION</div>
+          <h2>Create an account, sign in and recover access</h2>
+          <div class="step-list">
+            <article class="step-card"><span class="step-number">1</span><div><h3>Start registration</h3><p>On the sign-in page, choose <strong>Create an account</strong>. Enter your name and email address. The application checks the email format and whether the address is already registered before sending a verification code.</p></div></article>
+            <article class="step-card"><span class="step-number">2</span><div><h3>Verify your email</h3><p>Enter the one-time password (OTP) sent to your email. The current implementation gives an OTP a limited validity period and provides a <strong>Resend OTP</strong> action if you need a fresh code. An unverified email cannot complete account creation.</p></div></article>
+            <article class="step-card"><span class="step-number">3</span><div><h3>Create your password</h3><p>Enter and confirm a password. The application requires at least eight characters, including an uppercase letter, a lowercase letter, a number and a special character. After successful registration, return to the sign-in page.</p></div></article>
+            <article class="step-card"><span class="step-number">4</span><div><h3>Sign in</h3><p>Use your registered email and password. The password field includes a show/hide control. A successful standard-user sign-in opens the main discovery page; an administrator account opens the admin dashboard.</p></div></article>
+            <article class="step-card"><span class="step-number">5</span><div><h3>Recover a forgotten password</h3><p>Select <strong>Forgot Password?</strong>, submit the email address associated with your account, and follow the reset link if one is sent. Reset links expire after a limited period and are intended for one-time use. Choose a new password that meets the password rules.</p></div></article>
+          </div>
+          <p class="muted-note">If an OTP or reset email does not arrive, check the email address and spam folder and try the available resend or reset action. Email delivery depends on the application's configured email service.</p>
+        </section>
+
+        <section class="doc-section" id="discovery">
+          <div class="section-kicker">03 · HOTEL DISCOVERY</div>
+          <h2>Search for hotels: every available route</h2>
+          <p>Hotel discovery can be started from the main page's destination-search area or from the floating AI assistant. A search needs a destination and valid stay dates; the interface may ask for guest and room details as the conversation progresses.</p>
+          <div class="step-list">
+            <article class="step-card"><span class="step-number">A</span><div><h3>Search a destination manually</h3><p>Open <strong>Search a destination</strong> on the main page and start typing a city, town or area in India. Choose a result from the location suggestions rather than leaving an unresolved text entry. Then start the hotel search. If you type the destination in the assistant, it can resolve the place and begin the same discovery flow.</p></div></article>
+            <article class="step-card"><span class="step-number">B</span><div><h3>Use the “Find hotels near me” button</h3><p>Select <strong>Find hotels near me</strong> on the home page. If the browser requests location permission, allow it to use your device's location. The application attempts browser geolocation, resolves the coordinates to a readable place, and uses that location for hotel discovery. If precise location is unavailable or denied, the application can try its configured approximate IP-location fallback. If automatic location cannot be resolved, enter a destination manually.</p></div></article>
+            <article class="step-card"><span class="step-number">C</span><div><h3>Ask the AI assistant to find hotels</h3><p>Open the floating <strong>STAYMATE AI</strong> assistant and send a request such as <strong>“Find hotels in Ooty”</strong>, <strong>“Find hotels in Chittoor”</strong>, or <strong>“Find hotels near me”</strong>. A named place starts a destination search; a nearby request starts the current-location flow where available. If details are missing, answer the assistant's follow-up questions.</p></div></article>
+          </div>
+          <h3>Stay dates, guests and rooms</h3>
+          <p>Hotel availability and prices depend on the requested stay. The discovery flow uses check-in and check-out dates, adult and child counts, and room count. The application may start with temporary default search dates and default guest/room values; check the search details and update them when the interface asks. For a booking, confirm the actual dates and guest details in the booking form rather than assuming discovery defaults are final.</p>
+          <div class="info-callout"><strong>Location permission is optional</strong><p>You can still search by entering a destination. Location-based search needs browser/device location access or a successful configured fallback; it cannot guarantee an exact location when those services are unavailable.</p></div>
+        </section>
+
+        <section class="doc-section" id="hotel-results">
+          <div class="section-kicker">04 · HOTEL RESULTS</div>
+          <h2>Review results and request more hotels</h2>
+          <ul class="doc-bullets">
+            <li>Review the hotel cards returned for your selected destination and stay details. Depending on the provider response, cards may show the hotel name, address/location, image, rating, price or other available property details.</li>
+            <li>Use <strong>Load more hotels</strong> when the button appears to request another set of results. More results depend on the provider's available data and pagination response.</li>
+            <li>From the main discovery results, use <strong>View Prices</strong> to open the price-comparison page for a hotel.</li>
+            <li>From the floating assistant, use a hotel's <strong>View Prices</strong> action to continue to the comparison/booking flow. When a booking is started from the assistant, the subsequent booking steps are shown inside the assistant conversation.</li>
+            <li>Hotel descriptions, ratings, offers and availability are provider-supplied information. Review the current details and provider terms before making a decision.</li>
+          </ul>
+        </section>
+
+        <section class="doc-section" id="price-comparison">
+          <div class="section-kicker">05 · PRICE COMPARISON</div>
+          <h2>Compare hotel offers</h2>
+          <p>The <strong>Compare Prices</strong> page displays available offers for the selected property and stay details. The page may show provider deals with a <strong>View Deal</strong> link when a booking URL is available, or a deal-unavailable state when it is not.</p>
+          <ol class="numbered-list">
+            <li>Choose <strong>View Prices</strong> on a hotel result.</li>
+            <li>Review the hotel summary and the stay information used for the comparison.</li>
+            <li>Compare the available rates and offer links returned by the hotel-data provider.</li>
+            <li>Choose a provider's <strong>View Deal</strong> link to continue on that provider's website, or choose <strong>Book with StayMate</strong> to use the application's internal booking-record flow.</li>
+          </ol>
+          <p class="muted-note">The lowest displayed price is not a guarantee that the same price will remain available. Provider offers can change or become unavailable after the comparison page loads.</p>
+        </section>
+
+        <section class="doc-section" id="booking-flow">
+          <div class="section-kicker">06 · BOOKING FLOW</div>
+          <h2>Understand the StayMate booking steps</h2>
+          <p>Choose <strong>Book with StayMate</strong> (or the relevant booking action) to open the guided booking flow. The main page and the floating assistant support the same general steps; assistant-originated booking steps remain in the assistant conversation.</p>
+          <div class="step-list">
+            <article class="step-card"><span class="step-number">1</span><div><h3>Booking details</h3><p>Enter the guest name and mobile number, confirm check-in and check-out dates, and provide the adult/child and room counts requested by the form. Review the selected hotel before continuing.</p></div></article>
+            <article class="step-card"><span class="step-number">2</span><div><h3>Billing summary</h3><p>Review the rate, number of nights, room count and displayed total. The application calculates the subtotal from the nightly rate, stay duration and rooms, and includes the tax value supplied to the flow where applicable.</p></div></article>
+            <article class="step-card"><span class="step-number">3</span><div><h3>Select a payment method</h3><p>The demo interface offers <strong>UPI</strong>, <strong>Credit / Debit Card</strong> and <strong>Net Banking</strong>. Select the method and continue through the demo payment step.</p></div></article>
+            <article class="step-card"><span class="step-number">4</span><div><h3>Review the result</h3><p>After submission, the application displays the booking result and booking reference when the request succeeds. Keep the reference so you can distinguish bookings for the same hotel or different dates.</p></div></article>
+          </div>
+          <div class="warning-callout"><strong>Demo payment and reservation status</strong><p>The current project labels its payment step as demo processing. A saved StayMate booking record does not prove that a real payment was processed or that an external hotel confirmed a reservation. For a real stay, verify the reservation and payment directly with the relevant provider until a production booking and payment integration is implemented.</p></div>
+        </section>
+
+        <section class="doc-section" id="my-bookings">
+          <div class="section-kicker">07 · BOOKING MANAGEMENT</div>
+          <h2>My Bookings: view and identify your records</h2>
+          <p>Sign in with the account used to create the booking, then choose <strong>My Bookings</strong> from the profile menu or open the My Bookings page. The page lists records associated with the authenticated account, newest first.</p>
+          <p>Booking cards can display the hotel, booking reference, stay dates, guest/room information, amount, payment method and recorded status when those fields are available. Use the unique booking reference and check-in/check-out dates to distinguish multiple bookings at the same property.</p>
+          <h3>Ask the AI assistant for a booking view</h3>
+          <div class="prompt-examples"><span>“Show my bookings”</span><span>“Show my upcoming bookings”</span><span>“Show my confirmed bookings”</span><span>“Show my cancelled bookings”</span><span>“Show my bookings paid with UPI”</span></div>
+          <p>The assistant supports booking-list actions for all bookings, upcoming bookings, confirmed bookings and cancelled bookings. Payment-method filtering is dependent on the classifier's extracted payment information and the current filtering implementation. If a requested filter does not appear to work, use the My Bookings page to inspect the stored records and report the issue rather than assuming the filter was applied.</p>
+        </section>
+
+        <section class="doc-section" id="cancellations">
+          <div class="section-kicker">08 · CANCELLATION</div>
+          <h2>Cancel the correct booking</h2>
+          <ol class="numbered-list">
+            <li>Sign in and ask the assistant to cancel a booking, or use the available booking-management cancellation action.</li>
+            <li>If the assistant lists more than one eligible booking, choose the correct list number or enter its booking reference. This is especially important when the same hotel has multiple bookings for different dates.</li>
+            <li>Review the hotel name, reference, check-in/check-out dates and total shown by the assistant.</li>
+            <li>Reply <strong>Yes</strong> only when you want to cancel that exact booking. Reply <strong>No</strong> to leave it unchanged.</li>
+            <li>Check the final response and My Bookings status. A cancelled record should not be offered for cancellation again.</li>
+          </ol>
+          <div class="warning-callout"><strong>Cancellation and refunds</strong><p>The application checks booking ownership and cancellation eligibility. Refund conditions depend on the booking and any external provider's terms. Do not assume a refund has been issued just because a booking record changes to cancelled.</p></div>
+        </section>
+
+        <section class="doc-section" id="profile">
+          <div class="section-kicker">09 · PROFILE & SIGN-OUT</div>
+          <h2>Profile and account navigation</h2>
+          <ul class="doc-bullets">
+            <li>Open the profile menu from the main page to see the signed-in user's displayed name and email and navigate to <strong>My Bookings</strong>.</li>
+            <li>The <strong>My Profile</strong> page displays the account identity information available to the application and provides navigation to bookings and back to StayMate AI.</li>
+            <li>Use <strong>Logout</strong> to end the current session. The application clears the server-side session and redirects to the sign-in page.</li>
+            <li>Protected pages such as the main discovery page, profile and My Bookings require authentication; sign in again if your session is no longer active.</li>
+          </ul>
+        </section>
+
+        <section class="doc-section" id="assistant">
+          <div class="section-kicker">10 · AI ASSISTANT</div>
+          <h2>What the floating AI assistant can do</h2>
+          <p>Open the floating <strong>STAYMATE AI</strong> panel from the main page. You can type a request, submit it, use the suggested FAQ prompts, close the panel and reopen it later. The assistant classifies requests and routes them to the appropriate supported action or the knowledge-base answer service.</p>
+          <div class="example-grid">
+            <article><span class="example-icon">⌖</span><h3>Hotel discovery</h3><p>“Find hotels in Ooty.”</p></article>
+            <article><span class="example-icon">▤</span><h3>Booking lookup</h3><p>“Show my upcoming bookings.”</p></article>
+            <article><span class="example-icon">↺</span><h3>Cancellation</h3><p>“Cancel booking SM-XXXXXXXXXX.”</p></article>
+            <article><span class="example-icon">?</span><h3>Knowledge-base help</h3><p>“What is the cancellation policy?”</p></article>
+          </div>
+          <ul class="doc-bullets">
+            <li><strong>Intent classification:</strong> a hosted Qwen classifier accessed through the configured Groq API determines whether the request is a booking action, hotel search, clarification or informational question.</li>
+            <li><strong>Booking actions:</strong> supported booking lookups use the signed-in user's account. Cancellation requires a separate selection and confirmation flow.</li>
+            <li><strong>Follow-up questions:</strong> the assistant can ask for missing or ambiguous information and use the current conversation context to continue the task.</li>
+            <li><strong>Knowledge-base answers:</strong> policy and FAQ questions are answered using relevant passages retrieved from the project's indexed content.</li>
+            <li><strong>Hotel results:</strong> when hotel search is started in the assistant, results and the available View Prices action are presented in the assistant experience; the booking flow can continue there.</li>
+          </ul>
+          <p class="muted-note">The assistant can only perform actions implemented by the application. It should not be treated as a general-purpose booking agent for external hotel websites or as proof that a payment or external reservation was completed.</p>
+        </section>
+
+        <section class="doc-section" id="assistant-history">
+          <div class="section-kicker">11 · CONVERSATION HISTORY</div>
+          <h2>Past chats, continue and new chat</h2>
+          <ul class="doc-bullets">
+            <li>Use <strong>Past chats</strong> in the assistant to reopen a saved conversation.</li>
+            <li>When past-chat actions are shown, choose <strong>Continue</strong> to carry on with that conversation or <strong>New Chat</strong> to start a fresh conversation.</li>
+            <li><strong>New Chat</strong> opens the assistant's default welcome message and suggested questions, rather than continuing the old conversation.</li>
+            <li>The browser stores assistant conversation sessions in local storage. This is browser-specific history; it is not the same as a server-side booking record and may not follow you to another browser or device.</li>
+            <li>Close the assistant panel when you are finished. Closing the panel is different from logging out of your StayMate account.</li>
+          </ul>
+        </section>
+
+
+        <section class="doc-section" id="privacy">
+          <div class="section-kicker">12 · PRIVACY & ACCOUNT SAFETY</div>
+          <h2>Protect your account and information</h2>
+          <ul class="doc-bullets">
+            <li>Keep passwords, OTPs, password-reset links and account recovery information private.</li>
+            <li>Sign out when using a shared device and avoid saving credentials on public computers.</li>
+            <li>Use the account associated with a booking to access its personal details. Do not share booking references publicly if they expose information you want to keep private.</li>
+            <li>Grant browser location permission only if you want to use the near-me search. You can instead enter a destination manually.</li>
+            <li>Do not paste passwords, one-time codes, payment credentials or secret API keys into the assistant.</li>
+            <li>Official privacy notices and provider terms should be consulted where published; this user guide is not a substitute for a formal privacy policy.</li>
+          </ul>
+        </section>
+
+        <section class="doc-section" id="architecture">
+          <div class="section-kicker">13 · TECHNICAL OVERVIEW</div>
+          <h2>How StayMate AI works behind the scenes</h2>
+          <p>StayMate AI combines a responsive website, a Python web server, a database and AI-powered services. Each part has a clear responsibility: the interface guides the user, the backend applies application rules, the database stores account and booking records, and external services provide hotel information, email delivery and AI classification.</p>
+          <div class="tech-list">
+            <div><strong>Website and interaction layer</strong><span>The pages are rendered with Flask templates and Jinja, styled with CSS, and made interactive with browser-side JavaScript. This layer supports registration, sign-in, location suggestions, hotel cards, price comparison, booking forms, profile navigation, the floating assistant and saved chat history.</span></div>
+            <div><strong>Application and business-logic layer</strong><span>Python and Flask receive requests from the browser, validate inputs, apply booking rules and coordinate the database and configured services. Protected actions check the active session and, where needed, the user's role or ownership of a booking.</span></div>
+            <div><strong>Authentication and account protection</strong><span>Email verification uses one-time codes. Passwords are stored as hashes, password recovery uses time-limited reset links, and sessions identify signed-in users. Sensitive account actions are restricted to authenticated users.</span></div>
+            <div><strong>Data layer</strong><span>MongoDB Atlas stores user accounts and booking records. Booking lookups are scoped to the authenticated account, and cancellation requests verify ownership and eligibility. Assistant chat history is stored in the browser, so it is separate from permanent booking records.</span></div>
+            <div><strong>AI intent classification</strong><span>The assistant sends the latest message and relevant conversation context to a Qwen model hosted through Groq. The model classifies the request and extracts useful details; the backend then decides which supported action to run. The model does not directly write to the database or independently confirm that a booking has changed.</span></div>
+            <div><strong>Knowledge-base answers (RAG)</strong><span>Retrieval-augmented generation converts the user's question into an embedding, searches a FAISS vector index, and retrieves relevant passages from the project's FAQ and policy knowledge base. The current service builds its response from retrieved content and can return source metadata. Its answer quality depends on the coverage and relevance of the indexed material.</span></div>
+            <div><strong>Hotel discovery and location services</strong><span>Hotel searches use configured hotel-provider data to return properties, offers and available provider links. Location suggestions and reverse geocoding use Photon, while browser geolocation can provide device coordinates. An approximate IP-based location may be used as a fallback when available.</span></div>
+            <div><strong>Email delivery and deployment</strong><span>Transactional emails are sent through the Brevo HTTPS API, including signup OTPs, password-reset messages, booking confirmations with PDF attachments, and cancellation confirmations. The application sends HTTPS requests to Brevo rather than connecting to Gmail SMTP. Render hosts the deployed web application. Local environment variables and Render environment variables are configured separately, so each required credential must be set securely where the application runs.</span></div>
+          </div>
+          <div class="info-callout"><strong>How responsibilities are separated</strong><p>The browser presents the workflow, Flask validates and coordinates it, MongoDB stores account and booking data, and external services supply specialist capabilities. This separation helps the application keep access control and booking decisions on the server instead of trusting the browser or AI model alone.</p></div>
+        </section>
+
+        <section class="doc-section" id="integrations">
+          <div class="section-kicker">14 · INTEGRATIONS & CONFIGURATION</div>
+          <h2>Services the application depends on</h2>
+          <div class="tech-list">
+            <div><strong>MongoDB Atlas</strong><span>Stores account and booking data. The MongoDB URI and credentials must be set in the deployment environment and the database network access rules must allow the service to connect.</span></div>
+            <div><strong>Groq API</strong><span>Hosts the configured Qwen intent-classification model. A valid <code>GROQ_API_KEY</code> is required for assistant intent classification. If it is missing or invalid, assistant action routing can fail even when other site pages still load.</span></div>
+            <div><strong>SerpApi / Google Hotels</strong><span>Provides hotel search and property details. The application requires the configured <code>SERPAPI_KEY</code> for these endpoints.</span></div>
+            <div><strong>Photon geocoding and browser location</strong><span>Provides location suggestions and reverse-geocoding support; browser geolocation requires user permission. Approximate IP lookup may be used when available.</span></div>
+            <div><strong>Brevo transactional email API</strong><span>Sends signup OTPs, password-reset emails, booking confirmations with PDF attachments, and cancellation emails through Brevo’s HTTPS API endpoint <code>https://api.brevo.com/v3/smtp/email</code>. Configure <code>BREVO_API_KEY</code>, <code>MAIL_DEFAULT_SENDER</code> and <code>MAIL_SENDER_NAME</code> in the environment. The sender email must be a valid sender configured and verified in Brevo. <code>EMAIL_PROVIDER=brevo</code> may be kept as a descriptive setting; the current email service reads the Brevo API key and sender variables directly.</span></div>
+            <div><strong>Render</strong><span>Hosts the web service. Environment variables must be configured in the Render service separately from local development. Never put secrets in the ZIP, public repository, HTML or client-side JavaScript.</span></div>
+          </div>
+          <h3>Brevo environment configuration</h3>
+          <p>Add the following placeholders to <code>.env.example</code>. Put your real API key and verified sender address in your local <code>.env</code> file and in Render’s Environment settings; do not commit secrets to GitHub.</p>
+          <pre><code>EMAIL_PROVIDER=brevo
+BREVO_API_KEY=your_brevo_api_key_here
+MAIL_DEFAULT_SENDER=your_verified_sender@example.com
+MAIL_SENDER_NAME=STAYMATE AI</code></pre>
+          <div class="info-callout"><strong>Brevo setup and troubleshooting</strong><p>Generate a regular Brevo API key; MCP does not need to be enabled for sending email. Add and verify the sender under Brevo’s sender settings. <code>MAIL_DEFAULT_SENDER</code> must contain the email address alone, for example <code>sender@example.com</code>, not a combined value such as <code>StayMate AI &lt;sender@example.com&gt;</code>. The sender display name belongs in <code>MAIL_SENDER_NAME</code>. If the API returns “valid sender email required,” check the exact sender value loaded by the application, remove duplicate environment entries, and restart Flask after editing <code>.env</code>. Make sure <code>requests</code> is installed through <code>requirements.txt</code>.</p></div>
+        </section>
+
+        <section class="doc-section" id="limitations">
+          <div class="section-kicker">15 · IMPORTANT LIMITATIONS</div>
+          <h2>What users should and should not assume</h2>
+          <ul class="doc-bullets">
+            <li><strong>Hotel availability:</strong> search results reflect external provider data at the time of the request and can change.</li>
+            <li><strong>Provider links:</strong> a provider offer is useful for continuing to that provider, but StayMate does not control the provider's final availability or checkout.</li>
+            <li><strong>Internal booking record:</strong> the application can store a booking record and reference; this alone is not proof of a confirmed external reservation.</li>
+            <li><strong>Demo payment:</strong> the current project describes demo payment processing and must not be represented as a live payment gateway.</li>
+            <li><strong>AI answers:</strong> the classifier routes requests and the RAG service retrieves project knowledge. Verify important booking or payment details against the stored record and relevant provider.</li>
+            <li><strong>Location:</strong> geolocation depends on browser permission and device support; IP location is approximate and may be unavailable.</li>
+            <li><strong>External service configuration:</strong> hotel search, AI classification, email and database operations depend on valid credentials and network connectivity in the deployed environment.</li>
+          </ul>
+        </section>
+
+        <section class="docs-help-card">
+          <div><span class="section-kicker">READY TO EXPLORE?</span><h2>Return to StayMate AI</h2><p>Search for hotels, compare offers, manage booking records or open the AI assistant.</p></div>
+          <a href="/" class="primary-action">Go to StayMate AI <span>→</span></a>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="docs-footer"><a class="footer-brand" href="/">✦ STAYMATE AI</a><span>User guide · Keep booking details and account credentials private.</span><a href="/signin">Sign in</a></footer>
+</body>
+</html>

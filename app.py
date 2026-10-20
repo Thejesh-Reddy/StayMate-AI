@@ -139,6 +139,12 @@ app.register_blueprint(auth_bp)
 # AUTHENTICATION PAGE ROUTES
 # ============================================================
 
+@app.get("/docs")
+def documentation_page():
+    """Public user guide available before and after authentication."""
+    return render_template("docs.html")
+
+
 @app.get("/signin")
 def signin_page():
     if session.get("authenticated"):
