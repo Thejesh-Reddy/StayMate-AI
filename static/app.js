@@ -6568,6 +6568,7 @@ const smAiHistoryKey = 'staymate_ai_chat_history_v2';
 const smAiLegacyHistoryKey = 'staymate_ai_chat_history_v1';
 const smAiActiveChatKey = 'staymate_ai_active_chat_v1';
 const smAiHistoryButton = document.getElementById('sm-ai-history');
+const smAiClearChatButton = document.getElementById('sm-ai-clear-chat');
 const smAiSessions = [];
 let smAiActiveChatId = '';
 let smAiSelectedPastChatId = '';
@@ -6639,8 +6640,11 @@ function smAiSaveHistory() {
 }
 
 function smAiUpdateHistoryButton() {
-  if (!smAiHistoryButton) return;
-  smAiHistoryButton.hidden = !smAiSessions.some(chat => (chat.items || []).some(item => item?.type === 'message'));
+  const hasSavedMessages = smAiSessions.some(chat =>
+    (chat.items || []).some(item => item?.type === 'message')
+  );
+  if (smAiHistoryButton) smAiHistoryButton.hidden = !hasSavedMessages;
+  if (smAiClearChatButton) smAiClearChatButton.hidden = !hasSavedMessages;
 }
 
 function smAiAddMessage(text, sender = 'bot', persist = true) {
@@ -6782,6 +6786,36 @@ function smAiStartNewChat() {
   smAiRenderDefaultAssistant();
   smAiOpen();
   if (smAiInput) smAiInput.focus();
+}
+
+function smAiClearAllChatHistory() {
+  const confirmed = window.confirm(
+    'Clear all saved AI Assistant chat history? This cannot be undone. Your hotel bookings and account data will not be deleted.'
+  );
+  if (!confirmed) return;
+
+  // Remove current and legacy assistant conversation storage only.
+  try {
+    localStorage.removeItem(smAiHistoryKey);
+    localStorage.removeItem(smAiLegacyHistoryKey);
+    localStorage.removeItem(smAiActiveChatKey);
+  } catch (error) {
+    console.warn('[STAYMATE][AI HISTORY] Unable to clear saved chats.', error);
+    window.alert('Unable to clear chat history in this browser. Please check your browser storage settings and try again.');
+    return;
+  }
+
+  smAiSessions.splice(0, smAiSessions.length);
+  smAiActiveChatId = '';
+  smAiSelectedPastChatId = '';
+  smAiHistory = [];
+
+  // Start a clean session with the default assistant greeting and FAQs.
+  smAiStartNewChat();
+}
+
+if (smAiClearChatButton) {
+  smAiClearChatButton.addEventListener('click', smAiClearAllChatHistory);
 }
 
 if (smAiHistoryButton) {
