@@ -1096,6 +1096,7 @@ ASSISTANT_INTENTS = {
     "view_confirmed_bookings",
     "view_cancelled_bookings",
     "cancel_booking",
+    "greeting",
     "hotel_search",
     "booking_help",
     "policy_question",
@@ -1124,6 +1125,39 @@ def classify_assistant_intent(
     """
     if not isinstance(message, str) or not message.strip():
         raise ValueError("A non-empty message is required.")
+
+    # Greetings and common small talk should never be sent to the LLM/RAG
+    # pipeline. This avoids false "not enough information" replies and also
+    # works when the hosted classifier is temporarily unavailable.
+    normalized_message = re.sub(r"[\W_]+", " ", message.casefold()).strip()
+    greeting_patterns = (
+        r"(?:hi+|hii+|hello+|hey+|hey there|hiya|namaste)",
+        r"(?:good morning|good afternoon|good evening|good night)",
+        r"(?:how are you|how are you doing|what s up|whats up)",
+    )
+    if any(re.fullmatch(pattern, normalized_message) for pattern in greeting_patterns):
+        if normalized_message.startswith("good morning"):
+            reply = "Good morning! 😊 Welcome to StayMate AI. How can I help you today?"
+        elif normalized_message.startswith("good afternoon"):
+            reply = "Good afternoon! 😊 Welcome to StayMate AI. How can I help you today?"
+        elif normalized_message.startswith("good evening"):
+            reply = "Good evening! 😊 Welcome to StayMate AI. How can I help you today?"
+        elif normalized_message.startswith("good night"):
+            reply = "Good night! 😊 Feel free to return whenever you need help with StayMate AI."
+        elif normalized_message.startswith("how are you") or normalized_message in {"what s up", "whats up"}:
+            reply = "I'm doing well, thank you! 😊 I can help you find hotels or with your StayMate bookings. What would you like to do?"
+        else:
+            reply = "Hi! 👋 Welcome to StayMate AI. I can help you find hotels, compare prices, or manage your bookings. How can I help?"
+        return {
+            "intent": "greeting",
+            "route": "rag",
+            "confidence": 1.0,
+            "entities": {},
+            "missing_information": [],
+            "clarification_question": None,
+            "direct_response": reply,
+        }
+
     if not GROQ_API_KEY:
         raise ValueError("GROQ_API_KEY is not configured.")
 
@@ -1145,7 +1179,7 @@ Return exactly one JSON object with ALL these fields:
 
 Allowed intents (use these exact values only):
 view_bookings, view_upcoming_bookings, view_confirmed_bookings,
-view_cancelled_bookings, cancel_booking, hotel_search, booking_help,
+view_cancelled_bookings, cancel_booking, greeting, hotel_search, booking_help,
 policy_question, general_question, clarification_needed, unknown.
 
 Allowed routes (use these exact values only): rag, action, hotel_search,

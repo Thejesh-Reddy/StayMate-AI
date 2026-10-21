@@ -6858,3 +6858,9 @@ a {
 /* Documentation link in the main application footer */
 .footer-docs-link { display: inline-flex; margin-top: 10px; color: #087fbd; font-size: 13px; font-weight: 700; text-decoration: none; }
 .footer-docs-link:hover { text-decoration: underline; }
+
+
+/* Keep the hotel-results section completely hidden until a search returns. */
+#assistant[hidden] {
+  display: none !important;
+}

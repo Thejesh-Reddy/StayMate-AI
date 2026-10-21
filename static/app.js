@@ -2256,6 +2256,18 @@ async function processAnswer(
 
 
 // =========================================================
+// HOTEL RESULTS AREA VISIBILITY
+// =========================================================
+
+function revealHotelResultsArea() {
+  const section = document.getElementById('assistant');
+  if (section) {
+    section.hidden = false;
+  }
+}
+
+
+// =========================================================
 // HOTEL SEARCH
 // =========================================================
 
@@ -2381,6 +2393,10 @@ async function search(
     }
 
 
+    // Do not show the results section on initial page load. Reveal it
+    // only after a hotel search has returned from the backend.
+    revealHotelResultsArea();
+
     const properties =
       Array.isArray(
         data.properties
@@ -2481,6 +2497,7 @@ async function search(
       error
     );
 
+    revealHotelResultsArea();
 
     add(
       error.message ||
@@ -6185,9 +6202,9 @@ function initializeChat() {
   }
 
 
-  add(
-    'Welcome to STAYMATE AI! Tell me where you want to stay, or use “Find hotels near me” to search using your current location.'
-  );
+  // The main page is for hotel discovery, not chat. Keep this area
+  // empty and hidden until a hotel search returns a response.
+  return;
 }
 
 
@@ -6446,6 +6463,9 @@ const smAiFaqs =
   // =========================================================
   
   let smAiPendingCancellation = null;
+
+// True only after the assistant explicitly asks the user to provide a city/location.
+let smAiAwaitingLocation = false;
 
 let smAiCancellationBookings = [];
 
@@ -9471,6 +9491,46 @@ async function smAiAsk(
   }
 
   // -------------------------------------------------------
+  // DETERMINISTIC GREETING / SMALL-TALK HANDLING
+  // -------------------------------------------------------
+  // Keep greetings out of the RAG knowledge-answering flow. RAG is not
+  // expected to answer greetings and may incorrectly say it lacks context.
+  const normalizedGreeting = query
+    .toLowerCase()
+    .replace(/[\W_]+/g, ' ')
+    .trim();
+  const greetingOnly = /^(?:hi+|hii+|hello+|hey+|hey there|hiya|namaste|good morning|good afternoon|good evening|good night|how are you|how are you doing|what s up|whats up)$/.test(normalizedGreeting);
+
+  if (greetingOnly) {
+    let greetingReply = "Hi! 👋 Welcome to StayMate AI. I can help you find hotels, compare prices, or manage your bookings. How can I help?";
+    if (normalizedGreeting === 'good morning') greetingReply = 'Good morning! 😊 Welcome to StayMate AI. How can I help you today?';
+    else if (normalizedGreeting === 'good afternoon') greetingReply = 'Good afternoon! 😊 Welcome to StayMate AI. How can I help you today?';
+    else if (normalizedGreeting === 'good evening') greetingReply = 'Good evening! 😊 Welcome to StayMate AI. How can I help you today?';
+    else if (normalizedGreeting === 'good night') greetingReply = 'Good night! 😊 Feel free to return whenever you need help with StayMate AI.';
+    else if (/^(?:how are you|how are you doing|what s up|whats up)$/.test(normalizedGreeting)) greetingReply = "I'm doing well, thank you! 😊 I can help you find hotels or with your StayMate bookings. What would you like to do?";
+
+    smAiAddMessage(greetingReply, 'bot');
+    return;
+  }
+
+  // -------------------------------------------------------
+  // MANUAL LOCATION FOLLOW-UP
+  // -------------------------------------------------------
+  // If GPS could not establish a reliable location, accept the next city or
+  // location the user types. Do not ask for or infer a PIN code.
+  if (smAiAwaitingLocation) {
+    if (/^(?:cancel|never mind|nevermind|forget it|stop)$/i.test(query.trim())) {
+      smAiAwaitingLocation = false;
+      smAiAddMessage('No problem. Tell me whenever you would like to search for hotels.', 'bot');
+      return;
+    }
+
+    smAiAwaitingLocation = false;
+    await smAiSearchHotels(query.trim(), {});
+    return;
+  }
+
+  // -------------------------------------------------------
   // DETERMINISTIC HOTEL SEARCH ROUTING
   // -------------------------------------------------------
   // A clear hotel-search request must never fall through to RAG/FAQ,
@@ -9479,8 +9539,41 @@ async function smAiAsk(
     /\b(find|search|show|get|look for|recommend)\b/i.test(query) &&
     /\bhotels?\b/i.test(query);
 
-  const explicitDestinationMatch = query.match(
-    /\b(?:in|at|near|around)\s+(.+?)\s*[.!?]*$/i
+  // "near me" is a request for the user's current location, not a literal
+  // destination named "me". Use browser GPS; if it fails, ask for a city.
+  const nearMeHotelSearch = explicitHotelSearch &&
+    /\b(?:near me|around me|close to me|nearby|my current location|current location)\b/i.test(query);
+
+  const explicitCityMatch = query.match(
+    /\b(?:in|at)\s+([A-Za-z][A-Za-z .,'-]{1,60}?)(?=\s+(?:for|with|from|check[- ]?in|check[- ]?out|tomorrow|tonight|today)\b|[.!?]*$)/i
+  );
+
+  if (explicitHotelSearch && nearMeHotelSearch && !explicitCityMatch) {
+    console.log('[STAYMATE][HOTEL SEARCH] Near-me request; trying browser geolocation.');
+    const loading = smAiAddLoading();
+    let detectedLocation = null;
+    try {
+      detectedLocation = await automaticLocation(true);
+    } catch (error) {
+      console.warn('[STAYMATE][HOTEL SEARCH] Current location detection failed.', error);
+    } finally {
+      if (loading) loading.remove();
+    }
+
+    if (detectedLocation && String(detectedLocation).trim()) {
+      await smAiSearchHotels(String(detectedLocation).trim(), {});
+    } else {
+      context.location = null;
+      userCoords = null;
+      if (locationSearch) locationSearch.value = '';
+      smAiAwaitingLocation = true;
+      smAiAddMessage("I couldn't determine your location accurately. Which city or location would you like me to search near?", 'bot');
+    }
+    return;
+  }
+
+  const explicitDestinationMatch = explicitCityMatch || query.match(
+    /\b(?:near|around)\s+(?!me\b)([A-Za-z][A-Za-z .,'-]{2,60})/i
   );
 
   if (explicitHotelSearch && explicitDestinationMatch) {
@@ -9530,6 +9623,16 @@ async function smAiAsk(
       ...(classification.entities || {})
     };
 
+    // Also honor the backend's deterministic greeting classification in case
+    // a greeting variation is not covered by the local quick matcher.
+    if (intent === 'greeting') {
+      smAiAddMessage(
+        classification.direct_response || "Hi! 👋 Welcome to StayMate AI. How can I help you today?",
+        'bot'
+      );
+      return;
+    }
+
     // Recover the destination when the user explicitly
     // requests a hotel search but the LLM omits it.
     const isHotelSearchRequest =
@@ -9537,7 +9640,9 @@ async function smAiAsk(
       /\bhotels?\b/i.test(query);
 
     const destinationMatch = query.match(
-      /\b(?:in|at|near|around)\s+(.+?)\s*[.!?]*$/i
+      /\b(?:in|at)\s+([A-Za-z][A-Za-z .,'-]{1,60}?)(?=\s+(?:for|with|from|check[- ]?in|check[- ]?out|tomorrow|tonight|today)\b|[.!?]*$)/i
+    ) || query.match(
+      /\b(?:near|around)\s+(?!me\b)([A-Za-z][A-Za-z .,'-]{2,60})/i
     );
 
     if (isHotelSearchRequest && destinationMatch) {
