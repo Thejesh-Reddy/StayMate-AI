@@ -71,6 +71,12 @@ const locationResults =
     'locationResults'
   );
 
+
+const locationSearchSubmit =
+  document.getElementById(
+    'locationSearchSubmit'
+  );
+
 // =========================================================
 // PAGE-LEVEL SMOOTH SCROLLING
 // =========================================================
@@ -191,9 +197,13 @@ let context = {
 let lastResults =
   [];
 
-
-let nextPageToken =
-  null;
+// Keep hotel-search pages separate so each page shows only its own results.
+let firstPageResults = [];
+let hotelResultPages = [];
+let hotelPageTokens = [null];
+let currentHotelPage = 1;
+let activeHotelFilters = { minPrice: '', maxPrice: '', stars: [], ratingSort: 'none' };
+let nextPageToken = null;
 
 
 let userCoords =
@@ -1143,7 +1153,8 @@ function renderLocationSuggestions(
 
 
           await selectLocation(
-            location
+            location,
+            false
           );
         }
       );
@@ -1225,7 +1236,8 @@ function updateActiveLocationItem() {
 // =========================================================
 
 async function selectLocation(
-  location
+  location,
+  shouldSearch = true
 ) {
 
   if (
@@ -1287,6 +1299,21 @@ async function selectLocation(
   setDiscoveryDefaults();
 
 
+  if (!shouldSearch) {
+    // Make it visually clear that the suggestion only filled the field;
+    // keep focus/caret in the input and do not start a hotel search.
+    if (locationSearch) {
+      locationSearch.focus();
+      const caret = locationSearch.value.length;
+      try { locationSearch.setSelectionRange(caret, caret); } catch (_) {}
+    }
+    logInfo(
+      'LOCATION',
+      `SELECTED "${context.location}" — waiting for search submission`
+    );
+    return;
+  }
+
   add(
     `📍 Searching hotels in ${esc(
       context.location
@@ -1305,7 +1332,8 @@ async function selectLocation(
 // =========================================================
 
 async function selectLocationText(
-  text
+  text,
+  shouldSearch = true
 ) {
 
   const query =
@@ -1359,7 +1387,8 @@ async function selectLocationText(
     ) {
 
       await selectLocation(
-        locations[0]
+        locations[0],
+        shouldSearch
       );
 
 
@@ -1514,6 +1543,24 @@ async function searchLocations(
 }
 
 
+// The arrow button is the explicit submit action for destination search.
+if (locationSearchSubmit) {
+  locationSearchSubmit.addEventListener('click', async () => {
+    const value = String(locationSearch?.value || '').trim();
+    if (!value) {
+      locationSearch?.focus();
+      return;
+    }
+
+    if (context.location && context.location.trim().toLowerCase() === value.toLowerCase()) {
+      add(`📍 Searching hotels in ${esc(context.location)}...`);
+      await search(false);
+    } else {
+      await selectLocationText(value, true);
+    }
+  });
+}
+
 // =========================================================
 // LOCATION INPUT EVENTS
 // =========================================================
@@ -1605,7 +1652,8 @@ if (
           await selectLocation(
             locationSuggestions[
               activeLocationIndex
-            ]
+            ],
+            false
           );
 
         } else {
@@ -1617,10 +1665,17 @@ if (
           if (
             value.length >= 2
           ) {
-
-            await selectLocationText(
-              value
-            );
+            if (
+              context.location &&
+              context.location.trim().toLowerCase() === value.toLowerCase()
+            ) {
+              add(
+                `📍 Searching hotels in ${esc(context.location)}...`
+              );
+              await search(false);
+            } else {
+              await selectLocationText(value, true);
+            }
           }
         }
 
@@ -1833,8 +1888,8 @@ function setDiscoveryDefaults() {
 // 1. Existing/manual location
 // 2. Browser GPS
 // 3. Reverse GPS
-// 4. IP fallback
-// 5. Ask user manually
+// 4. Ask user to enter a destination manually
+
 //
 // =========================================================
 
@@ -1932,11 +1987,26 @@ async function automaticLocation(forceRefresh = false) {
 
 
 
+// Focus the visible destination search only after the user requests it.
+function focusManualLocationSearch() {
+  const field = document.getElementById('locationSearch');
+  if (!field) return;
+
+  revealHotelResultsArea();
+  field.placeholder = 'Enter your city or destination...';
+  field.setAttribute('aria-label', 'Enter your city or destination');
+  field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  window.setTimeout(() => field.focus({ preventScroll: true }), 350);
+}
+
 // =========================================================
 // INITIAL HOTEL SEARCH
 // =========================================================
 
 async function startHotelSearch() {
+
+  // Keep location status and the manual destination prompt visible when GPS fails.
+  revealHotelResultsArea();
 
   const locationMessage =
     addLoading(
@@ -1961,16 +2031,18 @@ async function startHotelSearch() {
         'location';
 
 
-        add(
-          '📍 Location access is unavailable. Please enter your destination in the chat input below, for example: "Find hotels in Tirupati".',
+        const locationHelpMessage = add(
+          '<div class="location-access-message"><span class="location-access-title">Location access unavailable</span><span class="location-access-copy">We could not determine your location because location access was denied or unavailable. Please enter your destination manually.</span><button type="button" class="manual-location-button" onclick="focusManualLocationSearch()"><span aria-hidden="true">⌖</span> Enter location manually <span aria-hidden="true">→</span></button></div>',
           "bot",
           true
         );
-        
-        const chatInput = document.querySelector("#input");
-        
-        if (chatInput) {
-          chatInput.focus();
+
+        // Bring the explanation into view first; the user chooses when to jump
+        // to the destination search field by clicking the themed button.
+        if (locationHelpMessage) {
+          requestAnimationFrame(() => {
+            locationHelpMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
         }
 
 
@@ -2250,7 +2322,7 @@ async function processAnswer(
 
 
   add(
-    "Tell me the city or location where you'd like to find hotels, or type 'Find hotels' to use your current location."
+    "Enter a city or destination in the location search field above to find hotels."
   );
 }
 
@@ -2293,6 +2365,10 @@ async function search(
 
 
     return;
+  }
+
+  if (!append) {
+    chat.querySelectorAll('.hotel-results-pagination').forEach(node => node.remove());
   }
 
 
@@ -2410,20 +2486,19 @@ async function search(
       null;
 
 
-    if (
-      !append
-    ) {
-
-      lastResults =
-        properties;
-
+    if (!append) {
+      firstPageResults = properties;
+      lastResults = properties;
+      hotelResultPages = [properties];
+      hotelPageTokens = [null, nextPageToken];
+      currentHotelPage = 1;
+      activeHotelFilters = { minPrice: '', maxPrice: '', stars: [], ratingSort: 'none' };
     } else {
-
-      lastResults =
-        [
-          ...lastResults,
-          ...properties
-        ];
+      // The newly fetched provider response becomes a separate page.
+      hotelResultPages[currentHotelPage] = properties;
+      currentHotelPage += 1;
+      hotelPageTokens[currentHotelPage] = nextPageToken;
+      lastResults = hotelResultPages.flat();
     }
 
 
@@ -2446,6 +2521,8 @@ async function search(
         add(
           'There are no more hotel results available.'
         );
+        chat.querySelectorAll('.hotel-results-pagination').forEach(node => node.remove());
+        renderLoadMoreButton();
       }
 
 
@@ -2453,30 +2530,18 @@ async function search(
     }
 
 
-    add(
+    chat.querySelectorAll('.hotel-page-intro').forEach(node => node.remove());
+    const intro = add(
       append
-        ? `Here are more live hotel options in ${esc(
-            context.location
-          )}:`
-        : `Here are live hotel options in ${esc(
-            context.location
-          )}:`,
+        ? `Hotel results — page ${currentHotelPage} in ${esc(context.location)}:`
+        : `Hotel results — page 1 in ${esc(context.location)}:`,
       'bot',
       true
     );
+    if (intro) intro.classList.add('hotel-page-intro');
 
-
-    renderHotels(
-      properties
-    );
-
-
-    if (
-      nextPageToken
-    ) {
-
-      renderLoadMoreButton();
-    }
+    renderHotels(hotelResultPages[currentHotelPage - 1] || [], activeHotelFilters);
+    renderLoadMoreButton();
 
 
   } catch (
@@ -2513,23 +2578,137 @@ async function search(
 
 
 // =========================================================
-// HOTEL CARD RENDERING
+// HOTEL CARD RENDERING AND FILTERING
 // =========================================================
 
+function getHotelNumericPrice(hotel) {
+  const candidates = [
+    hotel?.rate_per_night?.extracted_lowest,
+    hotel?.rate_per_night?.lowest,
+    typeof hotel?.rate_per_night === 'number' || typeof hotel?.rate_per_night === 'string' ? hotel.rate_per_night : null,
+    hotel?.price?.extracted_price,
+    hotel?.price?.extracted_lowest,
+    hotel?.price?.lowest,
+    typeof hotel?.price === 'number' || typeof hotel?.price === 'string' ? hotel.price : null,
+    hotel?.price_per_night,
+    hotel?.extracted_price
+  ];
+
+  for (const candidate of candidates) {
+    if (candidate === null || candidate === undefined || candidate === '') continue;
+    const numeric = typeof candidate === 'number'
+      ? candidate
+      : Number(String(candidate).replace(/[^0-9.]/g, ''));
+    if (Number.isFinite(numeric) && numeric > 0) return numeric;
+  }
+  return null;
+}
+
+function getHotelStarCount(hotel) {
+  const raw = hotel?.extracted_hotel_class ?? hotel?.hotel_class ?? hotel?.star_rating;
+  if (raw === null || raw === undefined || raw === '') return null;
+  const match = String(raw).match(/[3-5](?:\.0)?/);
+  return match ? Number(match[0]) : null;
+}
+
+function getHotelGuestRating(hotel) {
+  const value = Number(hotel?.overall_rating ?? hotel?.rating ?? hotel?.user_rating);
+  return Number.isFinite(value) ? value : null;
+}
+
 function renderHotels(
-  hotels
+  hotels,
+  filterState = {}
 ) {
 
   if (
-    !Array.isArray(
-      hotels
-    ) ||
-    !hotels.length
+    !Array.isArray(hotels)
   ) {
-
     return;
   }
 
+  const sourceHotels = Array.isArray(filterState.sourceHotels)
+    ? filterState.sourceHotels
+    : hotels;
+  const state = {
+    minPrice: filterState.minPrice ?? '',
+    maxPrice: filterState.maxPrice ?? '',
+    stars: Array.isArray(filterState.stars) ? filterState.stars : [],
+    ratingSort: filterState.ratingSort || 'none',
+    sourceHotels
+  };
+
+  const pricedHotels = sourceHotels.filter(hotel => getHotelNumericPrice(hotel) !== null);
+  let visibleHotels = pricedHotels.filter(hotel => {
+    const price = getHotelNumericPrice(hotel);
+    const min = state.minPrice === '' ? null : Number(state.minPrice);
+    const max = state.maxPrice === '' ? null : Number(state.maxPrice);
+    if (min !== null && Number.isFinite(min) && price < min) return false;
+    if (max !== null && Number.isFinite(max) && price > max) return false;
+    if (state.stars.length) {
+      const starCount = getHotelStarCount(hotel);
+      if (starCount === null || !state.stars.includes(String(starCount))) return false;
+    }
+    return true;
+  });
+
+  if (state.ratingSort !== 'none') {
+    visibleHotels.sort((a, b) => {
+      const ratingA = getHotelGuestRating(a);
+      const ratingB = getHotelGuestRating(b);
+      if (ratingA === null && ratingB === null) return 0;
+      if (ratingA === null) return 1;
+      if (ratingB === null) return -1;
+      return state.ratingSort === 'high' ? ratingB - ratingA : ratingA - ratingB;
+    });
+  }
+
+  // Replace the previous rendered result set when filters are changed.
+  chat.querySelectorAll('.hotel-results, .hotel-results-filter').forEach(node => node.remove());
+
+  const filterBar = document.createElement('div');
+  filterBar.className = 'hotel-results-filter';
+  filterBar.innerHTML = `
+    <div class="hotel-filter-field">
+      <label>Min price (₹/night)<input type="number" min="0" step="1" data-hotel-filter="min" value="${esc(state.minPrice)}" placeholder="Any"></label>
+      <label>Max price (₹/night)<input type="number" min="0" step="1" data-hotel-filter="max" value="${esc(state.maxPrice)}" placeholder="Any"></label>
+    </div>
+    <div class="hotel-filter-stars" aria-label="Filter by hotel star category">
+      <span>Hotel category</span>
+      ${['3','4','5'].map(star => `<label><input type="checkbox" data-hotel-star="${star}" ${state.stars.includes(star) ? 'checked' : ''}> ${star} star</label>`).join('')}
+    </div>
+    <label class="hotel-filter-sort">Guest rating
+      <select data-hotel-filter="sort">
+        <option value="none" ${state.ratingSort === 'none' ? 'selected' : ''}>Default order</option>
+        <option value="high" ${state.ratingSort === 'high' ? 'selected' : ''}>Highest to lowest</option>
+        <option value="low" ${state.ratingSort === 'low' ? 'selected' : ''}>Lowest to highest</option>
+      </select>
+    </label>
+    <div class="hotel-filter-actions"><button type="button" data-hotel-filter-apply>Apply filters</button><button type="button" data-hotel-filter-reset>Reset</button></div>
+    <span class="hotel-filter-count">Showing ${visibleHotels.length} of ${pricedHotels.length} priced hotels on page ${currentHotelPage}</span>
+  `;
+
+  const applyFilters = () => {
+    const minInput = filterBar.querySelector('[data-hotel-filter="min"]');
+    const maxInput = filterBar.querySelector('[data-hotel-filter="max"]');
+    const sortInput = filterBar.querySelector('[data-hotel-filter="sort"]');
+    const nextState = {
+      minPrice: minInput.value,
+      maxPrice: maxInput.value,
+      stars: [...filterBar.querySelectorAll('[data-hotel-star]:checked')].map(input => input.dataset.hotelStar),
+      ratingSort: sortInput.value,
+      sourceHotels
+    };
+    activeHotelFilters = { minPrice: nextState.minPrice, maxPrice: nextState.maxPrice, stars: nextState.stars, ratingSort: nextState.ratingSort };
+    renderHotels(sourceHotels, nextState);
+  };
+  const applyButton = filterBar.querySelector('[data-hotel-filter-apply]');
+  if (applyButton) applyButton.addEventListener('click', applyFilters);
+  const resetButton = filterBar.querySelector('[data-hotel-filter-reset]');
+  if (resetButton) resetButton.addEventListener('click', () => {
+    activeHotelFilters = { minPrice: '', maxPrice: '', stars: [], ratingSort: 'none' };
+    renderHotels(sourceHotels, activeHotelFilters);
+  });
 
   const wrapper =
     document.createElement(
@@ -2564,8 +2743,17 @@ function renderHotels(
   wrapper.style.boxSizing =
     'border-box';
 
+  if (!visibleHotels.length) {
+    const emptyState = document.createElement('div');
+    emptyState.className = 'hotel-filter-empty';
+    emptyState.textContent = pricedHotels.length
+      ? 'No hotels match the selected filters. Try adjusting your price range or star category.'
+      : 'No hotels with an available price were found for this search.';
+    emptyState.style.cssText = 'grid-column:1/-1;padding:18px;border:1px dashed var(--border,#dce6eb);border-radius:12px;color:var(--text-muted,#60727d);text-align:center;';
+    wrapper.appendChild(emptyState);
+  }
 
-  hotels.forEach(
+  visibleHotels.forEach(
     (
       hotel,
       index
@@ -2682,6 +2870,15 @@ function renderHotels(
               );
       }
 
+
+      const numericHotelPrice = getHotelNumericPrice(hotel);
+      if (numericHotelPrice !== null && price === 'Price unavailable') {
+        price = new Intl.NumberFormat('en-IN', {
+          style: 'currency',
+          currency: 'INR',
+          maximumFractionDigits: 0
+        }).format(numericHotelPrice);
+      }
 
       // ---------------------------------------------------
       // TOTAL PRICE
@@ -3099,6 +3296,8 @@ function renderHotels(
                   <a
                     class="hotel-view-link"
                     href="${esc(hotelLink)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     View hotel
                   </a>
@@ -3349,10 +3548,15 @@ if (
   }
 
 
+  chat.appendChild(filterBar);
   chat.appendChild(
     wrapper
   );
 
+  // Keep pagination anchored after the filter bar and hotel grid.
+  // Re-rendering after Apply/Reset must not leave it above the results.
+  const pagination = chat.querySelector('.hotel-results-pagination');
+  if (pagination) chat.appendChild(pagination);
 
   chat.scrollTop =
     chat.scrollHeight;
@@ -3370,66 +3574,62 @@ if (
 // =========================================================
 
 function renderLoadMoreButton() {
+  chat.querySelectorAll('.hotel-results-pagination').forEach(node => node.remove());
+  const actions = document.createElement('nav');
+  actions.className = 'hotel-results-pagination';
+  actions.setAttribute('aria-label', 'Hotel result pages');
 
-  const existing =
-    chat.querySelector(
-      '.load-more-hotels'
-    );
+  const makeButton = (label, className, handler, disabled = false) => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = className;
+    button.textContent = label;
+    button.disabled = disabled;
+    button.addEventListener('click', handler);
+    actions.appendChild(button);
+    return button;
+  };
+  const goToPage = (page) => {
+    if (page < 1 || page > hotelResultPages.length) return;
+    currentHotelPage = page;
+    nextPageToken = hotelPageTokens[page] || null;
+    chat.querySelectorAll('.hotel-page-intro').forEach(node => node.remove());
+    const intro = add(`Hotel results — page ${page} in ${esc(context.location)}:`, 'bot', true);
+    if (intro) intro.classList.add('hotel-page-intro');
+    renderHotels(hotelResultPages[page - 1] || [], activeHotelFilters);
+    renderLoadMoreButton();
+    scrollToStayMateSection(chat.querySelector('.hotel-results'));
+  };
 
+  makeButton('Back to first page', 'first-page-hotels', () => goToPage(1), currentHotelPage === 1);
+  makeButton('Previous page', 'previous-page-hotels', () => goToPage(currentHotelPage - 1), currentHotelPage <= 1);
 
-  if (
-    existing
-  ) {
-
-    existing.remove();
+  const pageNumbers = document.createElement('div');
+  pageNumbers.className = 'hotel-page-numbers';
+  for (let page = 1; page <= hotelResultPages.length; page += 1) {
+    const number = document.createElement('button');
+    number.type = 'button';
+    number.className = `hotel-page-number${page === currentHotelPage ? ' is-active' : ''}`;
+    number.textContent = String(page);
+    number.setAttribute('aria-current', page === currentHotelPage ? 'page' : 'false');
+    number.addEventListener('click', () => goToPage(page));
+    pageNumbers.appendChild(number);
   }
+  actions.appendChild(pageNumbers);
 
-
-  const button =
-    document.createElement(
-      'button'
-    );
-
-
-  button.type =
-    'button';
-
-
-  button.className =
-    'load-more-hotels';
-
-
-  button.textContent =
-    'Load more hotels';
-
-
-  button.addEventListener(
-    'click',
-    async () => {
-
-      button.disabled =
-        true;
-
-
-      await search(
-        true
-      );
-
-
-      button.remove();
+  makeButton('Next page', 'next-page-hotels', async (event) => {
+    if (currentHotelPage < hotelResultPages.length) {
+      goToPage(currentHotelPage + 1);
+      return;
     }
-  );
-
-
-  chat.appendChild(
-    button
-  );
-
-
-  chat.scrollTop =
-    chat.scrollHeight;
+    if (nextPageToken) {
+      event.currentTarget.disabled = true;
+      event.currentTarget.textContent = 'Loading…';
+      await search(true);
+    }
+  }, currentHotelPage >= hotelResultPages.length && !nextPageToken);
+  chat.appendChild(actions);
 }
-
 
 // =========================================================
 // BOOKING STATE
@@ -5696,6 +5896,10 @@ if (
 
       event.preventDefault();
 
+      // Reveal the main discovery area before rendering progress, validation, or
+      // manual-location messages. Otherwise they are inserted into #chat while
+      // its parent #assistant is still hidden and appear to the user as no action.
+      revealHotelResultsArea();
 
       const text =
         input.value.trim();
@@ -6089,9 +6293,12 @@ if (
       lastResults =
         [];
 
-
-      nextPageToken =
-        null;
+      firstPageResults = [];
+      hotelResultPages = [];
+      hotelPageTokens = [null];
+      currentHotelPage = 1;
+      activeHotelFilters = { minPrice: '', maxPrice: '', stars: [], ratingSort: 'none' };
+      nextPageToken = null;
 
 
       userCoords =
@@ -6385,49 +6592,65 @@ initializeChat();
   }
 
 
-  // Wait until the main StayMate UI is ready.
+  // Wait until the main StayMate UI is ready. Restoring chat history must
+  // never prevent the booking form from starting if history restoration fails.
   setTimeout(
     () => {
+      window.__stayMateAssistantBookingFlow =
+        pending.source === 'assistant';
 
-      try {
-
-        window.__stayMateAssistantBookingFlow =
-          pending.source === 'assistant';
-
-        if (
-          window.__stayMateAssistantBookingFlow &&
-          typeof smAiRestoreHistory === 'function'
-        ) {
-          smAiRestoreHistory(false);
-          if (typeof smAiOpen === 'function') smAiOpen();
-          if (typeof smAiAddMessage === 'function') {
-            smAiAddMessage(`Let's complete your booking for ${pending.hotel.name || 'your selected hotel'} here in the assistant.`, 'bot');
+      if (window.__stayMateAssistantBookingFlow) {
+        try {
+          if (typeof smAiRestoreHistory === 'function') {
+            smAiRestoreHistory(false);
           }
+        } catch (historyError) {
+          console.warn(
+            'Could not restore assistant history; continuing booking flow.',
+            historyError
+          );
         }
 
-        startBooking(
-          pending.hotel
-        );
-
-      } catch (
-        error
-      ) {
-
-        console.error(
-          'Unable to restore StayMate booking.',
-          error
-        );
-
-      } finally {
-
-        localStorage.removeItem(
-          'staymate_pending_booking'
-        );
-
+        try {
+          if (typeof smAiOpen === 'function') smAiOpen();
+          if (typeof smAiAddMessage === 'function') {
+            smAiAddMessage(
+              `Let's complete your booking for ${pending.hotel.name || 'your selected hotel'} here in the assistant.`,
+              'bot'
+            );
+          }
+        } catch (assistantUiError) {
+          console.warn(
+            'Could not prepare assistant UI; continuing booking flow.',
+            assistantUiError
+          );
+        }
       }
 
+      try {
+        // Always attempt to start the booking form independently of history/UI.
+        startBooking(pending.hotel);
+
+        // Make the newly rendered booking form visible to the user.
+        requestAnimationFrame(() => {
+          const bookingForm = smAiMessages?.querySelector(
+            '.booking-container, .billing-container, .payment-container'
+          );
+          if (bookingForm) {
+            bookingForm.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center'
+            });
+          }
+        });
+      } catch (bookingError) {
+        console.error('Unable to start StayMate booking.', bookingError);
+        alert('Unable to start the booking form. Please return to the hotel results and try again.');
+      } finally {
+        localStorage.removeItem('staymate_pending_booking');
+      }
     },
-    300
+    500
   );
 
 })();
@@ -6928,9 +7151,21 @@ function smAiOpenHotelPrices(hotel, destination, searchContext) {
 
 function smAiRenderHotelResults(destination, hotels, searchContext, persist = true) {
   if (!smAiMessages) return null;
-  const list = Array.isArray(hotels) ? hotels.slice(0, 5) : [];
+  const list = Array.isArray(hotels)
+    ? hotels.filter(hotel => getHotelNumericPrice(hotel) !== null).slice(0, 5)
+    : [];
   const wrapper = document.createElement('div');
   wrapper.className = 'sm-ai-message sm-ai-bot sm-ai-hotel-results';
+  if (!list.length) {
+    wrapper.textContent = `I couldn't find hotels with an available price in ${destination}. Please try another search.`;
+    smAiMessages.appendChild(wrapper);
+    smAiMessages.scrollTop = smAiMessages.scrollHeight;
+    if (persist) {
+      smAiHistory.push({ type: 'hotel_results', destination, hotels: [], searchContext, timestamp: Date.now() });
+      smAiSaveHistory();
+    }
+    return wrapper;
+  }
   wrapper.style.cssText = 'display:grid;grid-template-columns:minmax(0,1fr);gap:10px;width:100%;';
   list.forEach(hotel => {
     const card = document.createElement('article');
@@ -7561,6 +7796,34 @@ async function smAiViewBookings(
         );
     }
 
+    // -------------------------------------------------------
+    // MOST RECENT BOOKING / MOST RECENT CANCELLATION
+    // -------------------------------------------------------
+    const timestampValue = value => {
+      if (!value) return 0;
+      const parsed = Date.parse(String(value));
+      return Number.isFinite(parsed) ? parsed : 0;
+    };
+
+    if (filter === 'recent') {
+      filteredBookings = [...bookings].sort((a, b) =>
+        timestampValue(b.created_at || b.booking_date || b.createdAt) -
+        timestampValue(a.created_at || a.booking_date || a.createdAt)
+      ).slice(0, 1);
+    } else if (filter === 'last_cancelled') {
+      filteredBookings = bookings
+        .filter(booking =>
+          ['cancelled', 'canceled'].includes(
+            String(booking.booking_status || '').trim().toLowerCase()
+          )
+        )
+        .sort((a, b) =>
+          timestampValue(b.cancelled_at || b.cancellation_date || b.updated_at || b.created_at) -
+          timestampValue(a.cancelled_at || a.cancellation_date || a.updated_at || a.created_at)
+        )
+        .slice(0, 1);
+    }
+
     
     // -------------------------------------------------------
     // FILTER BY PAYMENT METHOD
@@ -7620,8 +7883,12 @@ async function smAiViewBookings(
         return;
       }
 
-      if (filter === 'cancelled') {
-        message += 'any cancelled bookings.';
+      if (filter === 'last_cancelled' || filter === 'cancelled') {
+        message += filter === 'last_cancelled'
+          ? 'any cancelled bookings to show as your most recent cancellation.'
+          : 'any cancelled bookings.';
+      } else if (filter === 'recent') {
+        message += 'any bookings yet.';
       } else if (filter === 'confirmed') {
         message += 'any confirmed bookings.';
       } else if (filter === 'upcoming') {
@@ -7644,7 +7911,11 @@ async function smAiViewBookings(
       'Your bookings';
 
 
-    if (
+    if (filter === 'recent') {
+      title = 'Your most recent booking';
+    } else if (filter === 'last_cancelled') {
+      title = 'Your most recently cancelled booking';
+    } else if (
       filter ===
       'cancelled'
     ) {
@@ -9561,6 +9832,23 @@ async function smAiAsk(
 
     smAiAwaitingLocation = false;
     await smAiSearchHotels(query.trim(), {});
+    return;
+  }
+
+  // -------------------------------------------------------
+  // DETERMINISTIC RECENT-BOOKING QUERIES
+  // -------------------------------------------------------
+  // These requests ask for one record, not the full booking list.
+  if (/\b(?:what is|what's|show me|show|tell me|find)\b.*\b(?:my )?(?:most recent|recent|latest|last) booking\b/i.test(query)) {
+    await smAiViewBookings('recent');
+    return;
+  }
+
+  if (/\b(?:show me|show|tell me|find|what is|what's)\b.*\b(?:last|latest|most recent|recent) cancelled booking\b/i.test(query) ||
+      /\b(?:last|latest|most recent|recent) cancelled booking\b/i.test(query) ||
+      /\b(?:what is|what's|show me|show|tell me|find)\b.*\b(?:my )?(?:last|latest|most recent|recent) cancellation\b/i.test(query) ||
+      /\b(?:my )?(?:last|latest|most recent|recent) cancellation\b/i.test(query)) {
+    await smAiViewBookings('last_cancelled');
     return;
   }
 

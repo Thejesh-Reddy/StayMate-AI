@@ -303,12 +303,15 @@
                 >
 
 
-                <span
+                <button
+                  id="locationSearchSubmit"
                   class="location-input-arrow"
-                  aria-hidden="true"
+                  type="button"
+                  aria-label="Search hotels in selected location"
+                  title="Search hotels"
                 >
                   →
-                </span>
+                </button>
 
               </div>
 
@@ -356,7 +359,7 @@
               type="button"
               class="hero-action primary-action"
               data-command="find hotels"
-              onclick="document.getElementById('input').value='Find hotels'; document.getElementById('chatForm').requestSubmit();"
+              onclick="if (typeof revealHotelResultsArea === 'function') revealHotelResultsArea(); if (typeof startHotelSearch === 'function') { startHotelSearch(); } else { const locationField = document.getElementById('locationSearch'); if (locationField) { locationField.focus(); locationField.placeholder = 'Enter your city or destination manually...'; } }"
             >
 
               <span class="hero-action-icon">

@@ -1420,8 +1420,8 @@
 
     const pendingBooking = {
 
-      // Preserve the entry point so the home page can route the booking UI
-      // to the floating assistant or the regular website chat appropriately.
+      // Preserve the entry point so the home page routes the booking UI
+      // back to the same chat surface where the hotel search began.
       source: (
         bookingQuery.get("assistant_flow") === "1" ||
         bookingQuery.has("assistant_search")
